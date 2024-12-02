@@ -12,12 +12,66 @@
   "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "sailpoint",
+          "title": "SailPoint Identity Security Cloud",
+          "icon": "resources/isc.svg"
+        }
+      ]
+    },
+    "views": {
+      "sailpoint": [
+        {
+          "id": "vscode-sailpoint-nerm.view",
+          "name": "NERM Tenants"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "vscode-sailpoint-nerm.view",
+        "contents": "No tenant.\n[Add Tenant](command:vscode-sailpoint-nerm.add-tenant)\n[Add Folder](command:vscode-sailpoint-nerm.folder.add-root)"
+      }
+    ],
     "commands": [
       {
-        "command": "vscode-sailpoint-nerm.helloWorld",
-        "title": "Hello World"
+        "command": "vscode-sailpoint-nerm.folder.add-root",
+        "title": "Add folder",
+        "icon": "$(new-folder)"
+      },
+      {
+        "command": "vscode-sailpoint-nerm.folder.add",
+        "title": "Add folder",
+        "icon": "$(new-folder)"
       }
-    ]
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "vscode-sailpoint-nerm.folder.add-root",
+          "when": "never"
+        },
+        {
+          "command": "vscode-sailpoint-nerm.folder.add",
+          "when": "never"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "vscode-sailpoint-nerm.folder.add-root",
+          "when": "view == vscode-sailpoint-nerm.view",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "vscode-sailpoint-nerm.folder.add",
+          "when": "view == vscode-sailpoint-nerm.view && viewItem == folder"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",

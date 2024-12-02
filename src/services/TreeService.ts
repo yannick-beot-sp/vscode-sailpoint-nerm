@@ -1,4 +1,5 @@
 import { Memento } from "vscode"
+import { compareByLabel } from "../utils/compare"
 
 const KEY_PREFIX = "TREE_"
 
@@ -6,22 +7,25 @@ export type StoredNodeType = "FOLDER" | "TENANT"
 
 export interface IStoredNode {
     readonly id: string,
-    readonly label: string,
+    label: string,
     readonly type: StoredNodeType
-    readonly parentId?: string
+    parentId?: string
+    readonly baseUrl?: string
 }
 
 export class StoredNode implements IStoredNode {
     public readonly id: string
-    public readonly label: string
+    public label: string
     public readonly type: StoredNodeType
-    public readonly parentId?: string
+    public parentId?: string
+    public readonly baseUrl?: string
 
-    constructor({ id, label, type, parentId }: IStoredNode) {
+    constructor({ id, label, type, parentId, baseUrl }: IStoredNode) {
         this.id = id
         this.label = label
         this.type = type
         this.parentId = parentId
+        this.baseUrl = baseUrl
     }
 
     get isRoot(): boolean {
@@ -30,15 +34,15 @@ export class StoredNode implements IStoredNode {
 }
 
 export class TreeService {
-    constructor(private storage: Memento) {
-    }
+    constructor(private storage: Memento) { }
 
     public getRoots(): IStoredNode[] {
-         const a = this.storage.keys()
+        const a = this.storage.keys()
             .filter(x => x.startsWith(KEY_PREFIX))
 
         return a.map(x => new StoredNode(this.storage.get<IStoredNode>(x)!))
             .filter(x => x.isRoot)
+            .sort(compareByLabel)
     }
 
     public getChildren(id: string): IStoredNode[] {
@@ -46,10 +50,11 @@ export class TreeService {
             .filter(x => x.startsWith(KEY_PREFIX))
             .map(x => new StoredNode(this.storage.get<IStoredNode>(x)!))
             .filter(x => x.parentId === id)
+            .sort(compareByLabel)
     }
 
-    public get(id: string): IStoredNode|undefined {
-        return this.storage.get(this._getKey(id) )
+    public get(id: string): IStoredNode | undefined {
+        return this.storage.get(this._getKey(id))
     }
 
     public async addOrUpdate(node: IStoredNode) {
@@ -59,7 +64,7 @@ export class TreeService {
         )
     }
 
-    public async remove(id: string):Promise<void> {
+    public async remove(id: string): Promise<void> {
         const children = this.getChildren(id)
         if (children) {
             for await (const element of children) {

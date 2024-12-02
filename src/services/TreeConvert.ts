@@ -17,11 +17,23 @@ export class TreeConvert {
                 return new TenantTreeItem({
                     id: node.id,
                     label: node.label,
-                    parentId: node.parentId
+                    parentId: node.parentId,
+                    baseUrl: node.baseUrl!
                 })
                 break;
         }
         // throw new Error(`Invalid type: ${node.type}`);
+
+    }
+
+    public static toStoredNode(node: FolderTreeItem | TenantTreeItem): IStoredNode {
+        return {
+            id: node.id,
+            label: node.label,
+            parentId: node.parentId,
+            type: node instanceof FolderTreeItem ? "FOLDER" : "TENANT",
+            baseUrl: (<TenantTreeItem>node).baseUrl
+        }
 
     }
 }

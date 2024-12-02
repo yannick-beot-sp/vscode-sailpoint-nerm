@@ -5,3 +5,7 @@ export const DROP_MIME_TYPE = 'application/vnd.code.tree.vscode-sailpoint-nerm.v
 
 export const NEW_FOLDER_ROOT = `${COMMAND_PREFIX}.folder.add-root`;
 export const NEW_FOLDER = `${COMMAND_PREFIX}.folder.add`;
+export const NEW_TENANT_ROOT = `${COMMAND_PREFIX}.tenant.add-root`;
+export const NEW_TENANT = `${COMMAND_PREFIX}.tenant.add`;
+export const RENAME = `${COMMAND_PREFIX}.rename`;
+export const REFRESH = `${COMMAND_PREFIX}.refresh`;

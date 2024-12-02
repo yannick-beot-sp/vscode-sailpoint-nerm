@@ -32,29 +32,56 @@
     "viewsWelcome": [
       {
         "view": "vscode-sailpoint-nerm.view",
-        "contents": "No tenant.\n[Add Tenant](command:vscode-sailpoint-nerm.add-tenant)\n[Add Folder](command:vscode-sailpoint-nerm.folder.add-root)"
+        "contents": "No tenant.\n[Add Tenant](command:vscode-sailpoint-nerm.tenant.add-root)\n[Add Folder](command:vscode-sailpoint-nerm.folder.add-root)"
       }
     ],
     "commands": [
       {
         "command": "vscode-sailpoint-nerm.folder.add-root",
-        "title": "Add folder",
+        "title": "NERM: Add folder",
         "icon": "$(new-folder)"
       },
       {
         "command": "vscode-sailpoint-nerm.folder.add",
         "title": "Add folder",
         "icon": "$(new-folder)"
+      },
+      {
+        "command": "vscode-sailpoint-nerm.tenant.add-root",
+        "title": "NERM: Add tenant",
+        "icon": "$(add)"
+      },
+      {
+        "command": "vscode-sailpoint-nerm.tenant.add",
+        "title": "Add tenant",
+        "icon": "$(add)"
+      },
+      {
+        "command": "vscode-sailpoint-nerm.rename",
+        "title": "Rename"
+      },
+      {
+        "command": "vscode-sailpoint-nerm.refresh",
+        "title": "Refresh",
+        "icon": "$(refresh)"
       }
     ],
     "menus": {
       "commandPalette": [
         {
-          "command": "vscode-sailpoint-nerm.folder.add-root",
+          "command": "vscode-sailpoint-nerm.tenant.add",
           "when": "never"
         },
         {
           "command": "vscode-sailpoint-nerm.folder.add",
+          "when": "never"
+        },
+        {
+          "command": "vscode-sailpoint-nerm.rename",
+          "when": "never"
+        },
+        {
+          "command": "vscode-sailpoint-nerm.refresh",
           "when": "never"
         }
       ],
@@ -63,12 +90,30 @@
           "command": "vscode-sailpoint-nerm.folder.add-root",
           "when": "view == vscode-sailpoint-nerm.view",
           "group": "navigation"
+        },
+        {
+          "command": "vscode-sailpoint-nerm.tenant.add-root",
+          "when": "view == vscode-sailpoint-nerm.view",
+          "group": "navigation"
+        },
+        {
+          "command": "vscode-sailpoint-nerm.refresh",
+          "when": "view == vscode-sailpoint-nerm.view",
+          "group": "navigation"
         }
       ],
       "view/item/context": [
         {
           "command": "vscode-sailpoint-nerm.folder.add",
           "when": "view == vscode-sailpoint-nerm.view && viewItem == folder"
+        },
+        {
+          "command": "vscode-sailpoint-nerm.tenant.add",
+          "when": "view == vscode-sailpoint-nerm.view && viewItem == folder"
+        },
+        {
+          "command": "vscode-sailpoint-nerm.rename",
+          "when": "view == vscode-sailpoint-nerm.view && (viewItem == folder || viewItem == tenant)"
         }
       ]
     }
@@ -101,6 +146,7 @@
     "typescript": "^5.6.3"
   },
   "dependencies": {
+    "axios": "^1.7.8",
     "vscode-sailpoint-nerm": "file:"
   }
 }

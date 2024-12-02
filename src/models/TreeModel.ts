@@ -8,6 +8,8 @@ import * as crypto from 'crypto';
 export abstract class BaseTreeItem extends vscode.TreeItem {
 
     public readonly parentId?: string
+    public readonly label: string
+    public readonly id: string
 
     constructor(
         {
@@ -24,6 +26,8 @@ export abstract class BaseTreeItem extends vscode.TreeItem {
     ) {
         super(label, collapsibleState);
         this.id = id
+        this.parentId = parentId
+        this.label = label
     }
 
     getChildren?(): Promise<BaseTreeItem[]>
@@ -56,15 +60,18 @@ export class FolderTreeItem extends BaseTreeItem {
 }
 
 export class TenantTreeItem extends BaseTreeItem {
+    public readonly baseUrl: string
     constructor(
         {
             id,
             parentId,
             label,
+            baseUrl
         }: {
             id: string,
             parentId?: string,
             label: string,
+            baseUrl: string
         }
     ) {
         super({
@@ -73,6 +80,7 @@ export class TenantTreeItem extends BaseTreeItem {
             label,
             collapsibleState: vscode.TreeItemCollapsibleState.Collapsed
         });
+        this.baseUrl = baseUrl
     }
 
     public async getChildren() {
@@ -83,7 +91,7 @@ export class TenantTreeItem extends BaseTreeItem {
         ]
     }
     contextValue = "tenant"
-    iconPath = "organization"
+    iconPath = new vscode.ThemeIcon("organization");
 
 }
 
@@ -115,7 +123,7 @@ export class UsersTreeItem extends LinkTreeItem {
             label: "Users"
         });
     }
-    iconPath = "person"
+    iconPath = new vscode.ThemeIcon("person");
     contextValue = "users"
 }
 
@@ -128,7 +136,7 @@ export class RolesTreeItem extends LinkTreeItem {
             label: "Roles"
         });
     }
-    iconPath = "account"
+    iconPath = new vscode.ThemeIcon("account");
     contextValue = "roles"
 }
 
@@ -141,6 +149,6 @@ export class ProfilesTreeItem extends LinkTreeItem {
             label: "Profiles"
         });
     }
-    iconPath = "extensions"
+    iconPath = new vscode.ThemeIcon("extensions");
     contextValue = "profiles"
 }

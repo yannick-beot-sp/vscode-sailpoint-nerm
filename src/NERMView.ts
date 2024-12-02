@@ -6,6 +6,7 @@ import { TreeConvert } from './services/TreeConvert';
 import { TenantService } from './services/TenantService';
 import { isBlank, isEmpty } from './utils/stringUtils';
 import { NERMClientFactory } from './services/NERMClientFactory';
+import { confirm } from './utils/vsCodeHelpers';
 
 export class NERMView implements vscode.TreeDataProvider<BaseTreeItem>, vscode.TreeDragAndDropController<BaseTreeItem> {
     private _onDidChangeTreeData: vscode.EventEmitter<(BaseTreeItem | undefined)[] | undefined> = new vscode.EventEmitter<BaseTreeItem[] | undefined>();
@@ -44,6 +45,8 @@ export class NERMView implements vscode.TreeDataProvider<BaseTreeItem>, vscode.T
             vscode.commands.registerCommand(constants.RENAME, this.rename, this));
         context.subscriptions.push(
             vscode.commands.registerCommand(constants.REFRESH, this.refresh, this));
+        context.subscriptions.push(
+            vscode.commands.registerCommand(constants.REMOVE, this.remove, this));
 
         context.subscriptions.push(
             vscode.window.createTreeView(
@@ -243,6 +246,34 @@ export class NERMView implements vscode.TreeDataProvider<BaseTreeItem>, vscode.T
             this._onDidChangeTreeData.fire([node]);
         } else {
             this._onDidChangeTreeData.fire(undefined);
+        }
+    }
+
+    async remove(node: BaseTreeItem): Promise<void> {
+        if (!(await confirm(`Are you sure you want to remove ${node.label}${node instanceof FolderTreeItem ? " and all its content" : ""}?`))) {
+            console.log("< EscalateCertificationCommand.execute: no reassignment");
+            return
+        }
+
+        const storedNode = this.treeService.get(node.id)
+        if (!storedNode) { return }
+        this._removeNode(storedNode)
+        this.refresh(node?.parentId ? this._getNode(node?.parentId) : undefined)
+
+    }
+    private async _removeNode(node: IStoredNode) {
+        if (node.type == "TENANT") {
+            this.tenantService.remove(node.id)
+            this.treeService.remove(node.id)
+        } else {
+            // FOLDER
+            const children = this.treeService.getChildren(node.id)
+            if (children) {
+                for (const child of children) {
+                    this._removeNode(child)
+                }
+            }
+            this.treeService.remove(node.id)
         }
     }
 

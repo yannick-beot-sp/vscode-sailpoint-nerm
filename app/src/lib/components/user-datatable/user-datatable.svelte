@@ -4,12 +4,21 @@
   import { onMount } from "svelte";
   import type { Users } from "../../../services/Client";
   import { ClientFactory } from "../../../services/ClientFactory";
+  import { type User } from "src/model/User";
 
   let client = ClientFactory.getClient();
-  let promiseUser: Promise<Users> = client.getUsers()
+  let users : User[]= $state<User[]>([])
+  onMount(async()=> {
+    let results  = await client.getUsers()
+    users = results.users
+    console.log("data loaded");
+    
+  })
 
 </script>
 
-{#await promiseUser then data}
-  <DataTable data={data.users} {columns} />
-{/await}
+  <DataTable bind:data={users} {columns} />
+
+  <div>
+    Count: {users.length}
+  </div>

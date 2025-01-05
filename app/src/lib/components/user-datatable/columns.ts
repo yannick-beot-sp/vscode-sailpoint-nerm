@@ -3,17 +3,35 @@ import type { User } from "src/model/User";
 import { createRawSnippet } from "svelte";
 import { renderComponent, renderSnippet } from "../ui/data-table";
 import ColumnStatus from "./column-status.svelte";
+import Actions from "./actions.svelte";
+import SortableHeader from "./sortable-header.svelte";
 
-export const columns: ColumnDef<User>[] = [
+
+export type MyColumnDef<TData> = ColumnDef<TData> & {
+    isVisibleByDefault?: boolean;
+};
+
+export const columns: MyColumnDef<User>[] = [
     {
         accessorKey: "name",
-        header: "Name",
+        header: ({ column }) =>
+            renderComponent(SortableHeader, {
+                onclick: () => column.toggleSorting(column.getIsSorted() === "asc"),
+                label: "Name"
+            }),
+        enableHiding: false
     },
     {
+        id: "login",
         accessorKey: "login",
-        header: "Login",
+        header: ({ column }) =>
+            renderComponent(SortableHeader, {
+                onclick: () => column.toggleSorting(column.getIsSorted() === "asc"),
+                label: "Login"
+            }),
     },
     {
+        id: "status",
         accessorKey: "status",
         header: "Status",
         cell: ({ row }) => {
@@ -23,7 +41,25 @@ export const columns: ColumnDef<User>[] = [
         },
     },
     {
+        id: "email",
         accessorKey: "email",
-        header: "Email",
-    }
+        header: ({ column }) =>
+            renderComponent(SortableHeader, {
+                onclick: () => column.toggleSorting(column.getIsSorted() === "asc"),
+                label: "Email"
+            }),
+    },
+    {
+        id: "id",
+        accessorKey: "id",
+        header: "ID",
+        isVisibleByDefault: false
+    },
+    {
+        id: "actions",
+        cell: ({ row, table }) => {
+            return renderComponent(Actions, { row, table });
+        },
+        enableHiding: false
+    },
 ];

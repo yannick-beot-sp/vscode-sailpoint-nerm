@@ -11,6 +11,7 @@ export interface IStoredNode {
     readonly type: StoredNodeType
     parentId?: string
     readonly baseUrl?: string
+    readOnly?: boolean
 }
 
 export class StoredNode implements IStoredNode {
@@ -19,13 +20,15 @@ export class StoredNode implements IStoredNode {
     public readonly type: StoredNodeType
     public parentId?: string
     public readonly baseUrl?: string
+    public readOnly?: boolean
 
-    constructor({ id, label, type, parentId, baseUrl }: IStoredNode) {
+    constructor({ id, label, type, parentId, baseUrl, readOnly }: IStoredNode) {
         this.id = id
         this.label = label
         this.type = type
         this.parentId = parentId
         this.baseUrl = baseUrl
+        this.readOnly = readOnly
     }
 
     get isRoot(): boolean {

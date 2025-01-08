@@ -4,7 +4,7 @@
   import { onMount } from "svelte";
   import type { Users } from "../../../services/Client";
   import { ClientFactory } from "../../../services/ClientFactory";
-  import { type User } from "src/model/User";
+  import type {  User } from "src/model/User";
 
   let client = ClientFactory.getClient();
   let users : User[]= $state<User[]>([])

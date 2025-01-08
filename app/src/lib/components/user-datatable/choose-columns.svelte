@@ -1,5 +1,5 @@
 <script lang="ts" generics="TData">
-	import Settings2 from "lucide-svelte/icons/settings-2";
+	import { Columns3 } from 'lucide-svelte';
 	import type { Table } from "@tanstack/table-core";
 	import { buttonVariants } from "$lib/components/ui/button";
 	import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
@@ -15,8 +15,8 @@
 			class: "ml-auto hidden h-8 lg:flex",
 		})}
 	>
-		<Settings2 />
-		View
+		<Columns3 />
+		
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content>
 		<DropdownMenu.Group>

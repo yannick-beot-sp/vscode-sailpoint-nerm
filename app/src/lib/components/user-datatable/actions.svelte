@@ -1,26 +1,20 @@
 <script lang="ts">
-  import { Pen } from "lucide-svelte";
-  import { Trash2 } from "lucide-svelte";
-  import { buttonVariants, Button } from "$lib/components/ui/button/index.js";
-  import * as AlertDialog from "$lib/components/ui/alert-dialog/index.js";
   import type { Row, Table } from "@tanstack/table-core";
   import type { User } from "src/model/User";
+  import ActionEdit from "./action-edit.svelte";
+  import DeleteButton from "../DeleteButton.svelte";
 
   let { row, table }: { row: Row<User>, table: Table<User> } = $props();
     const meta = table.options.meta;
 
 
   async function handleClick() {
+    //@ts-ignore
       await meta?.removeRow(row.index)
   }
 </script>
 
 <div>
-  <Button variant="ghost" size="icon" class="relative size-8 p-0">
-    <Pen />
-  </Button>
-  <Button variant="ghost" size="icon" class="relative size-8 p-0"
-  onclick={handleClick}>
-    <Trash2 class="text-destructive" />
-  </Button>
+  <ActionEdit user={row.original}/>
+  <DeleteButton {handleClick} />
 </div>

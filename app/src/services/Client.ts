@@ -1,3 +1,4 @@
+import type { Role } from "src/model/Role"
 import type { User } from "src/model/User"
 
 
@@ -15,4 +16,5 @@ export interface PaginatedData {
 
 export interface Client {
     getUsers(): Promise<User[]>
+    getRoles(): Promise<Role[]>
 }

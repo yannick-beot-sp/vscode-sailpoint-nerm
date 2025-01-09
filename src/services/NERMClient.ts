@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { GetUserRequest, GetUserResponse, PaginatedData, User } from '../models/API';
+import { GetRolesRequest, GetRolesResponse, GetUsersRequest, GetUsersResponse, PaginatedData, Role, User } from '../models/API';
 
 export class NERMClient {
     constructor(private readonly axios: AxiosInstance) {
@@ -18,11 +18,18 @@ export class NERMClient {
         }
     }
 
-    public async getUsers(request: GetUserRequest): Promise<PaginatedData<User>> {
-        const response = await this.axios.get<GetUserResponse>("users", { params: request })
+    public async getUsers(request: GetUsersRequest): Promise<PaginatedData<User>> {
+        const response = await this.axios.get<GetUsersResponse>("users", { params: request })
         return {
             _metadata: response.data._metadata,
             data: response.data.users
+        }
+    }
+    public async getRoles(request: GetRolesRequest): Promise<PaginatedData<Role>> {
+        const response = await this.axios.get<GetRolesResponse>("roles", { params: request })
+        return {
+            _metadata: response.data._metadata,
+            data: response.data.roles
         }
     }
 }

@@ -16,14 +16,19 @@ const config: Config = {
 		},
 		extend: {
 			colors: {
-				border: "hsl(var(--border) / <alpha-value>)",
-				input: "hsl(var(--input) / <alpha-value>)",
-				ring: "hsl(var(--ring) / <alpha-value>)",
-				background: "hsl(var(--background) / <alpha-value>)",
-				foreground: "hsl(var(--foreground) / <alpha-value>)",
+				border: "var(--border)",
+				input: "var(--input)",
+				"input-background": "var(--input-background)",
+				ring: "var(--ring)",
+				background: "var(--background)",
+				foreground: "var(--foreground)",
+				// primary: {
+				// 	DEFAULT: "hsl(var(--primary) / <alpha-value>)",
+				// 	foreground: "hsl(var(--primary-foreground) / <alpha-value>)"
+				// },
 				primary: {
-					DEFAULT: "hsl(var(--primary) / <alpha-value>)",
-					foreground: "hsl(var(--primary-foreground) / <alpha-value>)"
+					DEFAULT: "var(--primary)",
+					foreground: "var(--primary-foreground)"
 				},
 				secondary: {
 					DEFAULT: "hsl(var(--secondary) / <alpha-value>)",
@@ -65,13 +70,14 @@ const config: Config = {
         		},
 			},
 			borderRadius: {
-				xl: "calc(var(--radius) + 4px)",
-				lg: "var(--radius)",
-				md: "calc(var(--radius) - 2px)",
-				sm: "calc(var(--radius) - 4px)"
+				xl: "0",
+				lg: "0",
+				md: "0",
+				sm: "0"
 			},
 			fontFamily: {
 				sans: [...fontFamily.sans]
+				// sans:"var(--vscode-font-family)"
 			},
 			keyframes: {
 				"accordion-down": {

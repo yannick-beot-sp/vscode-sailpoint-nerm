@@ -6,12 +6,14 @@
   import * as Tabs from "$lib/components/ui/tabs/index.js";
   import UserForm from "./tab-user-form.svelte";
   import TabRoleList from "./tab-role-list.svelte";
+  import type { Client } from "src/services/Client";
 
   interface Props {
     user: User;
+    client: Client;
   }
 
-  let { user }: Props = $props();
+  let { user, client }: Props = $props();
 </script>
 
 <Sheet.Root>
@@ -24,7 +26,10 @@
   >
     <Pen /></Sheet.Trigger
   >
-  <Sheet.Content side="right" class="sm:max-w-lg overflow-y-scroll max-h-screen">
+  <Sheet.Content
+    side="right"
+    class="sm:max-w-lg overflow-y-scroll max-h-screen"
+  >
     <Tabs.Root value="user" class="w-full pt-4">
       <Tabs.List class="grid w-full grid-cols-2 gap-1">
         <Tabs.Trigger value="user">User</Tabs.Trigger>
@@ -34,7 +39,7 @@
         <UserForm {user} />
       </Tabs.Content>
       <Tabs.Content value="roles" class="pt-4">
-        <TabRoleList {user} />
+        <TabRoleList {user} {client}/>
       </Tabs.Content>
     </Tabs.Root>
   </Sheet.Content>

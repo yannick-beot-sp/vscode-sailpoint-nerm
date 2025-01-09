@@ -26,7 +26,7 @@ export interface PaginatedQueryParams {
 export interface PaginatedResponse {
     _metadata?: PaginationMetadata
 }
-export interface PaginatedData<T> extends PaginatedResponse{
+export interface PaginatedData<T> extends PaginatedResponse {
     data: T[]
 }
 
@@ -50,7 +50,7 @@ export type User = {
     group_strings: string;
 };
 
-export interface GetUserRequest extends PaginatedQueryParams {
+export interface GetUsersRequest extends PaginatedQueryParams {
     /**
      *  object name for filtering
      */
@@ -78,6 +78,34 @@ export interface GetUserRequest extends PaginatedQueryParams {
 
 }
 
-export interface GetUserResponse extends PaginatedResponse {
+export interface GetUsersResponse extends PaginatedResponse {
     users: User[]
+}
+
+export interface GetRolesRequest extends PaginatedQueryParams {
+
+
+}
+export interface Role {
+    /**
+     * uuid
+     */
+    id: string;
+
+    /**
+     * Possible values: >= 32 characters and <= 32 characters
+     * Example: sponsors_role
+     */
+    uid: string;
+
+    /**
+     * Example: Sponsors
+     */
+    name: string;
+
+    groups: string[]
+}
+
+export interface GetRolesResponse extends PaginatedResponse {
+    roles: Role[]
 }

@@ -3,19 +3,20 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+  body {
+    --background: var(--vscode-editor-background);
+    --foreground: var(--vscode-editor-foreground);
+    --input-background: var(--vscode-input-background);
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --border: var(--vscode-textSeparator-foreground);
+    --input: transparent;
+    --primary: var(--vscode-button-background);
+    --primary-foreground: var(--vscode-button-foreground);
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
     --accent: 210 40% 96.1%;
@@ -24,7 +25,7 @@
     --destructive-foreground: 210 40% 98%;
     --success: 144 78% 36%;
     --success-foreground: 210 40% 98%;
-    --ring: 222.2 84% 4.9%;
+    --ring: var(--vscode-focusBorder);
     --radius: 0.5rem;
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;

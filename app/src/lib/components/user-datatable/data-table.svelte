@@ -16,12 +16,14 @@
   import ChooseColumns from "./choose-columns.svelte";
   import { createVisibilityMap } from "./utils";
   import type { MyColumnDef } from "./columns";
+  import type { Client } from "src/services/Client";
   type Props = {
     columns: MyColumnDef<TData>[];
     data: TData[];
+    client: Client
   };
 
-  let { data = $bindable(), columns }: Props = $props();
+  let { data = $bindable(), columns, client }: Props = $props();
   let pagination = $state<PaginationState>({ pageIndex: 0, pageSize: 10 });
   let sorting = $state<SortingState>([]);
   let columnVisibility = $state<VisibilityState>(createVisibilityMap(columns));
@@ -66,6 +68,7 @@
       },
     },
     meta: {
+      client,
       removeRow: async (rowIndex: number) => {
         console.log(">table.meta.removeRow");
         // Note: Svelte react on array assignment

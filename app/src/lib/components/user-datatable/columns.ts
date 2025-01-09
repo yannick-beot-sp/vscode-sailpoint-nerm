@@ -1,7 +1,6 @@
 import type { ColumnDef } from "@tanstack/table-core";
 import type { User } from "src/model/User";
-import { createRawSnippet } from "svelte";
-import { renderComponent, renderSnippet } from "../ui/data-table";
+import { renderComponent } from "../ui/data-table";
 import ColumnStatus from "./column-status.svelte";
 import Actions from "./actions.svelte";
 import SortableHeader from "./sortable-header.svelte";
@@ -53,6 +52,24 @@ export const columns: MyColumnDef<User>[] = [
         id: "id",
         accessorKey: "id",
         header: "ID",
+        isVisibleByDefault: false
+    },
+    {
+        id: "title",
+        accessorKey: "title",
+        header: "Title",
+        isVisibleByDefault: false
+    },
+    {
+        id: "type",
+        accessorKey: "type",
+        header: "Type",
+        isVisibleByDefault: false
+    },
+    {
+        id: "last_login",
+        accessorKey: "last_login",
+        header: "Last Login",
         isVisibleByDefault: false
     },
     {

@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { TenantService } from './services/TenantService';
 import { NERMClient } from './services/NERMClient';
 import { GetAllUsersQuery } from './commands/GetAllUsersQuery';
+import { IRequest, IRequestHandler } from './commands/interfaces';
 
 
 
@@ -37,6 +38,7 @@ export class Panel {
     private readonly _panel: vscode.WebviewPanel;
     private readonly _extensionUri: vscode.Uri;
     private _disposables: vscode.Disposable[] = [];
+    private _commands = new Map<string, IRequestHandler<IRequest<unknown>, unknown>>()
 
 
     public static createOrShow(
@@ -88,6 +90,12 @@ export class Panel {
         }
     }
 
+    register(...args: IRequestHandler<IRequest<unknown>, unknown>[]) {
+        args.forEach(x=>{
+            this._commands.set(x.command, x)
+        })
+    }
+
     private constructor(panel: vscode.WebviewPanel,
         private client: NERMClient,
         extensionUri: vscode.Uri,
@@ -112,18 +120,20 @@ export class Panel {
             this._disposables
         );
 
+        this.register(
+            new GetAllUsersQuery(client) 
+        )
+
         // Handle messages from the webview
         this._panel.webview.onDidReceiveMessage(async message => {
             const { command, requestId, payload } = message;
-            switch (command) {
-                case "getUsers":
-                    const getAllUsersQuery = new GetAllUsersQuery(client)
-                    const response = await getAllUsersQuery.handle({})
-                    this._panel.webview.postMessage({ command, requestId, payload: response });
-                    break;
-                default:
-                    break;
+            const handler = this._commands.get(command)
+            if (!handler) {
+                console.error(`Panel: Invalid command ${command}`)
+                return
             }
+            const response = await handler.handle(payload)
+            this._panel.webview.postMessage({ command, requestId, payload: response });
         },
             null,
             this._disposables

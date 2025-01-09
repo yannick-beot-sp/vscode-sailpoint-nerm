@@ -7,6 +7,7 @@
   import type { UserRolePair } from "src/model/UserRolePair";
   import Autocomplete from "$lib/components/combobox/combobox.svelte";
   import type { Item } from "$lib/components/Item";
+  import type { Client } from "src/services/Client";
 
   interface listItem<T> {
     original: T;
@@ -20,9 +21,10 @@
 
   interface Props {
     user: User;
+    client: Client;
   }
 
-  let { user }: Props = $props();
+  let { user, client }: Props = $props();
 
   let userRoles: UserRolePair[] = [
     {

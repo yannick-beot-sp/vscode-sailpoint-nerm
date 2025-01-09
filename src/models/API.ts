@@ -140,3 +140,27 @@ export interface GetUserRolePairingsRequest extends PaginatedQueryParams {
 export interface GetUserRolePairingsResponse extends PaginatedResponse {
     user_roles: UserRole[]
 }
+
+export interface AddUserRoleDto {
+    /** uuid  */
+    user_id: string;
+
+    /** uuid */
+    role_id: string;
+}
+
+export interface AddUserRolePairingsRequest {
+    user_role: AddUserRoleDto
+}
+
+export interface AddUserRolePairingsResponse {
+    user_role: UserRole
+}
+
+export interface RemoveUserRolePairingsRequest {
+    id: string
+}
+
+export interface RemoveUserRolePairingsResponse {
+}
+

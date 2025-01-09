@@ -4,7 +4,7 @@ import { NERMClient } from './services/NERMClient';
 import { GetAllUsersQuery } from './commands/GetAllUsersQuery';
 import { IRequest, IRequestHandler } from './commands/interfaces';
 import { GetAllRolesQuery } from './commands/GetAllRolesQuery';
-import { GetAllUserRolePairings } from './commands/GetAllUserRolePairings';
+import { GetAllUserRolePairingsQuery } from './commands/GetAllUserRolePairingsQuery';
 
 
 
@@ -125,7 +125,7 @@ export class Panel {
         this.register(
             new GetAllUsersQuery(client),
             new GetAllRolesQuery(client),
-            new GetAllUserRolePairings(client)
+            new GetAllUserRolePairingsQuery(client)
         )
 
         // Handle messages from the webview

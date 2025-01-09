@@ -62,6 +62,7 @@
           {#each items as item}
             <Command.Item
               value={item.value}
+              keywords={item.label.split(" ")}
               onSelect={() => {
                 value = item.value;
                 closeAndFocusTrigger();

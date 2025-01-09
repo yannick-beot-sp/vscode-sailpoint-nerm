@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { TenantService } from './services/TenantService';
 import { NERMClient } from './services/NERMClient';
+import { GetAllUsersQuery } from './commands/GetAllUsersQuery';
 
 
 
@@ -10,7 +11,7 @@ function getWebviewOptions(extensionUri: vscode.Uri): vscode.WebviewOptions {
         enableScripts: true,
 
         // And restrict the webview to only loading content from our extension's `media` directory.
-        localResourceRoots: [vscode.Uri.joinPath(extensionUri, 'campaign-webview', 'assets')]
+        localResourceRoots: [vscode.Uri.joinPath(extensionUri, 'webview', 'assets')]
     };
 }
 
@@ -25,14 +26,14 @@ function getNonce() {
 
 interface PanelParams {
     tenantId: string
-    tenantName: string
+    tenantLabel: string
     path: string
 }
 
 export class Panel {
 
     public static currentPanels: Map<string, Panel> = new Map()
-    public static readonly viewType = 'campaignView';
+    public static readonly viewType = 'webview';
     private readonly _panel: vscode.WebviewPanel;
     private readonly _extensionUri: vscode.Uri;
     private _disposables: vscode.Disposable[] = [];
@@ -57,7 +58,7 @@ export class Panel {
         // Otherwise, create a new panel.
         const panel = vscode.window.createWebviewPanel(
             Panel.viewType,
-            `${params.tenantName} | ${params.path.replace("/", " | ")}`,
+            `${params.tenantLabel} | ${params.path.replace("/", " | ")}`,
             column || vscode.ViewColumn.One,
             getWebviewOptions(extensionUri)
         );
@@ -88,9 +89,9 @@ export class Panel {
     }
 
     private constructor(panel: vscode.WebviewPanel,
-        client: NERMClient,
+        private client: NERMClient,
         extensionUri: vscode.Uri,
-        params: PanelParams) {
+        private params: PanelParams) {
         this._panel = panel;
         this._extensionUri = extensionUri;
 
@@ -114,7 +115,15 @@ export class Panel {
         // Handle messages from the webview
         this._panel.webview.onDidReceiveMessage(async message => {
             const { command, requestId, payload } = message;
-            // TODO
+            switch (command) {
+                case "getUsers":
+                    const getAllUsersQuery = new GetAllUsersQuery(client)
+                    const response = await getAllUsersQuery.handle({})
+                    this._panel.webview.postMessage({ command, requestId, payload: response });
+                    break;
+                default:
+                    break;
+            }
         },
             null,
             this._disposables
@@ -131,14 +140,14 @@ export class Panel {
 
     private _getHtmlForWebview(webview: vscode.Webview) {
         // Local path to main script run in the webview
-        const scriptPathOnDisk = vscode.Uri.joinPath(this._extensionUri, 'campaign-webview', 'assets', 'index.js');
+        const scriptPathOnDisk = vscode.Uri.joinPath(this._extensionUri, 'webview', 'assets', 'index.js');
 
         // And the uri we use to load this script in the webview
         const scriptUri = webview.asWebviewUri(scriptPathOnDisk);
 
         // Local path to css styles
         // const styleResetPath = vscode.Uri.joinPath(this._extensionUri, 'media', 'reset.css');
-        const stylesPathMainPath = vscode.Uri.joinPath(this._extensionUri, 'campaign-webview', 'assets', 'index.css');
+        const stylesPathMainPath = vscode.Uri.joinPath(this._extensionUri, 'webview', 'assets', 'index.css');
 
         // Uri to load styles into webview
         // const stylesResetUri = webview.asWebviewUri(styleResetPath);
@@ -165,9 +174,7 @@ export class Panel {
   <body>
     <div id="app"></div>
     <script nonce="${nonce}">
-      window.data=${JSON.stringify({
-
-        })};
+      window.data=${JSON.stringify(this.params)};
     </script>
   </body>
 </html>`;

@@ -70,16 +70,9 @@ export class MockupClient implements Client {
         this.users = generateDummyUsers(this.count);
     }
     
-    async getUsers(): Promise<Users> {
+    async getUsers(): Promise<User[]> {
         stall()
-        return {
-            _metadata: {
-                "limit": 100,
-                "offset": 0,
-                "total": this.count
-            },
-            users: this.users
-        }
+        return this.users
     }
 
 }

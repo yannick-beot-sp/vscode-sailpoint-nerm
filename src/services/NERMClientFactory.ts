@@ -14,7 +14,7 @@ export class NERMClientFactory {
 
     public async getClient(params: GetClientRequest): Promise<NERMClient> {
         // Polymorphism is hard...
-        let tenantId: string, baseUrl: string | undefined, token: string | undefined
+        let baseUrl: string | undefined, token: string | undefined
         if ("tenantId" in params) {
             const tenantId = params.tenantId
             const config = this.treeService.get(tenantId)

@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 
 import * as crypto from 'crypto';
+import * as constants from "../constants"
 
 /**
  * Base class 
@@ -96,13 +97,18 @@ export class TenantTreeItem extends BaseTreeItem {
 }
 
 export class LinkTreeItem extends BaseTreeItem {
+    public readonly path: string;
+
+
     constructor(
         {
             tenantId,
             label,
+            path
         }: {
             tenantId: string,
             label: string,
+            path: string
         }
     ) {
         super({
@@ -111,7 +117,15 @@ export class LinkTreeItem extends BaseTreeItem {
             label,
             collapsibleState: vscode.TreeItemCollapsibleState.None
         });
+        this.path = path
+        this.contextValue = path
     }
+
+    command = {
+        title: "open",
+        command: constants.OPEN_WEBVIEW,
+        arguments: [this],
+    };
 }
 
 export class UsersTreeItem extends LinkTreeItem {
@@ -120,11 +134,11 @@ export class UsersTreeItem extends LinkTreeItem {
     ) {
         super({
             tenantId,
-            label: "Users"
+            label: "Users",
+            path: "users"
         });
     }
     iconPath = new vscode.ThemeIcon("person");
-    contextValue = "users"
 }
 
 export class RolesTreeItem extends LinkTreeItem {
@@ -133,11 +147,11 @@ export class RolesTreeItem extends LinkTreeItem {
     ) {
         super({
             tenantId,
-            label: "Roles"
+            label: "Roles",
+            path: "roles"
         });
     }
     iconPath = new vscode.ThemeIcon("account");
-    contextValue = "roles"
 }
 
 export class ProfilesTreeItem extends LinkTreeItem {
@@ -146,9 +160,9 @@ export class ProfilesTreeItem extends LinkTreeItem {
     ) {
         super({
             tenantId,
-            label: "Profiles"
+            label: "Profiles",
+            path: "profiles"
         });
     }
     iconPath = new vscode.ThemeIcon("extensions");
-    contextValue = "profiles"
 }

@@ -11,7 +11,6 @@ export class TreeConvert {
                     label: node.label,
                     parentId: node.parentId
                 })
-                break;
 
             case "TENANT":
                 return new TenantTreeItem({
@@ -20,7 +19,6 @@ export class TreeConvert {
                     parentId: node.parentId,
                     baseUrl: node.baseUrl!
                 })
-                break;
         }
         // throw new Error(`Invalid type: ${node.type}`);
 

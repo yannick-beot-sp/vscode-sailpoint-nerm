@@ -1,6 +1,5 @@
 import type { User } from "src/model/User";
 import type { Client, Users } from "./Client";
-import * as commands from "./Commands";
 import { messageHandler } from "./MessageHandler";
 import { Messenger } from "./Messenger";
 
@@ -12,7 +11,7 @@ interface State {
 export class VsCodeClient implements Client {
     private state: State = {}
 
-    getUsers(): Promise<Users> {
-        throw new Error("Method not implemented.");
+    async getUsers(): Promise<User[]> {
+        return await messageHandler.request<User[]>("getUsers")
     }
 }

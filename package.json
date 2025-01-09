@@ -69,6 +69,10 @@
         "command": "vscode-sailpoint-nerm.remove",
         "title": "Remove",
         "icon": "$(trash)"
+      },
+      {
+        "command": "vscode-sailpoint-nerm.open.webview",
+        "title": "Open"
       }
     ],
     "menus": {
@@ -91,6 +95,10 @@
         },
         {
           "command": "vscode-sailpoint-nerm.remove",
+          "when": "never"
+        },
+        {
+          "command": "vscode-sailpoint-nerm.open.webview",
           "when": "never"
         }
       ],
@@ -138,12 +146,14 @@
     "watch:esbuild": "node esbuild.js --watch",
     "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
     "package": "npm run check-types && npm run lint && node esbuild.js --production",
+    "package:app": "cd app && npm run build",
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "npm run compile-tests && npm run compile && npm run lint",
     "check-types": "tsc --noEmit",
     "lint": "eslint src",
-    "test": "vscode-test"
+    "test": "vscode-test",
+    "postinstall": "cd app && npm install"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.9",

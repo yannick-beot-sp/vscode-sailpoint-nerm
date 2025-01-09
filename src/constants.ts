@@ -10,3 +10,5 @@ export const NEW_TENANT = `${COMMAND_PREFIX}.tenant.add`;
 export const RENAME = `${COMMAND_PREFIX}.rename`;
 export const REFRESH = `${COMMAND_PREFIX}.refresh`;
 export const REMOVE = `${COMMAND_PREFIX}.remove`;
+
+export const OPEN_WEBVIEW = `${COMMAND_PREFIX}.open.webview`;

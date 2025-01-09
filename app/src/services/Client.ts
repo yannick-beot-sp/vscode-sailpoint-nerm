@@ -9,15 +9,10 @@ export interface PaginationMetadata {
     "next"?: string
 }
 
-
 export interface PaginatedData {
     _metadata?: PaginationMetadata
 }
 
-export interface Users extends PaginatedData {
-    users: User[]
-}
-
 export interface Client {
-    getUsers(): Promise<Users>
+    getUsers(): Promise<User[]>
 }

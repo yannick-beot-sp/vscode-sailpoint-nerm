@@ -2,17 +2,14 @@
   import DataTable from "./data-table.svelte";
   import { columns } from "./columns.js";
   import { onMount } from "svelte";
-  import type { Users } from "../../../services/Client";
   import { ClientFactory } from "../../../services/ClientFactory";
   import type {  User } from "src/model/User";
 
   let client = ClientFactory.getClient();
   let users : User[]= $state<User[]>([])
   onMount(async()=> {
-    let results  = await client.getUsers()
-    users = results.users
+    users  = await client.getUsers()
     console.log("data loaded");
-    
   })
 
 </script>

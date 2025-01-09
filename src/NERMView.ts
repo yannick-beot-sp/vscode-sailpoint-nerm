@@ -1,12 +1,13 @@
 import * as vscode from 'vscode';
 import * as constants from './constants';
 import { IStoredNode, TreeService } from './services/TreeService';
-import { BaseTreeItem, FolderTreeItem, TenantTreeItem } from './models/TreeModel';
+import { BaseTreeItem, FolderTreeItem, LinkTreeItem, TenantTreeItem } from './models/TreeModel';
 import { TreeConvert } from './services/TreeConvert';
 import { TenantService } from './services/TenantService';
 import { isBlank, isEmpty } from './utils/stringUtils';
 import { NERMClientFactory } from './services/NERMClientFactory';
 import { confirm } from './utils/vsCodeHelpers';
+import { Panel } from './Panel';
 
 export class NERMView implements vscode.TreeDataProvider<BaseTreeItem>, vscode.TreeDragAndDropController<BaseTreeItem> {
     private _onDidChangeTreeData: vscode.EventEmitter<(BaseTreeItem | undefined)[] | undefined> = new vscode.EventEmitter<BaseTreeItem[] | undefined>();
@@ -17,9 +18,11 @@ export class NERMView implements vscode.TreeDataProvider<BaseTreeItem>, vscode.T
     // Keep track of any nodes we create so that we can re-use the same objects.
     private nodes: Map<string, BaseTreeItem> = new Map();
 
-    private treeService: TreeService
-    private tenantService: TenantService
-    private clientFactory: NERMClientFactory
+    private readonly treeService: TreeService
+    private readonly tenantService: TenantService
+    private readonly clientFactory: NERMClientFactory
+
+    private readonly extensionUri: vscode.Uri
 
     ////////////////////////////////
     //#region Constructor
@@ -49,6 +52,9 @@ export class NERMView implements vscode.TreeDataProvider<BaseTreeItem>, vscode.T
             vscode.commands.registerCommand(constants.REMOVE, this.remove, this));
 
         context.subscriptions.push(
+            vscode.commands.registerCommand(constants.OPEN_WEBVIEW, this.openWebview, this));
+
+        context.subscriptions.push(
             vscode.window.createTreeView(
                 constants.VIEW_CONTAINER_ID,
                 { treeDataProvider: this, showCollapseAll: true, canSelectMany: false, dragAndDropController: this })
@@ -57,6 +63,7 @@ export class NERMView implements vscode.TreeDataProvider<BaseTreeItem>, vscode.T
         this.treeService = new TreeService(context.globalState)
         this.tenantService = new TenantService(context.secrets)
         this.clientFactory = new NERMClientFactory(this.treeService, this.tenantService)
+        this.extensionUri = context.extensionUri
     }
 
     ////////////////////////////////
@@ -238,6 +245,30 @@ export class NERMView implements vscode.TreeDataProvider<BaseTreeItem>, vscode.T
             baseUrl: baseUrl
         }, element)
         vscode.window.showInformationMessage(`Tenant ${tenantDisplayName} successfully added`)
+    }
+
+    public async openWebview(element: LinkTreeItem): Promise<void> {
+        const tenantId = element.parentId!
+        const tenantInfo = this.treeService.get(tenantId)
+
+        const apiKey = await this.tenantService.get(tenantId)
+
+        if (!tenantInfo || !apiKey) { return }
+
+        const client = await this.clientFactory.getClient({
+            baseUrl: tenantInfo.baseUrl!,
+            token: apiKey
+        })
+        Panel.createOrShow(
+            client,
+            this.extensionUri,
+            {
+                tenantId,
+                tenantLabel: tenantInfo.label,
+                path: element.path
+            }
+
+        )
     }
 
     refresh(node?: BaseTreeItem): void {

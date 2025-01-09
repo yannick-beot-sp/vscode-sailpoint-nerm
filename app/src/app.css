@@ -14,7 +14,7 @@
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
     --border: var(--vscode-textSeparator-foreground);
-    --input: transparent;
+    --input: var(--vscode-textSeparator-foreground);
     --primary: var(--vscode-button-background);
     --primary-foreground: var(--vscode-button-foreground);
     --secondary: 210 40% 96.1%;

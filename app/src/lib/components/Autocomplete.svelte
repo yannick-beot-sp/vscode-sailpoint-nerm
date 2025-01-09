@@ -54,7 +54,7 @@
   bind:open
   {...mergedRootProps}
 >
-  <div class="relative">
+  <div class="relative border-input">
     <!--OrangeSlice
       class="absolute start-3 top-1/2 size-6 -translate-y-1/2 text-muted-foreground"
 	  <Search class="mr-2 size-4 shrink-0 opacity-50" />

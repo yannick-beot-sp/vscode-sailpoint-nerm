@@ -43,7 +43,7 @@
     {#snippet child({ props })}
       <Button
         variant="outline"
-        class="w-full justify-between"
+        class="w-full justify-between bg-input-background"
         {...props}
         role="combobox"
         aria-expanded={open}

@@ -1,6 +1,7 @@
 import type { Status, User } from "src/model/User";
 import type { Client } from "./Client";
 import type { Role } from "src/model/Role";
+import type { UserRolePair } from "src/model/UserRolePair";
 
 function getRandomInt(min: number, max: number): number {
     min = Math.ceil(min);
@@ -370,15 +371,39 @@ function generateDummyUsers(count: number): User[] {
         });
 }
 
+const getRandomUserRolePairs = (roles: Role[], userRoleCount: number, userId: string): UserRolePair[] => {
+    const count = Math.min(userRoleCount, roles.length);
+
+    return [...roles]
+        .sort(() => Math.random() - 0.5)
+        .slice(0, count)
+        .map(role => ({
+            uid: role.uid, // not used anyway
+            id: crypto.randomUUID(),
+            user_id: userId,
+            role_id: role.id
+        }));
+};
+
 export class MockupClient implements Client {
 
-    private readonly count = 35
+    private readonly userCount = 35
+    private readonly userRoleCount = 10
     users: User[];
     /**
      *
      */
     constructor() {
-        this.users = generateDummyUsers(this.count);
+        this.users = generateDummyUsers(this.userCount);
+    }
+
+    async getUserRolePairings({ user_id, role_id }: { user_id?: string, role_id?: string }): Promise<UserRolePair[]> {
+        await stall()
+        if (user_id) {
+
+            return getRandomUserRolePairs(roles, this.userRoleCount, user_id);
+        }
+        return []
     }
     async getRoles(): Promise<Role[]> {
         await stall()

@@ -109,3 +109,34 @@ export interface Role {
 export interface GetRolesResponse extends PaginatedResponse {
     roles: Role[]
 }
+
+export interface UserRole {
+    /**
+    * uuid
+    */
+    id: string;
+
+    /**
+     * Possible values: >= 32 characters and <= 32 characters
+     * Example: sponsors_role
+     */
+    uid: string;
+
+    /** uuid  */
+    user_id: string;
+
+    /** uuid */
+    role_id: string;
+}
+
+export interface GetUserRolePairingsRequest extends PaginatedQueryParams {
+    /** The ID of a user for filtering  */
+    user_id?: string;
+
+    /** The ID of a role for filtering */
+    role_id?: string;
+}
+
+export interface GetUserRolePairingsResponse extends PaginatedResponse {
+    user_roles: UserRole[]
+}

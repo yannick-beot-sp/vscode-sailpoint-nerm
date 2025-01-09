@@ -8,10 +8,10 @@
   import Autocomplete from "$lib/components/combobox/combobox.svelte";
   import type { Item } from "$lib/components/Item";
   import type { Client } from "src/services/Client";
+  import { onMount } from "svelte";
 
   interface listItem<T> {
     original: T;
-    index: number;
     status?: "Deleted" | "Added";
   }
 
@@ -26,102 +26,62 @@
 
   let { user, client }: Props = $props();
 
-  let userRoles: UserRolePair[] = [
-    {
-      id: "5d21b470-dfdf-4eb9-a011-6addd88c4129",
-      uid: "253949d4d5a14eb4ad5340ec56536e0a",
-      user_id: "f9b5f3d2-2c2c-4a2c-b968-00044bb9bdbb",
-      role_id: "322b4dbb-9956-48cc-b6b1-86bcc43d4fd4",
-    },
-    {
-      id: "5d21b470-dfdf-4eb9-a011-6addd88c4129",
-      uid: "253949d4d5a14eb4ad5340ec56536e0a",
-      user_id: "f9b5f3d2-2c2c-4a2c-b968-00044bb9bdbb",
-      role_id: "3205bdb2-cde1-4f24-98c2-02c00111b7ca",
-    },
-  ];
+  let userRoles: UserRolePair[] = $state([]);
 
-  let roles: Role[] = [
-    {
-      id: "7dceabc1-1788-467e-b4e0-48ae5c8a5662",
-      uid: "b3_department_admins_neprofile_role",
-      name: "Department Admins",
-      groups: ["Department Admins"],
-    },
-    {
-      id: "872f424a-0095-4025-990f-deae3fdd1c12",
-      uid: "b3_all_suborganization_collaborators_neaccess_role",
-      name: "All Sub-Organization Collaborators",
-      groups: ["All Sub-Organization Collaborators"],
-    },
-    {
-      id: "322b4dbb-9956-48cc-b6b1-86bcc43d4fd4",
-      uid: "b3_department_approvers_neprofile_role",
-      name: "Department Approvers",
-      groups: ["Department Approvers"],
-    },
-    {
-      id: "3205bdb2-cde1-4f24-98c2-02c00111b7ca",
-      uid: "b3_system_configuration_admins_neprofile_role",
-      name: "System Configuration Admins",
-      groups: ["System Configuration Admins"],
-    },
-  ];
+  let roles = $state<Role[]>([]);
 
-  const roleMap = new Map<string, Role>();
-  roles.forEach((x) => {
-    roleMap.set(x.id, x);
+  let roleMap = $derived.by(() => {
+    let roleMap = new Map<string, Role>();
+    roles.forEach((x) => {
+      roleMap.set(x.id, x);
+    });
+    return roleMap;
   });
-  const userRolesMap = new Map<string, UserRolePair>();
-  userRoles.forEach((x) => {
-    userRolesMap.set(x.role_id, x);
+  let userRolesMap = $derived.by(() => {
+    let userRolesMap = new Map<string, UserRolePair>();
+    userRoles.forEach((x) => {
+      userRolesMap.set(x.role_id, x);
+    });
+    return userRolesMap;
   });
 
-  let index = 0;
-  let items: listItem<UserRolePairWithRoleName>[] = $state(
-    userRoles
-      .map((x) => {
-        const role = roleMap.get(x.role_id);
-        return {
-          original: {
-            ...x,
-            name: role?.name ?? "N/A",
-          },
-          index: index++,
-        };
-      })
-      .sort((a, b) => a.original.name.localeCompare(b.original.name))
-  );
+  let items: listItem<UserRolePairWithRoleName>[] = $state([]);
 
   let selectedRole = $state<string>();
-  let roleItems: Item[] = $state(
+  let roleItems: Item[] = $derived(
     roles
       .filter((x) => !userRolesMap.has(x.id))
       .map((x) => ({ label: x.name, value: x.id }))
+      .sort((a, b) => a.label.localeCompare(b.label))
   );
 
-  function handleDelete(index: number) {
-    console.log(">handleDelete", index, items);
-    items[index].status = "Deleted";
+  function getItem(id: string): listItem<UserRolePairWithRoleName> | undefined {
+    return items.find((x) => id === x.original.id);
   }
-  function handleRestore(index: number) {
-    console.log(">handleRestore", index, items);
-    items[index].status = "Added";
+
+  function handleDelete(id: string) {
+    console.log(">handleDelete", id, $state.snapshot(items));
+    const item = getItem(id);
+    if (item) {
+      item.status = "Deleted";
+    }
+  }
+  
+  function handleRestore(id: string) {
+    console.log(">handleRestore", id, $state.snapshot(items));
+    const item = getItem(id);
+    if (item) {
+      item.status = "Added";
+    }
   }
 
   function handleAdd() {
     console.log(">handleAdd");
     if (selectedRole) {
       const role = roleMap.get(selectedRole);
-      const lastIndex = items.reduce(
-        (accumulator, currentValue) =>
-          Math.max(currentValue.index, accumulator),
-        0
-      );
       items.push({
-        index: lastIndex + 1,
         original: {
-          id: "0",
+          id: crypto.randomUUID(),
           uid: "0",
           user_id: user.id,
           role_id: selectedRole,
@@ -129,7 +89,7 @@
         },
         status: "Added",
       });
-      roleItems = roleItems.filter((x) => x.value !== selectedRole);
+      roles = roles.filter((x) => x.id !== selectedRole);
       selectedRole = undefined;
     }
   }
@@ -137,6 +97,22 @@
     console.log(">save", items);
     items = items.filter((x) => x.status !== "Deleted");
   }
+
+  onMount(async () => {
+    roles = await client.getRoles();
+    userRoles = await client.getUserRolePairings({ user_id: user.id });
+    items = userRoles
+      .map((x) => {
+        const role = roleMap.get(x.role_id);
+        return {
+          original: {
+            ...x,
+            name: role?.name ?? "N/A",
+          },
+        };
+      })
+      .sort((a, b) => a.original.name.localeCompare(b.original.name));
+  });
 </script>
 
 <div class="flex gap-2 mb-4 items-center">
@@ -167,13 +143,13 @@
         </div>
         <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
           {#if item.status !== "Deleted"}
-            <DeleteButton handleClick={() => handleDelete(item.index)} />
+            <DeleteButton handleClick={() => handleDelete(item.original.id)} />
           {:else}
             <Button
               variant="ghost"
               size="icon"
               class="relative size-8 p-0"
-              onclick={() => handleRestore(item.index)}
+              onclick={() => handleRestore(item.original.id)}
             >
               <CirclePlus class="text-success" />
             </Button>

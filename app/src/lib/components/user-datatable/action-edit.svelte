@@ -30,6 +30,10 @@
     side="right"
     class="sm:max-w-lg overflow-y-scroll max-h-screen"
   >
+  <div class="px-4 sm:px-0">
+    <h3 class="text-base/7 font-semibold">{user.name}</h3>
+    <p class="max-w-2xl text-sm/6 text-muted-foreground">{user.login}</p>
+  </div>
     <Tabs.Root value="user" class="w-full pt-4">
       <Tabs.List class="grid w-full grid-cols-2 gap-1">
         <Tabs.Trigger value="user">User</Tabs.Trigger>

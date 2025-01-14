@@ -150,11 +150,11 @@ export interface AddUserRoleDto {
 }
 
 export interface AddUserRolePairingsRequest {
-    user_role: AddUserRoleDto
+    user_roles: AddUserRoleDto[]
 }
 
 export interface AddUserRolePairingsResponse {
-    user_role: UserRole
+    user_roles: UserRole[]
 }
 
 export interface RemoveUserRolePairingsRequest {

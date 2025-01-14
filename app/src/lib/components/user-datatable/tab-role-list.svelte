@@ -2,7 +2,7 @@
   import type { Role } from "src/model/Role";
   import type { User } from "src/model/User";
   import DeleteButton from "$lib/components/DeleteButton.svelte";
-  import { CirclePlus } from "lucide-svelte";
+  import { CirclePlus, Sparkles } from "lucide-svelte";
   import { Button } from "../ui/button";
   import type { UserRolePair } from "src/model/UserRolePair";
   import Autocomplete from "$lib/components/combobox/combobox.svelte";
@@ -13,6 +13,7 @@
   interface listItem<T> {
     original: T;
     status?: "Deleted" | "Added";
+    new?: boolean;
   }
 
   type UserRolePairWithRoleName = UserRolePair & {
@@ -66,7 +67,7 @@
       item.status = "Deleted";
     }
   }
-  
+
   function handleRestore(id: string) {
     console.log(">handleRestore", id, $state.snapshot(items));
     const item = getItem(id);
@@ -87,14 +88,41 @@
           role_id: selectedRole,
           name: role?.name ?? "",
         },
+        new: true,
         status: "Added",
       });
       roles = roles.filter((x) => x.id !== selectedRole);
       selectedRole = undefined;
     }
   }
-  function save() {
+  async function save() {
     console.log(">save", items);
+    const rolesToRemove = items.filter(
+      (x) => x.status === "Deleted" && !x.new
+    );
+    for (const element of rolesToRemove) {
+      await client.removeUserRolePairing(element.original.id);
+    }
+
+    const rolesToAdd = items.filter(
+      (x) => x.status === "Added" && x.new
+    );
+    if (rolesToAdd.length > 0) {
+      const newRoles = await client.addUserRolePairings(
+        rolesToAdd.map((x) => ({
+          user_id: user.id,
+          role_id: x.original.role_id,
+        }))
+      );
+      newRoles.forEach((newRole) => {
+        const item = items.find((x) => newRole.role_id === x.original.role_id);
+        if (item) {
+          item.original.id = newRole.id;
+          item.new = false;
+        }
+      });
+    }
+
     items = items.filter((x) => x.status !== "Deleted");
   }
 
@@ -121,7 +149,7 @@
     variant="ghost"
     size="icon"
     class="relative size-8 p-0"
-    onclick={handleAdd}
+    onclick={async () => handleAdd()}
     disabled={!selectedRole}
   >
     <CirclePlus class="text-success" />
@@ -141,6 +169,11 @@
         <div class="min-w-0 flex-auto">
           <p class="text-sm/6">{item.original.name}</p>
         </div>
+        <span>
+          {#if item.new}
+            <Sparkles class="ml-1" />
+          {/if}
+        </span>
         <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
           {#if item.status !== "Deleted"}
             <DeleteButton handleClick={() => handleDelete(item.original.id)} />

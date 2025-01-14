@@ -1,5 +1,5 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { AddUserRoleDto, AddUserRolePairingsRequest, AddUserRolePairingsResponse, GetRolesRequest, GetRolesResponse, GetUserRolePairingsRequest, GetUserRolePairingsResponse, GetUsersRequest, GetUsersResponse, PaginatedData, RemoveUserRolePairingsRequest, RemoveUserRolePairingsResponse, Role, User, UserRole } from '../models/API';
+import { AxiosInstance } from 'axios';
+import { AddUserRolePairingsRequest, AddUserRolePairingsResponse, GetRolesRequest, GetRolesResponse, GetUserRolePairingsRequest, GetUserRolePairingsResponse, GetUsersRequest, GetUsersResponse, PaginatedData, RemoveUserRolePairingsRequest, RemoveUserRolePairingsResponse, Role, User, UserRole } from '../models/API';
 
 export class NERMClient {
     constructor(private readonly axios: AxiosInstance) {
@@ -42,11 +42,11 @@ export class NERMClient {
         }
     }
 
-    public async addUserRolePairings(request: AddUserRolePairingsRequest): Promise<UserRole> {
-        const response = await this.axios.post<AddUserRolePairingsResponse>("user_role", request)
-        return response.data.user_role
+    public async addUserRolePairings(request: AddUserRolePairingsRequest): Promise<UserRole[]> {
+        const response = await this.axios.post<AddUserRolePairingsResponse>("user_roles", request)
+        return response.data.user_roles
     }
-    
+
     public async removeUserRolePairings(request: RemoveUserRolePairingsRequest): Promise<RemoveUserRolePairingsResponse> {
         const response = await this.axios.delete<RemoveUserRolePairingsResponse>(`user_role/${request.id}`)
         return response.data

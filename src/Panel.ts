@@ -5,6 +5,8 @@ import { GetAllUsersQuery } from './commands/GetAllUsersQuery';
 import { IRequest, IRequestHandler } from './commands/interfaces';
 import { GetAllRolesQuery } from './commands/GetAllRolesQuery';
 import { GetAllUserRolePairingsQuery } from './commands/GetAllUserRolePairingsQuery';
+import { RemoveRoleFromUser } from './commands/RemoveRoleFromUser';
+import { AddUserRolePairingsCommand } from './commands/AddUserRolePairingsCommand';
 
 
 
@@ -125,7 +127,9 @@ export class Panel {
         this.register(
             new GetAllUsersQuery(client),
             new GetAllRolesQuery(client),
-            new GetAllUserRolePairingsQuery(client)
+            new GetAllUserRolePairingsQuery(client),
+            new AddUserRolePairingsCommand(client),
+            new RemoveRoleFromUser(client)
         )
 
         // Handle messages from the webview

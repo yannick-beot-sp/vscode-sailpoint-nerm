@@ -12,6 +12,7 @@ interface State {
 }
 
 export class VsCodeClient implements Client {
+
     async addUserRolePairings(args: NewUserRolePair[]): Promise<UserRolePair[]> {
         return await messageHandler.request<UserRolePair[]>("addUserRolePairings", {
             user_roles: args
@@ -30,5 +31,9 @@ export class VsCodeClient implements Client {
 
     async getUsers(): Promise<User[]> {
         return await messageHandler.request<User[]>("getUsers")
+    }
+
+    async updateUser(user: User): Promise<User> {
+        return await messageHandler.request<User>("updateUser", user)
     }
 }

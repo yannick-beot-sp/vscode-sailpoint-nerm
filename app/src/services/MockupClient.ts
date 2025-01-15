@@ -397,6 +397,17 @@ export class MockupClient implements Client {
     constructor() {
         this.users = generateDummyUsers(this.userCount);
     }
+
+    async updateUser(user: User): Promise<User> {
+        const userIndex = this.users.findIndex(u => u.id === user.id);
+
+        if (userIndex !== -1) {
+            this.users[userIndex] = user;
+        }
+
+        return user;
+    }
+    
     async addUserRolePairings(args: NewUserRolePair[]): Promise<UserRolePair[]> {
         await stall()
         return args.map(x => ({

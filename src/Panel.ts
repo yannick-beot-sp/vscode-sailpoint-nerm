@@ -7,6 +7,8 @@ import { GetAllRolesQuery } from './commands/GetAllRolesQuery';
 import { GetAllUserRolePairingsQuery } from './commands/GetAllUserRolePairingsQuery';
 import { RemoveRoleFromUser } from './commands/RemoveRoleFromUser';
 import { AddUserRolePairingsCommand } from './commands/AddUserRolePairingsCommand';
+import { UpdateUserCommand } from './commands/UpdateUserCommand';
+import { DeleteUserCommand } from './commands/DeleteUserCommand';
 
 
 
@@ -129,7 +131,9 @@ export class Panel {
             new GetAllRolesQuery(client),
             new GetAllUserRolePairingsQuery(client),
             new AddUserRolePairingsCommand(client),
-            new RemoveRoleFromUser(client)
+            new RemoveRoleFromUser(client),
+            new UpdateUserCommand(client),
+            new DeleteUserCommand(client),
         )
 
         // Handle messages from the webview

@@ -1,4 +1,4 @@
-import { GetUserRolePairingsRequest, User, UserRole } from "../models/API";
+import { GetUserRolePairingsRequest, UserRole } from "../models/API";
 import { NERMClient } from "../services/NERMClient";
 import { paginator } from "../services/paginator";
 import { IRequest, IRequestHandler } from "./interfaces";

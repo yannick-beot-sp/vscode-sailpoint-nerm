@@ -164,3 +164,20 @@ export interface RemoveUserRolePairingsRequest {
 export interface RemoveUserRolePairingsResponse {
 }
 
+export interface UpdateUserRequest {
+    user: User
+}
+
+export interface UpdateUserResponse extends UpdateUserRequest {
+}
+
+export interface DeleteUserRequest {
+    /** ID of the object to retrieve, update, or delete */
+    id: string
+}
+
+export interface DeleteUserResponse {
+    /** A message confirming the operation */
+    info: string
+}
+

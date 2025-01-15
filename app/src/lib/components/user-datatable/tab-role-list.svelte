@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { toast } from "svelte-sonner";
   import type { Role } from "src/model/Role";
   import type { User } from "src/model/User";
   import DeleteButton from "$lib/components/DeleteButton.svelte";
@@ -97,16 +98,12 @@
   }
   async function save() {
     console.log(">save", items);
-    const rolesToRemove = items.filter(
-      (x) => x.status === "Deleted" && !x.new
-    );
+    const rolesToRemove = items.filter((x) => x.status === "Deleted" && !x.new);
     for (const element of rolesToRemove) {
       await client.removeUserRolePairing(element.original.id);
     }
 
-    const rolesToAdd = items.filter(
-      (x) => x.status === "Added" && x.new
-    );
+    const rolesToAdd = items.filter((x) => x.status === "Added" && x.new);
     if (rolesToAdd.length > 0) {
       const newRoles = await client.addUserRolePairings(
         rolesToAdd.map((x) => ({
@@ -124,6 +121,7 @@
     }
 
     items = items.filter((x) => x.status !== "Deleted");
+    toast.success("Roles updated");
   }
 
   onMount(async () => {

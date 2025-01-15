@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { toast } from "svelte-sonner";
   import { createForm } from "felte";
   import { reporter, ValidationMessage } from "@felte/reporter-svelte";
   import { validator } from "@felte/validator-yup";
@@ -14,14 +15,17 @@
   import { copyText } from "$lib/utils";
 
   import type { Status, User } from "src/model/User";
+  import type { Client } from "src/services/Client";
 
   interface Props {
     user: User;
+    client: Client;
+    updateRow: (u: User) => void;
   }
 
   const userTypes = ["NeprofileUser", "NeaccessUser"];
 
-  let { user }: Props = $props();
+  let { user = $bindable(), client, updateRow }: Props = $props();
 
   let statusChecked = $state(user.status === "Active");
   let statusLabel: Status = $derived(statusChecked ? "Active" : "Disabled");
@@ -31,15 +35,28 @@
     name: yup.string().label("Name").trim().required(),
     login: yup.string().label("Login").trim().required(),
     type: yup.string().label("Type").required().oneOf(userTypes),
-    status: yup.string().label("Status").required().oneOf(["Active", "Disabled"]),
+    status: yup
+      .string()
+      .label("Status")
+      .required()
+      .oneOf(["Active", "Disabled"]),
     title: yup.string().label("Title").trim().notRequired(),
   });
 
   const { form, setFields } = createForm({
     initialValues: user,
     extend: [reporter, validator({ schema })],
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       console.log(values);
+
+      //@ts-ignore
+      await client.updateUser({
+        ...values,
+        id: user.id,
+      });
+      user = { ...user, ...values };
+      updateRow(user);
+      toast.success("User updated");
     },
   });
 </script>
@@ -125,7 +142,7 @@
     color: hsl(var(--destructive) / 1);
   }
 
-  :global(input[aria-invalid='true']) {
+  :global(input[aria-invalid="true"]) {
     --tw-ring-color: hsl(var(--destructive) / 1) !important;
     background-color: hsl(var(--destructive) / 0.1);
   }

@@ -20,7 +20,7 @@
   type Props = {
     columns: MyColumnDef<TData>[];
     data: TData[];
-    client: Client
+    client: Client;
   };
 
   let { data = $bindable(), columns, client }: Props = $props();
@@ -73,10 +73,16 @@
         console.log(">table.meta.removeRow");
         // Note: Svelte react on array assignment
         // So here, I clone the data, remove the row and pass the result to the variable data to "update" data
-        const copyData =[...data]
+        const copyData = [...data];
         copyData.splice(rowIndex, 1);
-        data=copyData
+        data = copyData;
         // XXX TODO actually remove from client
+      },
+      updateRow: async (rowIndex: number, updatedRow: TData) => {
+        console.log(">table.meta.updateRow");
+        const copyData = [...data];
+        copyData[rowIndex] = updatedRow;
+        data = copyData;
       },
     },
   });

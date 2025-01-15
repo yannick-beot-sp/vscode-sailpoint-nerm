@@ -1,23 +1,42 @@
 <script lang="ts">
   import { Trash2 } from "lucide-svelte";
-  import { Button } from "./ui/button";
+  import * as AlertDialog from "$lib/components/ui/alert-dialog/index.js";
+  import { buttonVariants } from "./ui/button";
+  import type { MouseEventHandler } from "svelte/elements";
   interface Props {
-    handleClick: (
-      element: EventTarget,
-      type: string,
-      handler: EventListener,
-      options?: AddEventListenerOptions | undefined
-    ) => void;
+    handleClick: MouseEventHandler<HTMLButtonElement> &
+      MouseEventHandler<HTMLAnchorElement>;
+    username: string;
   }
 
-  let { handleClick }: Props = $props();
+  let { handleClick, username }: Props = $props();
+
+  let open = $state(false);
 </script>
 
-<Button
-  variant="ghost"
-  size="icon"
-  class="relative size-8 p-0"
-  onclick={handleClick}
->
-  <Trash2 class="text-destructive" />
-</Button>
+<AlertDialog.Root bind:open>
+  <AlertDialog.Trigger
+    class={buttonVariants({
+      variant: "ghost",
+      size: "icon",
+      class: "relative size-8 p-0",
+    })}><Trash2 class="text-destructive" /></AlertDialog.Trigger
+  >
+  <AlertDialog.Content>
+    <AlertDialog.Header>
+      <AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>
+      <AlertDialog.Description>
+        This action cannot be undone. This will permanently delete the user {username}
+      </AlertDialog.Description>
+    </AlertDialog.Header>
+    <AlertDialog.Footer>
+      <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+      <AlertDialog.Action
+        onclick={(event) => {
+          handleClick(event);
+          open = false;
+        }}>Continue</AlertDialog.Action
+      >
+    </AlertDialog.Footer>
+  </AlertDialog.Content>
+</AlertDialog.Root>

@@ -3,12 +3,13 @@
   import type { User } from "src/model/User";
   import ActionEdit from "./action-edit.svelte";
   import DeleteButton from "../DeleteButton.svelte";
-
+  import type { Client } from "src/services/Client";
   let { row, table }: { row: Row<User>; table: Table<User> } = $props();
-  const meta = table.options.meta;
-  const client = meta.client;
+  const meta = table.options.meta!;
+  const client = meta.client as Client;
 
   async function handleDelete() {
+    client.deleteUser(row.original.id);
     //@ts-ignore
     await meta?.removeRow(row.index);
   }
@@ -19,6 +20,6 @@
 </script>
 
 <div>
-  <ActionEdit user={row.original} {client} updateRow={updateRow}/>
-  <DeleteButton handleClick={handleDelete} />
+  <ActionEdit user={row.original} {client} {updateRow} />
+  <DeleteButton handleClick={handleDelete} username={row.original.name} />
 </div>

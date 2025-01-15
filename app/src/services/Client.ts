@@ -12,5 +12,6 @@ export interface Client {
     getUserRolePairings(args:{ user_id?:string, role_id?:string}): Promise<UserRolePair[]>
     addUserRolePairings(args:NewUserRolePair[]): Promise<UserRolePair[]>
     removeUserRolePairing(id:string): Promise<void>
+    deleteUser(id:string): Promise<void>
 
 }

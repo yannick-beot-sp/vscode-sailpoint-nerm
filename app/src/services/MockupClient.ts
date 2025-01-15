@@ -407,7 +407,7 @@ export class MockupClient implements Client {
 
         return user;
     }
-    
+
     async addUserRolePairings(args: NewUserRolePair[]): Promise<UserRolePair[]> {
         await stall()
         return args.map(x => ({
@@ -420,6 +420,10 @@ export class MockupClient implements Client {
     async removeUserRolePairing(id: string): Promise<void> {
         await stall()
         // do nothing
+    }
+    async deleteUser(idToRemove: string): Promise<void> {
+        await stall()
+        this.users = this.users.filter(user => user.id !== idToRemove);
     }
 
     async getUserRolePairings({ user_id, role_id }: { user_id?: string, role_id?: string }): Promise<UserRolePair[]> {

@@ -36,4 +36,8 @@ export class VsCodeClient implements Client {
     async updateUser(user: User): Promise<User> {
         return await messageHandler.request<User>("updateUser", user)
     }
+
+    async deleteUser(id: string): Promise<void> {
+        await messageHandler.request<User>("deleteUser", { id })
+    }
 }

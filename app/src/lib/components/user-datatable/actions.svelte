@@ -2,7 +2,7 @@
   import type { Row, Table } from "@tanstack/table-core";
   import type { User } from "src/model/User";
   import ActionEdit from "./action-edit.svelte";
-  import DeleteButton from "../DeleteButton.svelte";
+  import DeleteButton from "./action-delete.svelte";
   import type { Client } from "src/services/Client";
   let { row, table }: { row: Row<User>; table: Table<User> } = $props();
   const meta = table.options.meta!;

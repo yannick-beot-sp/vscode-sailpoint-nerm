@@ -43,7 +43,7 @@
     title: yup.string().label("Title").trim().notRequired(),
   });
 
-  const { form, setFields } = createForm({
+  const { form, setFields, touched, isValid, isSubmitting } = createForm({
     initialValues: user,
     extend: [reporter, validator({ schema })],
     onSubmit: async (values) => {
@@ -59,6 +59,21 @@
       toast.success("User updated");
     },
   });
+  let isTouched = $state(false),
+    isFormValid = $state(false),
+    isFormSubmitting = $state(false);
+  touched.subscribe((e) => {
+    isTouched = Object.values(e).includes(true);
+  });
+
+  isValid.subscribe((e) => {
+    isFormValid = e;
+  });
+  isSubmitting.subscribe((e) => {
+    isFormSubmitting = e;
+  });
+  let disabled = $derived(!(isTouched && isFormValid && !isFormSubmitting))
+  $inspect(isTouched, isFormValid, isFormSubmitting, disabled);
 </script>
 
 <form use:form>
@@ -128,7 +143,8 @@
       </ValidationMessage>
     </div>
   </div>
-  <Button type="submit">Save</Button>
+  <Button type="submit" {disabled}    >Save</Button
+  >
 </form>
 
 <style>

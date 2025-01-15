@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Trash2 } from "lucide-svelte";
   import * as AlertDialog from "$lib/components/ui/alert-dialog/index.js";
-  import { buttonVariants } from "./ui/button";
+  import { buttonVariants } from "$lib/components/ui/button";
   import type { MouseEventHandler } from "svelte/elements";
   interface Props {
     handleClick: MouseEventHandler<HTMLButtonElement> &

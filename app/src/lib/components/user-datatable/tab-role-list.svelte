@@ -2,8 +2,7 @@
   import { toast } from "svelte-sonner";
   import type { Role } from "src/model/Role";
   import type { User } from "src/model/User";
-  import DeleteButton from "$lib/components/DeleteButton.svelte";
-  import { CirclePlus, Sparkles } from "lucide-svelte";
+  import { CirclePlus, Sparkles, Trash2 } from "lucide-svelte";
   import { Button } from "../ui/button";
   import type { UserRolePair } from "src/model/UserRolePair";
   import Autocomplete from "$lib/components/combobox/combobox.svelte";
@@ -31,6 +30,8 @@
   let userRoles: UserRolePair[] = $state([]);
 
   let roles = $state<Role[]>([]);
+
+  let updated = $state(false);
 
   let roleMap = $derived.by(() => {
     let roleMap = new Map<string, Role>();
@@ -66,6 +67,7 @@
     const item = getItem(id);
     if (item) {
       item.status = "Deleted";
+      updated = true;
     }
   }
 
@@ -74,6 +76,7 @@
     const item = getItem(id);
     if (item) {
       item.status = "Added";
+      updated = true;
     }
   }
 
@@ -94,6 +97,7 @@
       });
       roles = roles.filter((x) => x.id !== selectedRole);
       selectedRole = undefined;
+      updated = true;
     }
   }
   async function save() {
@@ -122,6 +126,7 @@
 
     items = items.filter((x) => x.status !== "Deleted");
     toast.success("Roles updated");
+    updated = false;
   }
 
   onMount(async () => {
@@ -174,7 +179,14 @@
         </span>
         <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
           {#if item.status !== "Deleted"}
-            <DeleteButton handleClick={() => handleDelete(item.original.id)} />
+            <Button
+              variant="ghost"
+              size="icon"
+              class="relative size-8 p-0"
+              onclick={() => handleDelete(item.original.id)}
+            >
+              <Trash2 class="text-destructive" />
+            </Button>
           {:else}
             <Button
               variant="ghost"
@@ -191,7 +203,7 @@
   {/each}
 </ul>
 
-<Button onclick={save} class="mt-5">Save</Button>
+<Button onclick={save} class="mt-5" disabled={!updated}>Save</Button>
 
 <style>
   .deleted {

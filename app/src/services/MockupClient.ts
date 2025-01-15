@@ -399,6 +399,7 @@ export class MockupClient implements Client {
     }
 
     async updateUser(user: User): Promise<User> {
+        await stall()
         const userIndex = this.users.findIndex(u => u.id === user.id);
 
         if (userIndex !== -1) {

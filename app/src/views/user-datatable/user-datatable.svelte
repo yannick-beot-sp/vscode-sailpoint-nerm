@@ -2,8 +2,8 @@
   import DataTable from "./data-table.svelte";
   import { columns } from "./columns.js";
   import { onMount } from "svelte";
-  import { ClientFactory } from "../../../services/ClientFactory";
   import type { User } from "src/model/User";
+  import { ClientFactory } from "../../services/ClientFactory";
 
   let client = ClientFactory.getClient();
   let users: User[] = $state<User[]>([]);

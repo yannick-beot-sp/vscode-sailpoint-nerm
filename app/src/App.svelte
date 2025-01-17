@@ -1,6 +1,6 @@
 <script lang="ts">
   import "./app.css";
-  import UserDataTable from "$lib/components/user-datatable/user-datatable.svelte"
+  import UserDataTable from "./views/user-datatable/user-datatable.svelte"
 </script>
 
 <main>

@@ -1,6 +1,6 @@
 import type { ColumnDef } from "@tanstack/table-core";
 import type { User } from "src/model/User";
-import { renderComponent } from "../ui/data-table";
+import { renderComponent } from "../../lib/components/ui/data-table";
 import ColumnStatus from "./column-status.svelte";
 import Actions from "./actions.svelte";
 import SortableHeader from "./sortable-header.svelte";

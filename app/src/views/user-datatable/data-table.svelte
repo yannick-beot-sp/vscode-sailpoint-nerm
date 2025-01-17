@@ -12,7 +12,7 @@
     FlexRender,
   } from "$lib/components/ui/data-table/index.js";
   import * as Table from "$lib/components/ui/table/index.js";
-  import DataTablePagination from "../ui/data-table/data-table-pagination.svelte";
+  import DataTablePagination from "$lib/components/ui/data-table/data-table-pagination.svelte";
   import ChooseColumns from "./choose-columns.svelte";
   import { createVisibilityMap } from "./utils";
   import type { MyColumnDef } from "./columns";

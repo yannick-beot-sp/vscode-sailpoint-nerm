@@ -3,7 +3,7 @@
   import type { Role } from "src/model/Role";
   import type { User } from "src/model/User";
   import { CirclePlus, Sparkles, Trash2 } from "lucide-svelte";
-  import { Button } from "../ui/button";
+  import { Button } from "$lib/components/ui/button";
   import type { UserRolePair } from "src/model/UserRolePair";
   import Autocomplete from "$lib/components/combobox/combobox.svelte";
   import type { Item } from "$lib/components/Item";

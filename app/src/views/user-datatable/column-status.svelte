@@ -6,7 +6,7 @@
   }
 
   let { status }: Props = $props();
-  let variant: BadgeVariant = status === "Disabled" ? "destructive" : "success";
+  let variant: BadgeVariant = $derived(status === "Disabled" ? "destructive" : "success");
 </script>
 
 <div>

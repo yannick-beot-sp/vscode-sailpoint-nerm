@@ -2,6 +2,7 @@ import type { ColumnDef } from "@tanstack/table-core";
 import type { User } from "src/model/User";
 import { renderComponent } from "../../lib/components/ui/data-table";
 import ColumnStatus from "./column-status.svelte";
+import ColumnLastLogin from "./column-lastlogin.svelte";
 import Actions from "./actions.svelte";
 import SortableHeader from "./sortable-header.svelte";
 
@@ -70,7 +71,12 @@ export const columns: MyColumnDef<User>[] = [
         id: "last_login",
         accessorKey: "last_login",
         header: "Last Login",
-        isVisibleByDefault: false
+        isVisibleByDefault: false,
+        cell: ({ row, table }) => {
+            return renderComponent(ColumnLastLogin,  {
+                value: row.original.last_login,
+            });
+        },
     },
     {
         id: "actions",

@@ -62,7 +62,9 @@ export class Panel {
         const panelKey = `${params.tenantId}|${params.path}`
         // If we already have a panel, show it.
         if (Panel.currentPanels.has(panelKey)) {
-            Panel.currentPanels.get(panelKey)!._panel.reveal(column);
+            const existingPanel = Panel.currentPanels.get(panelKey)!._panel
+            const a = existingPanel.active
+            existingPanel.reveal(column);
             return;
         }
 
@@ -75,19 +77,14 @@ export class Panel {
         );
 
         Panel.currentPanels.set(panelKey, new Panel(
+            panelKey,
             panel,
             params
         ))
     }
 
     public dispose() {
-        for (let [key, value] of Panel.currentPanels) {
-            value.dispose()
-        }
-        Panel.currentPanels = new Map();
-
-        // Clean up our resources
-        this._panel.dispose();
+        Panel.currentPanels.delete(this.panelKey)
 
         while (this._disposables.length) {
             const x = this._disposables.pop();
@@ -98,13 +95,14 @@ export class Panel {
     }
 
     register(...args: IRequestHandler<IRequest<unknown>, unknown>[]) {
-        args.forEach(x=>{
+        args.forEach(x => {
             this._commands.set(x.command, x)
         })
     }
 
-    private constructor(panel: vscode.WebviewPanel,
-
+    private constructor(
+        private panelKey: string,
+        panel: vscode.WebviewPanel,
         private params: PanelParams) {
         this._panel = panel;
         this._extensionUri = params.extensionUri;

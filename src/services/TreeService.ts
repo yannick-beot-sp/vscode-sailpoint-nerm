@@ -5,6 +5,9 @@ const KEY_PREFIX = "TREE_"
 
 export type StoredNodeType = "FOLDER" | "TENANT"
 
+export type VisibilityState = Record<string, boolean>;
+
+
 export interface IStoredNode {
     readonly id: string,
     label: string,
@@ -12,6 +15,7 @@ export interface IStoredNode {
     parentId?: string
     readonly baseUrl?: string
     readOnly?: boolean
+    tableViews?: Record<string, VisibilityState>
 }
 
 export class StoredNode implements IStoredNode {

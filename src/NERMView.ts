@@ -259,16 +259,14 @@ export class NERMView implements vscode.TreeDataProvider<BaseTreeItem>, vscode.T
             baseUrl: tenantInfo.baseUrl!,
             token: apiKey
         })
-        Panel.createOrShow(
+        Panel.createOrShow({
+            tenantId,
+            tenantLabel: tenantInfo.label,
+            path: element.path,
             client,
-            this.extensionUri,
-            {
-                tenantId,
-                tenantLabel: tenantInfo.label,
-                path: element.path
-            }
-
-        )
+            extensionUri: this.extensionUri,
+            treeService: this.treeService
+        })
     }
 
     refresh(node?: BaseTreeItem): void {

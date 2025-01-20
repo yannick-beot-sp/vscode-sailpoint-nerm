@@ -10,7 +10,7 @@
 </script>
 {#if value}
   <Tooltip.Provider>
-    <Tooltip.Root>
+    <Tooltip.Root delayDuration={200}>
       <Tooltip.Trigger>{formatTimeAgo(new Date(value))}</Tooltip.Trigger>
       <Tooltip.Content>
         <p>{value}</p>

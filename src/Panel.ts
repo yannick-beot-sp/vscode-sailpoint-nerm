@@ -9,6 +9,9 @@ import { RemoveRoleFromUser } from './commands/RemoveRoleFromUser';
 import { AddUserRolePairingsCommand } from './commands/AddUserRolePairingsCommand';
 import { UpdateUserCommand } from './commands/UpdateUserCommand';
 import { DeleteUserCommand } from './commands/DeleteUserCommand';
+import { TreeService } from './services/TreeService';
+import { GetTableVisibilityStateQuery } from './commands/GetTableVisibilityStateQuery';
+import { SetTableVisibilityStateCommand } from './commands/SetTableVisibilityStateCommand';
 
 
 
@@ -17,7 +20,7 @@ function getWebviewOptions(extensionUri: vscode.Uri): vscode.WebviewOptions {
         // Enable javascript in the webview
         enableScripts: true,
 
-        // And restrict the webview to only loading content from our extension's `media` directory.
+        // And restrict the webview to only loading content from our extension's `webview/assets` directory.
         localResourceRoots: [vscode.Uri.joinPath(extensionUri, 'webview', 'assets')]
     };
 }
@@ -32,6 +35,9 @@ function getNonce() {
 }
 
 interface PanelParams {
+    client: NERMClient,
+    treeService: TreeService,
+    extensionUri: vscode.Uri,
     tenantId: string
     tenantLabel: string
     path: string
@@ -48,10 +54,7 @@ export class Panel {
 
 
     public static createOrShow(
-        client: NERMClient,
-        extensionUri: vscode.Uri,
         params: PanelParams
-
     ) {
         const column = vscode.window.activeTextEditor
             ? vscode.window.activeTextEditor.viewColumn
@@ -68,13 +71,11 @@ export class Panel {
             Panel.viewType,
             `${params.tenantLabel} | ${params.path.replace("/", " | ")}`,
             column || vscode.ViewColumn.One,
-            getWebviewOptions(extensionUri)
+            getWebviewOptions(params.extensionUri)
         );
 
         Panel.currentPanels.set(panelKey, new Panel(
             panel,
-            client,
-            extensionUri,
             params
         ))
     }
@@ -103,11 +104,10 @@ export class Panel {
     }
 
     private constructor(panel: vscode.WebviewPanel,
-        private client: NERMClient,
-        extensionUri: vscode.Uri,
+
         private params: PanelParams) {
         this._panel = panel;
-        this._extensionUri = extensionUri;
+        this._extensionUri = params.extensionUri;
 
 
         this._update()
@@ -127,13 +127,15 @@ export class Panel {
         );
 
         this.register(
-            new GetAllUsersQuery(client),
-            new GetAllRolesQuery(client),
-            new GetAllUserRolePairingsQuery(client),
-            new AddUserRolePairingsCommand(client),
-            new RemoveRoleFromUser(client),
-            new UpdateUserCommand(client),
-            new DeleteUserCommand(client),
+            new GetAllUsersQuery(params.client),
+            new GetAllRolesQuery(params.client),
+            new GetAllUserRolePairingsQuery(params.client),
+            new AddUserRolePairingsCommand(params.client),
+            new RemoveRoleFromUser(params.client),
+            new UpdateUserCommand(params.client),
+            new DeleteUserCommand(params.client),
+            new GetTableVisibilityStateQuery(params.tenantId, params.treeService),
+            new SetTableVisibilityStateCommand(params.tenantId, params.treeService),
         )
 
         // Handle messages from the webview

@@ -3,6 +3,7 @@ import type { Client } from "./Client";
 import type { Role } from "src/model/Role";
 import type { UserRolePair } from "src/model/UserRolePair";
 import type { NewUserRolePair } from "src/model/NewUserRolePair";
+import type { VisibilityState } from "@tanstack/table-core";
 
 function getRandomInt(min: number, max: number): number {
     min = Math.ceil(min);
@@ -396,6 +397,14 @@ export class MockupClient implements Client {
      */
     constructor() {
         this.users = generateDummyUsers(this.userCount);
+    }
+
+    async getTableVisibilityState(tableName: string): Promise<Record<string, boolean> | undefined> {
+        return undefined;
+    }
+
+    async setTableVisibilityState(tableName: string, visibilityState: VisibilityState): Promise<void> {
+        //Do Nothing
     }
 
     async updateUser(user: User): Promise<User> {

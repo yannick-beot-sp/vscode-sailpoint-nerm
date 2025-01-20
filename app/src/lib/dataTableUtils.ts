@@ -1,4 +1,4 @@
-import type { MyColumnDef } from "./columns";
+import type { MyColumnDef } from "../views/user-datatable/columns";
 
 export function createVisibilityMap<T>(columnDefs: MyColumnDef<T>[]): Record<string, boolean> {
   const visibilityMap: Record<string, boolean> = {};

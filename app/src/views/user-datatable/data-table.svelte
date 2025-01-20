@@ -14,16 +14,18 @@
   import * as Table from "$lib/components/ui/table/index.js";
   import DataTablePagination from "$lib/components/ui/data-table/data-table-pagination.svelte";
   import ChooseColumns from "./choose-columns.svelte";
-  import { createVisibilityMap } from "./utils";
+  import { createVisibilityMap } from "$lib/dataTableUtils";
   import type { MyColumnDef } from "./columns";
   import type { Client } from "src/services/Client";
+  import { onMount } from "svelte";
   type Props = {
     columns: MyColumnDef<TData>[];
     data: TData[];
     client: Client;
+    tableId: string
   };
 
-  let { data = $bindable(), columns, client }: Props = $props();
+  let { data = $bindable(), columns, client, tableId }: Props = $props();
   let pagination = $state<PaginationState>({ pageIndex: 0, pageSize: 10 });
   let sorting = $state<SortingState>([]);
   let columnVisibility = $state<VisibilityState>(createVisibilityMap(columns));
@@ -55,6 +57,7 @@
       } else {
         columnVisibility = updater;
       }
+      client.setTableVisibilityState(tableId, columnVisibility)
     },
     state: {
       get pagination() {
@@ -86,6 +89,14 @@
       },
     },
   });
+
+  onMount(async()=>{
+    const visibilityState = await client.getTableVisibilityState(tableId)
+    if (visibilityState) {
+      columnVisibility = visibilityState
+    }
+
+  })
 </script>
 
 <div>

@@ -5,6 +5,7 @@ import { Messenger } from "./Messenger";
 import type { Role } from "src/model/Role";
 import type { UserRolePair } from "src/model/UserRolePair";
 import type { NewUserRolePair } from "src/model/NewUserRolePair";
+import type { VisibilityState } from "@tanstack/table-core";
 
 
 interface State {
@@ -39,5 +40,15 @@ export class VsCodeClient implements Client {
 
     async deleteUser(id: string): Promise<void> {
         await messageHandler.request<User>("deleteUser", { id })
+    }
+
+    async getTableVisibilityState(tableName: string): Promise<Record<string, boolean> | undefined> {
+        return await messageHandler.request<Record<string, boolean> | undefined>("getTableVisibilityState", { tableName })
+    }
+    async setTableVisibilityState(tableName: string, visibilityState: VisibilityState): Promise<void> {
+        await messageHandler.request<void>("setTableVisibilityState", {
+            tableName,
+            visibilityState: $state.snapshot(visibilityState)
+        })
     }
 }

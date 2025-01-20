@@ -13,4 +13,4 @@
   });
 </script>
 
-<DataTable bind:data={users} {columns} {client}/>
+<DataTable bind:data={users} {columns} {client} tableId="user"/>

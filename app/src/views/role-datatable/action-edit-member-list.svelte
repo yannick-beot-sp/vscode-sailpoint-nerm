@@ -28,17 +28,42 @@
     client: Client;
   }
 
+  /**
+   * Safely concatenate name and email
+   * @param user
+   * @returns String with the format "name (email)"
+   */
+  function computeDisplayname(
+    user: User | undefined,
+    defaultValue: string = "N/A"
+  ): string {
+    if (!user) {
+      return defaultValue;
+    }
+    const name = [user?.name, user?.email ? `(${user.email})` : undefined]
+      .join(" ")
+      .trim();
+
+    if (!name) {
+      return defaultValue;
+    }
+    return name;
+  }
+
   let { role, client }: Props = $props();
 
+  // Manage the display of the Spinner or the list
   let loading = $state(true);
 
   // list users for the given role
   let members: UserRolePair[] = $state([]);
 
+  // All users
   let users = $state<User[]>([]);
 
   let updated = $state(false);
 
+  // Map for fast matching by id
   let userMap = $derived.by(() => {
     let userMap = new Map<string, User>();
     users.forEach((x) => {
@@ -98,7 +123,7 @@
           uid: "0",
           user_id: selectedUser,
           role_id: role.id,
-          name: user?.name ?? "",
+          name: computeDisplayname(user),
         },
         new: true,
         status: "Added",
@@ -123,14 +148,21 @@
           role_id: x.original.role_id,
         }))
       );
+      console.log({newRoles, items});
+        
       newRoles.forEach((newRole) => {
-        const item = items.find((x) => newRole.role_id === x.original.role_id);
-        if (item) {
-          item.original.id = newRole.id;
-          item.new = false;
+        const index = items.findIndex(
+          (item) => newRole.user_id === item.original.user_id
+        );
+        if (index !== -1) {
+          const newData = items[index];
+          newData.original.id = newRole.id;
+          newData.new = false;
+          Object.assign(items[index], newData);
         }
       });
     }
+    console.log({items});
 
     items = items.filter((x) => x.status !== "Deleted");
     toast.success("Roles updated");
@@ -145,16 +177,10 @@
         const user = userMap.get(x.user_id);
         console.log(user);
 
-        const userName = [
-          user?.name,
-          user?.email ? `(${user.email})` : undefined,
-        ]
-          .join(" ")
-          .trim();
         return {
           original: {
             ...x,
-            name: userName ?? "N/A",
+            name: computeDisplayname(user),
           },
         };
       })

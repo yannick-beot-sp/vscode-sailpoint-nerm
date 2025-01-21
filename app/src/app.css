@@ -9,8 +9,8 @@
     --input-background: var(--vscode-input-background);
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: var(--vscode-editorWidget-background);
+    --popover-foreground: var(--vscode-editorWidget-foreground);
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
     --border: var(--vscode-textSeparator-foreground);

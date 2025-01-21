@@ -51,8 +51,8 @@ const config: Config = {
 					foreground: "hsl(var(--accent-foreground) / <alpha-value>)"
 				},
 				popover: {
-					DEFAULT: "hsl(var(--popover) / <alpha-value>)",
-					foreground: "hsl(var(--popover-foreground) / <alpha-value>)"
+					DEFAULT: "var(--popover)",
+					foreground: "var(--popover-foreground)"
 				},
 				card: {
 					DEFAULT: "hsl(var(--card) / <alpha-value>)",

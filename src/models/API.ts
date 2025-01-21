@@ -26,8 +26,21 @@ export interface PaginatedQueryParams {
 export interface PaginatedResponse {
     _metadata?: PaginationMetadata
 }
+
 export interface PaginatedData<T> extends PaginatedResponse {
     data: T[]
+}
+
+export interface ErrorResponse {
+    error: string
+}
+
+export const ErrorMessages = {
+    NO_USER_ROLE: "no user roles found"
+} as const;
+
+export function isError(e: any): e is ErrorResponse {
+    return "error" in e
 }
 
 export type Status = "Active" | "Disabled"

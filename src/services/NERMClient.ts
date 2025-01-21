@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { AddUserRolePairingsRequest, AddUserRolePairingsResponse, DeleteUserRequest, DeleteUserResponse, GetRolesRequest, GetRolesResponse, GetUserRolePairingsRequest, GetUserRolePairingsResponse, GetUsersRequest, GetUsersResponse, PaginatedData, RemoveUserRolePairingsRequest, RemoveUserRolePairingsResponse, Role, UpdateUserRequest, UpdateUserResponse, User, UserRole } from '../models/API';
+import { AddUserRolePairingsRequest, AddUserRolePairingsResponse, DeleteUserRequest, DeleteUserResponse, ErrorMessages, ErrorResponse, GetRolesRequest, GetRolesResponse, GetUserRolePairingsRequest, GetUserRolePairingsResponse, GetUsersRequest, GetUsersResponse, isError, PaginatedData, RemoveUserRolePairingsRequest, RemoveUserRolePairingsResponse, Role, UpdateUserRequest, UpdateUserResponse, User, UserRole } from '../models/API';
 
 export class NERMClient {
     constructor(private readonly axios: AxiosInstance) {
@@ -27,6 +27,10 @@ export class NERMClient {
     }
 
     public async getRoles(request: GetRolesRequest): Promise<PaginatedData<Role>> {
+        request = {
+            order: "name",
+            ...request
+        }
         const response = await this.axios.get<GetRolesResponse>("roles", { params: request })
         return {
             _metadata: response.data._metadata,
@@ -35,7 +39,22 @@ export class NERMClient {
     }
 
     public async getUserRolePairings(request: GetUserRolePairingsRequest): Promise<PaginatedData<UserRole>> {
-        const response = await this.axios.get<GetUserRolePairingsResponse>("user_roles", { params: request })
+        const response = await this.axios.get<GetUserRolePairingsResponse | ErrorResponse>("user_roles", { params: request })
+        if (isError(response.data)) {
+            // NERM's API returns 200 if there is no user role pair with an error message
+            if (response.data.error === ErrorMessages.NO_USER_ROLE) {
+                return {
+                    _metadata: {
+                        limit: 0,
+                        offset: 0,
+                        total: 0,
+                        next: ""
+                    },
+                    data: []
+                }
+            }
+            throw new Error(response.data.error);
+        }
         return {
             _metadata: response.data._metadata,
             data: response.data.user_roles

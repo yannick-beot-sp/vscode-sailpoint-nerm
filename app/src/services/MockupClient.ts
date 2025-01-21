@@ -373,7 +373,7 @@ function generateDummyUsers(count: number): User[] {
         });
 }
 
-const getRandomUserRolePairs = (roles: Role[], userRoleCount: number, userId: string): UserRolePair[] => {
+const getRandomUserRolePairsForUsers = (roles: Role[], userRoleCount: number, userId: string): UserRolePair[] => {
     const count = Math.min(userRoleCount, roles.length);
 
     return [...roles]
@@ -384,6 +384,19 @@ const getRandomUserRolePairs = (roles: Role[], userRoleCount: number, userId: st
             id: crypto.randomUUID(),
             user_id: userId,
             role_id: role.id
+        }));
+};
+
+const getRandomUserRolePairsForRoles = (users: User[], userRoleCount: number, roleId: string): UserRolePair[] => {
+    const count = Math.min(userRoleCount, users.length);
+    return [...users]
+        .sort(() => Math.random() - 0.5)
+        .slice(0, count)
+        .map(u => ({
+            uid: u.uid, // not used anyway
+            id: crypto.randomUUID(),
+            user_id: u.id,
+            role_id: roleId
         }));
 };
 
@@ -439,8 +452,10 @@ export class MockupClient implements Client {
     async getUserRolePairings({ user_id, role_id }: { user_id?: string, role_id?: string }): Promise<UserRolePair[]> {
         await stall()
         if (user_id) {
-
-            return getRandomUserRolePairs(roles, this.userRoleCount, user_id);
+            return getRandomUserRolePairsForUsers(roles, this.userRoleCount, user_id);
+        }
+        if (role_id) {
+            return getRandomUserRolePairsForRoles(this.users, this.userRoleCount, role_id)
         }
         return []
     }

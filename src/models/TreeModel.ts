@@ -88,7 +88,7 @@ export class TenantTreeItem extends BaseTreeItem {
         return [
             new UsersTreeItem(this.id!),
             new RolesTreeItem(this.id!),
-            new ProfilesTreeItem(this.id!)
+            // new ProfilesTreeItem(this.id!)
         ]
     }
     contextValue = "tenant"

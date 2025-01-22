@@ -66,7 +66,7 @@
 > This extension is not developed, maintained or supported by SailPoint.
 > It is a community effort to help manage Non-Employee Risk Management from Visual Studio Code.
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+<!--[![Product Name Screen Shot][product-screenshot]](https://example.com)-->
 
 The SailPoint Non-Employee Risk Management extension makes it easy to:
 
@@ -151,7 +151,7 @@ Don't forget to give the project a star! Thanks again!
 <!-- LICENSE -->
 ## License
 
-Distributed under the project_license. See `LICENSE.txt` for more information.
+Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

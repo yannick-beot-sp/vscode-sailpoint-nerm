@@ -291,7 +291,7 @@ export class NERMView implements vscode.TreeDataProvider<BaseTreeItem>, vscode.T
 
     }
     private async _removeNode(node: IStoredNode) {
-        if (node.type == "TENANT") {
+        if (node.type === "TENANT") {
             this.tenantService.remove(node.id)
             this.treeService.remove(node.id)
         } else {

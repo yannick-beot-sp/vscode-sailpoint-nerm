@@ -1,71 +1,192 @@
-# vscode-sailpoint-nerm README
+<a id="readme-top"></a>
+<!--  based on https://github.com/othneildrew/Best-README-Template -->
 
-This is the README for your extension "vscode-sailpoint-nerm". After writing up a brief description, we recommend including the following sections.
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="https://github.com/yannick-beot-sp/vscode-sailpoint-nerm">
+    <img src="images/logo.png" alt="Logo" width="80" height="80">
+  </a>
 
-## Features
+<h3 align="center">SailPoint Non-Employee Risk Management for Visual Studio Code</h3>
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+  <p align="center">
+    Extension to easily manage SailPoint Non-Employee Risk Management
+    <br />
+    <br />
+    <a href="#change-log">View Changelog</a>
+    &middot;
+    <a href="#view-demo">View Demo</a>
+    &middot;
+    <a href="https://github.com/yannick-beot-sp/vscode-sailpoint-nerm/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
+    &middot;
+    <a href="https://github.com/yannick-beot-sp/vscode-sailpoint-nerm/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+  </p>
+</div>
 
-For example if there is an image subfolder under your extension project workspace:
+<!-- PROJECT SHIELDS -->
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![project_license][license-shield]][license-url]
 
-\!\[feature X\]\(images/feature-x.png\)
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
+  </ol>
+</details>
 
-## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
 
-## Extension Settings
+<!-- ABOUT THE Extension -->
+## About The Extension
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+> This extension is not developed, maintained or supported by SailPoint.
+> It is a community effort to help manage Non-Employee Risk Management from Visual Studio Code.
 
-For example:
+[![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-This extension contributes the following settings:
+The SailPoint Non-Employee Risk Management extension makes it easy to:
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+- View, edit users and add them to roles
+- View roles users and add users
 
-## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+
+
+
+<!-- GETTING STARTED -->
+## Getting Started
+
+### Installation
+Go to the extension menu or press `Ctrl`+`Shift`+`X` and look for the extension "Non-Employee Risk Management". Click on the button `Install`.
+
+The VSIX can be installed from the extension menu. Press `Ctrl`+`Shift`+`X` and in the menu, click `Install from VSIX...`.
+
+
+## Add new tenant
+
+The extension supports several tenants.
+
+Open the **Command Palette** with `Ctrl+Shift+P` (Windows or Linux) or `Cmd+Shift+P` (macOS) to find the command "ISC: Add tenant...".
+
+
+
+
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- USAGE EXAMPLES -->
+## Usage
+
+TODO
+
+
+
+<!-- ROADMAP -->
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
+### 0.0.1
 
-### 1.0.0
+Initial internal release
 
-Initial release of ...
+- Add or remove tenant
+- Add or remove folder
+- View users, edit, add or remove role
+- View roles, add or remove members
 
-### 1.0.1
 
-Fixed issue #.
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### 1.1.0
+<!-- CONTRIBUTING -->
+## Contributing
 
-Added features X, Y, and Z.
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
----
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+Don't forget to give the project a star! Thanks again!
 
-## Following extension guidelines
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
+### Top contributors:
 
-## Working with Markdown
+<a href="https://github.com/yannick-beot-sp/vscode-sailpoint-nerm/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=yannick-beot-sp/vscode-sailpoint-nerm" alt="contrib.rocks image" />
+</a>
 
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
 
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
 
-## For more information
+<!-- LICENSE -->
+## License
 
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+Distributed under the project_license. See `LICENSE.txt` for more information.
 
-**Enjoy!**
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[contributors-shield]: https://img.shields.io/github/contributors/yannick-beot-sp/vscode-sailpoint-nerm.svg?style=for-the-badge
+[contributors-url]: https://github.com/yannick-beot-sp/vscode-sailpoint-nerm/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/yannick-beot-sp/vscode-sailpoint-nerm.svg?style=for-the-badge
+[forks-url]: https://github.com/yannick-beot-sp/vscode-sailpoint-nerm/network/members
+[stars-shield]: https://img.shields.io/github/stars/yannick-beot-sp/vscode-sailpoint-nerm.svg?style=for-the-badge
+[stars-url]: https://github.com/yannick-beot-sp/vscode-sailpoint-nerm/stargazers
+[issues-shield]: https://img.shields.io/github/issues/yannick-beot-sp/vscode-sailpoint-nerm.svg?style=for-the-badge
+[issues-url]: https://github.com/yannick-beot-sp/vscode-sailpoint-nerm/issues
+[license-shield]: https://img.shields.io/github/license/yannick-beot-sp/vscode-sailpoint-nerm.svg?style=for-the-badge
+[license-url]: https://github.com/yannick-beot-sp/vscode-sailpoint-nerm/blob/master/LICENSE.txt
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+[linkedin-url]: https://linkedin.com/in/linkedin_username
+[product-screenshot]: images/screenshot.png
+[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
+[Next-url]: https://nextjs.org/
+[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
+[React-url]: https://reactjs.org/
+[Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
+[Vue-url]: https://vuejs.org/
+[Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
+[Angular-url]: https://angular.io/
+[Svelte.dev]: https://img.shields.io/badge/Svelte-4A4A55?style=for-the-badge&logo=svelte&logoColor=FF3E00
+[Svelte-url]: https://svelte.dev/
+[Laravel.com]: https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white
+[Laravel-url]: https://laravel.com
+[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
+[Bootstrap-url]: https://getbootstrap.com
+[JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
+[JQuery-url]: https://jquery.com 
+

@@ -211,7 +211,7 @@ export class NERMView implements vscode.TreeDataProvider<BaseTreeItem>, vscode.T
             prompt: 'Enter the API key.',
             title: 'New Tenant (2/3)',
             validateInput: text => {
-                const regex = new RegExp('^[a-f0-9]{32}$');
+                const regex = new RegExp('^([a-f0-9]{32})|(ne-[A-Za-z0-9]+)$');
                 if (regex.test(text)) {
                     return null;
                 }

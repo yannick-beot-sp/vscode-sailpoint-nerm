@@ -263,6 +263,7 @@ export class NERMView implements vscode.TreeDataProvider<BaseTreeItem>, vscode.T
             tenantId,
             tenantLabel: tenantInfo.label,
             path: element.path,
+            label: element.label,
             client,
             extensionUri: this.extensionUri,
             treeService: this.treeService

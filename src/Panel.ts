@@ -1,5 +1,4 @@
 import * as vscode from 'vscode';
-import { TenantService } from './services/TenantService';
 import { NERMClient } from './services/NERMClient';
 import { GetAllUsersQuery } from './commands/GetAllUsersQuery';
 import { IRequest, IRequestHandler } from './commands/interfaces';
@@ -41,6 +40,7 @@ interface PanelParams {
     tenantId: string
     tenantLabel: string
     path: string
+    label: string
 }
 
 export class Panel {
@@ -71,7 +71,7 @@ export class Panel {
         // Otherwise, create a new panel.
         const panel = vscode.window.createWebviewPanel(
             Panel.viewType,
-            `${params.tenantLabel} | ${params.path.replace("/", " | ")}`,
+            `${params.tenantLabel} | ${params.label}`,
             column || vscode.ViewColumn.One,
             getWebviewOptions(params.extensionUri)
         );

@@ -135,7 +135,7 @@ export class UsersTreeItem extends LinkTreeItem {
         super({
             tenantId,
             label: "Users",
-            path: "users"
+            path: "/users"
         });
     }
     iconPath = new vscode.ThemeIcon("person");
@@ -148,7 +148,7 @@ export class RolesTreeItem extends LinkTreeItem {
         super({
             tenantId,
             label: "Roles",
-            path: "roles"
+            path: "/roles"
         });
     }
     iconPath = new vscode.ThemeIcon("account");
@@ -161,7 +161,7 @@ export class ProfilesTreeItem extends LinkTreeItem {
         super({
             tenantId,
             label: "Profiles",
-            path: "profiles"
+            path: "/profiles"
         });
     }
     iconPath = new vscode.ThemeIcon("extensions");

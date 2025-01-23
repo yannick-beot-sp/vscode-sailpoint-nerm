@@ -22,12 +22,14 @@
     columns: MyColumnDef<TData>[];
     data: TData[];
     client: Client;
-    tableId: string
+    tableId: string;
   };
 
   let { data = $bindable(), columns, client, tableId }: Props = $props();
-  let pagination = $state<PaginationState>({ pageIndex: 0, pageSize: 10 });
-  let sorting = $state<SortingState>([]);
+  let pagination = $state<PaginationState>(
+    client.getPaginationState() ?? { pageIndex: 0, pageSize: 10 }
+  );
+  let sorting = $state<SortingState>(client.getSortingState() ?? []);
   let columnVisibility = $state<VisibilityState>(createVisibilityMap(columns));
   const table = createSvelteTable({
     get data() {
@@ -43,6 +45,7 @@
       } else {
         sorting = updater;
       }
+      client.setSortingState(sorting);
     },
     onPaginationChange: (updater) => {
       if (typeof updater === "function") {
@@ -50,6 +53,7 @@
       } else {
         pagination = updater;
       }
+      client.setPaginationState(pagination);
     },
     onColumnVisibilityChange: (updater) => {
       if (typeof updater === "function") {
@@ -57,7 +61,7 @@
       } else {
         columnVisibility = updater;
       }
-      client.setTableVisibilityState(tableId, columnVisibility)
+      client.setTableVisibilityState(tableId, columnVisibility);
     },
     state: {
       get pagination() {
@@ -90,13 +94,12 @@
     },
   });
 
-  onMount(async()=>{
-    const visibilityState = await client.getTableVisibilityState(tableId)
+  onMount(async () => {
+    const visibilityState = await client.getTableVisibilityState(tableId);
     if (visibilityState) {
-      columnVisibility = visibilityState
+      columnVisibility = visibilityState;
     }
-
-  })
+  });
 </script>
 
 <div>

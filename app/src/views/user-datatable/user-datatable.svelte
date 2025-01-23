@@ -8,9 +8,14 @@
   let client = ClientFactory.getClient();
   let users: User[] = $state<User[]>([]);
   onMount(async () => {
-    users = await client.getUsers();
+    let tmpusers = client.getData<User>();
+    if (!tmpusers) {
+      tmpusers = await client.getUsers();
+      client.setData(tmpusers);
+    }
+    users = tmpusers;
     console.log("data loaded");
   });
 </script>
 
-<DataTable bind:data={users} {columns} {client} tableId="user"/>
+<DataTable bind:data={users} {columns} {client} tableId="user" />

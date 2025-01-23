@@ -5,11 +5,13 @@ import { Messenger } from "./Messenger";
 import type { Role } from "src/model/Role";
 import type { UserRolePair } from "src/model/UserRolePair";
 import type { NewUserRolePair } from "src/model/NewUserRolePair";
-import type { VisibilityState } from "@tanstack/table-core";
+import type { PaginationState, SortingState, VisibilityState } from "@tanstack/table-core";
 
 
 interface State {
-    users?: User[]
+    data?: any[]
+    paginationState?: PaginationState
+    sortingState?: SortingState
 }
 
 export class VsCodeClient implements Client {
@@ -51,4 +53,47 @@ export class VsCodeClient implements Client {
             visibilityState: $state.snapshot(visibilityState)
         })
     }
+
+    setPaginationState(paginationState: PaginationState): void {
+        const tmpstate = Messenger.getState() as State
+        const newstate: State = {
+            ...tmpstate,
+            paginationState
+        }
+        Messenger.setState(newstate)
+    }
+
+    getPaginationState(): PaginationState | undefined {
+        const tmpstate = Messenger.getState() as State
+        return tmpstate?.paginationState
+    }
+
+    setSortingState(sortingState: SortingState): void {
+        const tmpstate = Messenger.getState() as State
+        const newstate: State = {
+            ...tmpstate,
+            sortingState
+        }
+        Messenger.setState(newstate)
+    }
+
+    getSortingState(): SortingState | undefined {
+        const tmpstate = Messenger.getState() as State
+        return tmpstate?.sortingState
+    }
+
+    setData<T>(data: T[]): void {
+        const tmpstate = Messenger.getState() as State
+        const newstate: State = {
+            ...tmpstate,
+            data
+        }
+        Messenger.setState(newstate)
+    }
+    
+    getData<T>(): T[] | undefined {
+        const tmpstate = Messenger.getState() as State
+        return tmpstate?.data
+    }
+
 }

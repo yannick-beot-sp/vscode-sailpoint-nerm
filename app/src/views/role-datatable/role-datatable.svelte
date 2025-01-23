@@ -8,7 +8,12 @@
   let client = ClientFactory.getClient();
   let roles: Role[] = $state<Role[]>([]);
   onMount(async () => {
-    roles = await client.getRoles();
+    let tmproles = client.getData<Role>();
+    if (!tmproles) {
+      tmproles = await client.getRoles();
+      client.setData(tmproles);
+    }
+    roles = tmproles;
     console.log("data loaded");
   });
 </script>

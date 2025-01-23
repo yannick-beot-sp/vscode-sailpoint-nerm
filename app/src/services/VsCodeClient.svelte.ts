@@ -12,6 +12,7 @@ interface State {
     data?: any[]
     paginationState?: PaginationState
     sortingState?: SortingState
+    globalFilter?: string
 }
 
 export class VsCodeClient implements Client {
@@ -90,10 +91,23 @@ export class VsCodeClient implements Client {
         }
         Messenger.setState(newstate)
     }
-    
+
     getData<T>(): T[] | undefined {
         const tmpstate = Messenger.getState() as State
         return tmpstate?.data
     }
 
+    setGlobalFilter(globalFilter: string): void {
+        const tmpstate = Messenger.getState() as State
+        const newstate: State = {
+            ...tmpstate,
+            globalFilter
+        }
+        Messenger.setState(newstate)
+    }
+
+    getGlobalFilter(): string | undefined {
+        const tmpstate = Messenger.getState() as State
+        return tmpstate?.globalFilter
+    }
 }

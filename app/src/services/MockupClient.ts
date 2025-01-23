@@ -482,4 +482,9 @@ export class MockupClient implements Client {
         return undefined
     }
 
+    setGlobalFilter(filter: string): void { }
+    getGlobalFilter(): string | undefined {
+        return undefined
+    }
+
 }

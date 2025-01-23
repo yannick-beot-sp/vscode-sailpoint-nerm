@@ -4,6 +4,7 @@
     type SortingState,
     type VisibilityState,
     getCoreRowModel,
+    getFilteredRowModel,
     getPaginationRowModel,
     getSortedRowModel,
   } from "@tanstack/table-core";
@@ -18,6 +19,7 @@
   import type { MyColumnDef } from "./columns";
   import type { Client } from "src/services/Client";
   import { onMount } from "svelte";
+  import { Input } from "$lib/components/ui/input";
   type Props = {
     columns: MyColumnDef<TData>[];
     data: TData[];
@@ -31,12 +33,15 @@
   );
   let sorting = $state<SortingState>(client.getSortingState() ?? []);
   let columnVisibility = $state<VisibilityState>(createVisibilityMap(columns));
+  let globalFilter = $state(client.getGlobalFilter());
   const table = createSvelteTable({
     get data() {
       return data;
     },
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(), // needed for client-side global filtering
+    globalFilterFn: "includesString", // built-in filter function
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     onSortingChange: (updater) => {
@@ -63,6 +68,16 @@
       }
       client.setTableVisibilityState(tableId, columnVisibility);
     },
+    onGlobalFilterChange: (updater) => {
+      console.log(">onGlobalFilterChange");
+
+      if (typeof updater === "function") {
+        globalFilter = updater(globalFilter);
+      } else {
+        globalFilter = updater;
+      }
+      client.setGlobalFilter($state.snapshot(globalFilter) as string);
+    },
     state: {
       get pagination() {
         return pagination;
@@ -72,6 +87,9 @@
       },
       get columnVisibility() {
         return columnVisibility;
+      },
+      get globalFilter() {
+        return globalFilter;
       },
     },
     meta: {
@@ -104,6 +122,13 @@
 
 <div>
   <div class="flex items-center py-4">
+    <Input
+      placeholder="Filter..."
+      value={globalFilter}
+      onChange={(e) => table.setGlobalFilter(String(e.target.value))}
+      oninput={(e) => table.setGlobalFilter(String(e.target.value))}
+      class="max-w-sm"
+    />
     <ChooseColumns {table} />
   </div>
 

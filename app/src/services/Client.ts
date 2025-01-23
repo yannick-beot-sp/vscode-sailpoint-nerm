@@ -28,6 +28,8 @@ export interface Client {
     getPaginationState(): PaginationState | undefined;
     setSortingState(state: SortingState): void;
     getSortingState(): SortingState | undefined;
+    setGlobalFilter(filter: string): void;
+    getGlobalFilter(): string | undefined;
     setData<T>(data: T[]): void;
     getData<T>(): T[] | undefined;
 }

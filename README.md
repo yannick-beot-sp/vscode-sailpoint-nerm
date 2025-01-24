@@ -108,6 +108,11 @@ You will asked for:
 
 ## Release Notes
 
+### 0.0.2
+
+- Updated documentation
+- Better management of cache/state
+
 ### 0.0.1
 
 Initial internal release

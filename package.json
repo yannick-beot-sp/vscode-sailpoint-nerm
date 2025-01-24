@@ -4,7 +4,7 @@
   "description": "Customize SailPoint Non-Employee Risk Management",
   "version": "0.0.2",
   "publisher": "yannick-beot-sp",
-  "license": "SEE LICENSE IN LICENSE.TXT",
+  "license": "SEE LICENSE IN LICENSE.txt",
   "icon": "resources/nerm.png",
   "bugs": {
     "url": "https://github.com/yannick-beot-sp/vscode-sailpoint-nerm/issues"

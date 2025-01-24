@@ -33,7 +33,7 @@ jobs:
         path: ${{github.workspace}}/vscode-sailpoint-nerm-*.vsix
 
     - name: Release
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       if: success() && startsWith( github.ref, 'refs/tags/releases/')
       with:
         files: vscode-sailpoint-nerm-*.vsix

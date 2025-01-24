@@ -1,11 +1,12 @@
 <a id="readme-top"></a>
+
 <!--  based on https://github.com/othneildrew/Best-README-Template -->
 
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
   <a href="https://github.com/yannick-beot-sp/vscode-sailpoint-nerm">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="resources/nerm.png" alt="Logo" width="256" height="160">
   </a>
 
 <h3 align="center">SailPoint Non-Employee Risk Management for Visual Studio Code</h3>
@@ -14,57 +15,56 @@
     Extension to easily manage SailPoint Non-Employee Risk Management
     <br />
     <br />
-    <a href="#change-log">View Changelog</a>
+    <a href="#release-notes">View Release Notes</a>
     &middot;
-    <a href="#view-demo">View Demo</a>
+    <a href="#usage">View Demo</a>
     &middot;
-    <a href="https://github.com/yannick-beot-sp/vscode-sailpoint-nerm/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
+    <a href="https://github.com/yannick-beot-sp/vscode-sailpoint-nerm/issues/new?labels=bug&template=bug_report.md">Report Bug</a>
     &middot;
-    <a href="https://github.com/yannick-beot-sp/vscode-sailpoint-nerm/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+    <a href="https://github.com/yannick-beot-sp/vscode-sailpoint-nerm/issues/new?template=feature_request.md">Request Feature</a>
   </p>
 </div>
 
 <!-- PROJECT SHIELDS -->
+
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![project_license][license-shield]][license-url]
 
-
 <!-- TABLE OF CONTENTS -->
 <details>
   <summary>Table of Contents</summary>
   <ol>
     <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
+      <a href="#about-this-extension">About this extension</a>
     </li>
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
+        <li><a href="#add-new-tenant">Add new tenant</a></li>
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#release-notes">Release Notes</a></li>
+    <li>
+      <a href="#contributing">Contributing</a>
+      <ul>
+        <li><a href="#top-contributors">Top contributors</a></li>
+      </ul>
+    </li>
     <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
+<!-- ABOUT THIS EXTENSION -->
 
+## About this extension
 
-<!-- ABOUT THE Extension -->
-## About The Extension
-
-> This extension is not developed, maintained or supported by SailPoint.
-> It is a community effort to help manage Non-Employee Risk Management from Visual Studio Code.
+> **This extension is not developed, maintained or supported by SailPoint.**
+> **It is a community effort to help manage Non-Employee Risk Management from Visual Studio Code.**
 
 <!--[![Product Name Screen Shot][product-screenshot]](https://example.com)-->
 
@@ -73,43 +73,39 @@ The SailPoint Non-Employee Risk Management extension makes it easy to:
 - View, edit users and add them to roles
 - View roles users and add users
 
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
-
 <!-- GETTING STARTED -->
+
 ## Getting Started
 
 ### Installation
+
 Go to the extension menu or press `Ctrl`+`Shift`+`X` and look for the extension "Non-Employee Risk Management". Click on the button `Install`.
 
 The VSIX can be installed from the extension menu. Press `Ctrl`+`Shift`+`X` and in the menu, click `Install from VSIX...`.
 
-
-## Add new tenant
+### Add new tenant
 
 The extension supports several tenants.
 
-Open the **Command Palette** with `Ctrl+Shift+P` (Windows or Linux) or `Cmd+Shift+P` (macOS) to find the command "ISC: Add tenant...".
+Open the **Command Palette** with `Ctrl+Shift+P` (Windows or Linux) or `Cmd+Shift+P` (macOS) to find the command "NERM: Add tenant..." or simply click ➕ in the "NERM TENANTS" view.
 
-
-
-
+You will asked for:
+- A friendly name
+- The API URL, e.g. `https://mycompany.mynonemployee.com/api`
+- An API Key (Go to **Admin**, under **Sytem**, go to **Api**)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- USAGE EXAMPLES -->
+
 ## Usage
 
-TODO
-
-
+![Add tenant](https://raw.githubusercontent.com/yannick-beot-sp/vscode-sailpoint-nerm/main/resources/readme/add-tenant.gif)
 
 <!-- ROADMAP -->
+
 ## Release Notes
 
 ### 0.0.1
@@ -121,10 +117,10 @@ Initial internal release
 - View users, edit, add or remove role
 - View roles, add or remove members
 
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTRIBUTING -->
+
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -146,20 +142,17 @@ Don't forget to give the project a star! Thanks again!
   <img src="https://contrib.rocks/image?repo=yannick-beot-sp/vscode-sailpoint-nerm" alt="contrib.rocks image" />
 </a>
 
-
-
 <!-- LICENSE -->
+
 ## License
 
 Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
-
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
 [contributors-shield]: https://img.shields.io/github/contributors/yannick-beot-sp/vscode-sailpoint-nerm.svg?style=for-the-badge
 [contributors-url]: https://github.com/yannick-beot-sp/vscode-sailpoint-nerm/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/yannick-beot-sp/vscode-sailpoint-nerm.svg?style=for-the-badge
@@ -188,5 +181,4 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 [Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
 [Bootstrap-url]: https://getbootstrap.com
 [JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
-[JQuery-url]: https://jquery.com 
-
+[JQuery-url]: https://jquery.com

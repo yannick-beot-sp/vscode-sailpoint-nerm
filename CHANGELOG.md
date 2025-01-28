@@ -4,6 +4,12 @@ All notable changes to the "vscode-sailpoint-nerm" extension will be documented 
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.0.3] - 2025-01-28
+
+### Fixed
+
+- Fixed packaging issue that did not include webview
+
 ## [0.0.2] - 2025-01-24
 
 ### Added

@@ -108,6 +108,10 @@ You will asked for:
 
 ## Release Notes
 
+### 0.0.3
+
+- Fixed packaging issue that did not include webview
+
 ### 0.0.2
 
 - Updated documentation

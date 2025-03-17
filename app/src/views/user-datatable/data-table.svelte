@@ -20,14 +20,23 @@
   import type { Client } from "src/services/Client";
   import { onMount } from "svelte";
   import { Input } from "$lib/components/ui/input";
+  import { RotateCw } from "lucide-svelte";
+  import { Button } from "$lib/components/ui/button";
   type Props = {
     columns: MyColumnDef<TData>[];
     data: TData[];
     client: Client;
     tableId: string;
+    refresh: (forceRefresh?: boolean) => Promise<void>;
   };
 
-  let { data = $bindable(), columns, client, tableId }: Props = $props();
+  let {
+    data = $bindable(),
+    columns,
+    client,
+    tableId,
+    refresh,
+  }: Props = $props();
   let pagination = $state<PaginationState>(
     client.getPaginationState() ?? { pageIndex: 0, pageSize: 10 }
   );
@@ -129,6 +138,14 @@
       oninput={(e) => table.setGlobalFilter(String(e.target.value))}
       class="max-w-sm"
     />
+    <Button
+      onclick={async () => {
+        await refresh(true);
+      }}
+      size="sm"
+      class="ml-auto hidden h-8 lg:flex"
+      variant="outline"><RotateCw /></Button
+    >
     <ChooseColumns {table} />
   </div>
 

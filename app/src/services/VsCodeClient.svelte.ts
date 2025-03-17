@@ -22,19 +22,23 @@ export class VsCodeClient implements Client {
             user_roles: args
         })
     }
+
     async removeUserRolePairing(id: string): Promise<void> {
         await messageHandler.request<UserRolePair[]>("removeRoleFromUser", { id })
     }
+
     async getUserRolePairings(args: { user_id?: string; role_id?: string; }): Promise<UserRolePair[]> {
         return await messageHandler.request<UserRolePair[]>("getAllUserRolePairings", args)
     }
-    async getRoles(): Promise<Role[]> {
-        return await messageHandler.request<Role[]>("getAllRoles")
+
+    async getRoles(forceRefresh?: boolean): Promise<Role[]> {
+        return await messageHandler.request<Role[]>("getAllRoles", { forceRefresh })
     }
+
     private state: State = {}
 
-    async getUsers(): Promise<User[]> {
-        return await messageHandler.request<User[]>("getUsers")
+    async getUsers(forceRefresh?: boolean): Promise<User[]> {
+        return await messageHandler.request<User[]>("getUsers", { forceRefresh })
     }
 
     async updateUser(user: User): Promise<User> {

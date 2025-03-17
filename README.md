@@ -108,6 +108,11 @@ You will asked for:
 
 ## Release Notes
 
+
+### 0.0.4
+
+- Add cache for users & roles for better performance, and the possibility to refresh
+
 ### 0.0.3
 
 - Fixed packaging issue that did not include webview

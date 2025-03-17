@@ -4,18 +4,39 @@
   import { onMount } from "svelte";
   import type { Role } from "src/model/Role";
   import { ClientFactory } from "../../services/ClientFactory";
-
+  import Spinner from "$lib/components/Spinner.svelte";
+  
   let client = ClientFactory.getClient();
   let roles: Role[] = $state<Role[]>([]);
-  onMount(async () => {
+  let loading = $state(true);
+
+  async function getData(forceRefresh?: boolean) {
+    loading = true;
     let tmproles = client.getData<Role>();
     if (!tmproles) {
-      tmproles = await client.getRoles();
+      tmproles = await client.getRoles(forceRefresh);
       client.setData(tmproles);
     }
     roles = tmproles;
+    loading = false;
     console.log("data loaded");
+  }
+
+  onMount(async () => {
+    await getData();
   });
 </script>
 
-<DataTable bind:data={roles} {columns} {client} tableId="role"/>
+{#if loading}
+  <div class="flex justify-center gap-3">
+    <Spinner show={true} />
+  </div>
+{:else}
+<DataTable
+  bind:data={roles}
+  {columns}
+  {client}
+  refresh={getData}
+  tableId="role"
+/>
+{/if}

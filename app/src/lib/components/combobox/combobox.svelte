@@ -12,14 +12,16 @@
     items: Item[];
     placeholder?: string;
     emptyString?: string;
-    value?:string
+    value?:string;
+    disabled: boolean;
   }
 
   let {
     items,
     placeholder = "Search...",
     emptyString = "No result found.",
-    value=$bindable()
+    value=$bindable(),
+    disabled = $bindable(false)
   }: Props = $props();
 
   let open = $state(false);
@@ -47,6 +49,7 @@
         {...props}
         role="combobox"
         aria-expanded={open}
+        {disabled}
       >
         {selectedValue || placeholder}
         <ChevronsUpDown class="opacity-50" />
@@ -62,7 +65,7 @@
           {#each items as item}
             <Command.Item
               value={item.value}
-              keywords={item.label.split(" ")}
+              keywords={item.label?.split(" ")}
               onSelect={() => {
                 value = item.value;
                 closeAndFocusTrigger();

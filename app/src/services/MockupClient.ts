@@ -459,12 +459,12 @@ export class MockupClient implements Client {
         }
         return []
     }
-    async getRoles(): Promise<Role[]> {
+    async getRoles(forceRefresh?: boolean): Promise<Role[]> {
         await stall()
         return roles;
     }
 
-    async getUsers(): Promise<User[]> {
+    async getUsers(forceRefresh?: boolean): Promise<User[]> {
         await stall()
         return this.users
     }

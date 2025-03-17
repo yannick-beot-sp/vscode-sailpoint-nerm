@@ -4,6 +4,10 @@ All notable changes to the "vscode-sailpoint-nerm" extension will be documented 
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.0.4] - 2025-03-17
+
+- Add cache for users & roles for better performance, and the possibility to refresh
+
 ## [0.0.3] - 2025-01-28
 
 ### Fixed

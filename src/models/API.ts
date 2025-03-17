@@ -95,10 +95,8 @@ export interface GetUsersResponse extends PaginatedResponse {
     users: User[]
 }
 
-export interface GetRolesRequest extends PaginatedQueryParams {
+export interface GetRolesRequest extends PaginatedQueryParams { }
 
-
-}
 export interface Role {
     /**
      * uuid

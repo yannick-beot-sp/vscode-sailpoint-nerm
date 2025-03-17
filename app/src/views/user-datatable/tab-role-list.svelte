@@ -2,13 +2,14 @@
   import { toast } from "svelte-sonner";
   import type { Role } from "src/model/Role";
   import type { User } from "src/model/User";
-  import { CirclePlus, Sparkles, Trash2 } from "lucide-svelte";
+  import { CirclePlus, RotateCw, Sparkles, Trash2 } from "lucide-svelte";
   import { Button } from "$lib/components/ui/button";
   import type { UserRolePair } from "src/model/UserRolePair";
   import Autocomplete from "$lib/components/combobox/combobox.svelte";
   import type { Item } from "$lib/components/Item";
   import type { Client } from "src/services/Client";
   import { onMount } from "svelte";
+  import { compare } from "$lib/utils/stringUtils";
 
   interface listItem<T> {
     original: T;
@@ -55,7 +56,7 @@
     roles
       .filter((x) => !userRolesMap.has(x.id))
       .map((x) => ({ label: x.name, value: x.id }))
-      .sort((a, b) => a.label.localeCompare(b.label))
+      .sort((a, b) => compare(a.label, b.label))
   );
 
   function getItem(id: string): listItem<UserRolePairWithRoleName> | undefined {
@@ -100,6 +101,21 @@
       updated = true;
     }
   }
+  async function getData(forceRefresh?: boolean) {
+    roles = await client.getRoles(forceRefresh);
+    userRoles = await client.getUserRolePairings({ user_id: user.id });
+    items = userRoles
+      .map((x) => {
+        const role = roleMap.get(x.role_id);
+        return {
+          original: {
+            ...x,
+            name: role?.name ?? "N/A",
+          },
+        };
+      })
+      .sort((a, b) => compare(a.original.name, b.original.name));
+  }
   async function save() {
     console.log(">save", items);
     const rolesToRemove = items.filter((x) => x.status === "Deleted" && !x.new);
@@ -130,24 +146,15 @@
   }
 
   onMount(async () => {
-    roles = await client.getRoles();
-    userRoles = await client.getUserRolePairings({ user_id: user.id });
-    items = userRoles
-      .map((x) => {
-        const role = roleMap.get(x.role_id);
-        return {
-          original: {
-            ...x,
-            name: role?.name ?? "N/A",
-          },
-        };
-      })
-      .sort((a, b) => a.original.name.localeCompare(b.original.name));
+    await getData();
   });
 </script>
 
 <div class="flex gap-2 mb-4 items-center">
   <Autocomplete items={roleItems} bind:value={selectedRole} />
+  <Button onclick={async () => getData(true)} size="icon" class="relative size-8 p-0"
+    ><RotateCw /></Button
+  >
   <Button
     variant="ghost"
     size="icon"

@@ -3,15 +3,25 @@ import { NERMClient } from "../services/NERMClient";
 import { paginator } from "../services/paginator";
 import { IRequest, IRequestHandler } from "./interfaces";
 
-export interface GetAllUsers extends IRequest<User[]> { }
+export interface GetAllUsersRequest extends IRequest<User[]> {
+    forceRefresh?: boolean
+}
 
-export class GetAllUsersQuery implements IRequestHandler<GetAllUsersQuery, User[]> {
+const userCache = new Map<string, User[]>()
+
+
+export class GetAllUsersQuery implements IRequestHandler<GetAllUsersRequest, User[]> {
     public readonly command = "getUsers"
-    constructor(private client: NERMClient) {
+    constructor(private tenantId: string, private client: NERMClient) {
     }
 
-    async handle(request: GetAllUsers): Promise<User[]> {
-        const users = await paginator(this.client, this.client.getUsers, request)
+    async handle(request: GetAllUsersRequest): Promise<User[]> {
+        if (!request?.forceRefresh && userCache.has(this.tenantId)) {
+            return userCache.get(this.tenantId)!
+        }
+
+        const users = await paginator(this.client, this.client.getUsers, {})
+        userCache.set(this.tenantId, users)
         return users
     }
 }

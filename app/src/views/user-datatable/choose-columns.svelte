@@ -12,7 +12,7 @@
     class={buttonVariants({
       variant: "outline",
       size: "sm",
-      class: "ml-auto hidden h-8 lg:flex",
+      class: "ml-1 hidden h-8 lg:flex",
     })}
   >
     <Columns3 />

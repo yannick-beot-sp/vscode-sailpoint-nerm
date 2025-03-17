@@ -125,8 +125,8 @@ export class Panel {
         );
 
         this.register(
-            new GetAllUsersQuery(params.client),
-            new GetAllRolesQuery(params.client),
+            new GetAllUsersQuery(params.tenantId, params.client),
+            new GetAllRolesQuery(params.tenantId, params.client),
             new GetAllUserRolePairingsQuery(params.client),
             new AddUserRolePairingsCommand(params.client),
             new RemoveRoleFromUser(params.client),

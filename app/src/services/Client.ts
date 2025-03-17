@@ -8,8 +8,8 @@ import type { UserRolePair } from "src/model/UserRolePair"
 
 export interface Client {
     updateUser(user: User): Promise<User>
-    getUsers(): Promise<User[]>
-    getRoles(): Promise<Role[]>
+    getUsers(forceRefresh?:boolean): Promise<User[]>
+    getRoles(forceRefresh?:boolean): Promise<Role[]>
     getUserRolePairings(args: { user_id?: string, role_id?: string }): Promise<UserRolePair[]>
     addUserRolePairings(args: NewUserRolePair[]): Promise<UserRolePair[]>
     removeUserRolePairing(id: string): Promise<void>

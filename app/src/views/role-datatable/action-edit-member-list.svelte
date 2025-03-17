@@ -2,7 +2,7 @@
   import { toast } from "svelte-sonner";
   import type { Role } from "src/model/Role";
   import type { User } from "src/model/User";
-  import { CirclePlus, Sparkles, Trash2 } from "lucide-svelte";
+  import { CirclePlus, RotateCw, Sparkles, Trash2 } from "lucide-svelte";
   import { Button } from "$lib/components/ui/button";
   import type { UserRolePair } from "src/model/UserRolePair";
   import Autocomplete from "$lib/components/combobox/combobox.svelte";
@@ -12,6 +12,7 @@
   import type { Item } from "$lib/components/Item";
   import type { Client } from "src/services/Client";
   import { onMount } from "svelte";
+  import { compare } from "$lib/utils/stringUtils";
 
   interface listItem<T> {
     original: T;
@@ -88,7 +89,7 @@
     users
       .filter((x) => !userRolesMap.has(x.id))
       .map((x) => ({ label: x.name, value: x.id }))
-      .sort((a, b) => a.label.localeCompare(b.label))
+      .sort((a, b) => compare(a.label, b.label))
   );
 
   function getItem(id: string): listItem<UserRolePairWithUserName> | undefined {
@@ -148,8 +149,8 @@
           role_id: x.original.role_id,
         }))
       );
-      console.log({newRoles, items});
-        
+      console.log({ newRoles, items });
+
       newRoles.forEach((newRole) => {
         const index = items.findIndex(
           (item) => newRole.user_id === item.original.user_id
@@ -162,15 +163,15 @@
         }
       });
     }
-    console.log({items});
+    console.log({ items });
 
     items = items.filter((x) => x.status !== "Deleted");
     toast.success("Roles updated");
     updated = false;
   }
-
-  onMount(async () => {
-    users = await client.getUsers();
+  async function getData(forceRefresh?: boolean) {
+    loading = true;
+    users = await client.getUsers(forceRefresh);
     members = await client.getUserRolePairings({ role_id: role.id });
     items = members
       .map((x) => {
@@ -184,8 +185,13 @@
           },
         };
       })
-      .sort((a, b) => a.original.name.localeCompare(b.original.name));
-    loading = false;
+      .sort((a, b) => compare(a.original.name, b.original.name));
+      loading = false;
+  }
+
+  onMount(async () => {
+    await getData();
+    
   });
 </script>
 
@@ -193,7 +199,12 @@
   <Label class="label">Members</Label>
 
   <div class="flex gap-2 mb-4 mt-2 items-center">
-    <Autocomplete items={userItems} bind:value={selectedUser} />
+    <Autocomplete items={userItems} bind:value={selectedUser} disabled={loading}/>
+    <Button
+      onclick={async () => getData(true)}
+      size="icon"
+      class="relative size-8 p-0"><RotateCw /></Button
+    >
     <Button
       variant="ghost"
       size="icon"

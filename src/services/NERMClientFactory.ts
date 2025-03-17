@@ -20,7 +20,7 @@ export class NERMClientFactory {
             const config = this.treeService.get(tenantId)
             baseUrl = config?.baseUrl
             token = await this.tenantService.get(tenantId)
-            if (baseUrl === baseUrl || token === undefined) {
+            if (baseUrl === undefined || token === undefined) {
                 throw new Error(`Invalid tenant ID ${tenantId}`);
             }
         } else {

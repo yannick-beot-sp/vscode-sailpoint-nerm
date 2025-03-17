@@ -192,3 +192,296 @@ export interface DeleteUserResponse {
     info: string
 }
 
+
+export interface GetProfileTypesRequest extends PaginatedQueryParams {
+    /**
+     *  object name for filtering
+     */
+    name?: string
+
+    /**
+     * Filter by archive status
+     */
+    archived?: boolean
+}
+
+export interface ProfileType {
+    /**
+    * uuid
+    */
+    id: string;
+
+    /**
+     * Possible values: >= 32 characters and <= 32 characters
+     * Example: sponsors_role
+     */
+    uid: string;
+
+    /** This is the name of the profile type.  */
+    name: string;
+    category: 'employee' | 'non-employee' | 'organization' | 'assignment' | 'other'; // This is the category the profile type falls into.
+    bypass_dup_protection: boolean; // Whether or not duplication protection is bypassed.
+    archived: boolean; // Whether or not the profile type is archived.
+    permitted_role_ids: string[]; // The role IDs that are permitted for this profile type.
+    isc_synced: boolean; // Is this profile type synced with ICS.
+    profile_type_dup_attributes: {
+        id: string; // The ID of the properties that are used for duplication protection.
+        uid: string; // The user-specified identifier of the properties that are used for duplication protection.
+        profile_type_id: string; // The ID of the profile type.
+        ne_attribute_id: string; // The ID of the NE attribute.
+    }[];
+    profile_type_namings: {
+        id: string; // The ID of the profile type naming.
+        uid: string; // The user-specified identifier of the profile type naming.
+        profile_type_id: string; // The ID of the associated profile type.
+        ne_attribute_id: string; // The ID of the associated NE attribute.
+        order: number; // The order that the namings are used in.
+    }[];
+}
+
+export interface GetProfileTypesResponse extends PaginatedResponse {
+    profile_types: ProfileType[]
+}
+
+export type DataType = "text field"
+    | "text area"
+    | "drop-down"
+    | "radio buttons"
+    | "check boxes"
+    | "date"
+    | "tags"
+    | "attachment"
+    | "profile select"
+    | "profile search"
+    | "owner select"
+    | "owner search"
+    | "contributor select"
+    | "contributor search"
+
+
+export interface GetAttributesRequest extends PaginatedQueryParams {
+    /**
+     *  The attribute label to filter by
+     */
+    label: string
+
+
+    data_type: DataType
+}
+
+export interface Attribute {
+
+    /**
+     * The id of the attribute
+     */
+    id: string
+    /**
+     * The user-specified identifier of the attribute
+     */
+    uid: string
+    /**
+     * The label for the attribute
+     */
+    label: string
+    /**
+     * A description of the attribute
+     */
+    description: string
+    /**
+     * The helper text that accompanies the attribute
+     */
+    tool_tip: string
+    /**
+     * Whether the attribute is encrypted
+     */
+    crypt: boolean
+    /**
+     * Whether the attribute is archived
+     */
+    archived: boolean
+    /**
+     * When the attribute was archived
+     */
+    archived_on: Date
+    /**
+     * When the attribute was created
+     */
+    created_at: Date
+    /**
+     * When the attribute was updated
+     */
+    updated_at: Date
+    /**
+     * The format of the date input if it is a date input
+     */
+    date_format?:
+    | "mm/dd/yyyy"
+    | "mm-dd-yyyy"
+    | "dd/mm/yyyy"
+    | "dd-mm-yyyy"
+    | "yyyy/mm/dd"
+    | "yyyy-mm-dd"
+    /**
+     * The status of the profiles that can be selected
+     */
+    selectable_status?: string
+    /**
+     * Type of risk that applies to the attribute
+     */
+    risk_type: string
+    /**
+     * Only shows profiles that the user currently has access to, to be selected
+     */
+    ownership_driven: boolean
+    /**
+     * Whether or not multiple selections can be made on something like a contributor search.
+     */
+    allow_multiple_selections: boolean
+    /**
+     * Whether or not the attribute is filtered by another attribute
+     */
+    filtered_by_ne_attribute: boolean
+    /**
+     * The ID of the filtering attribute
+     */
+    filtering_ne_attribute_id?: string
+    /**
+     * The ID of the attribute filter
+     */
+    ne_attribute_filter_id?: string
+    reverse_association_attribute?: {
+        /**
+         * The id of the attribute
+         */
+        id?: string
+        /**
+         * The user-specified identifier of the attribute
+         */
+        uid?: string
+        /**
+         * The label for the attribute
+         */
+        label?: string
+        /**
+         * A description of the attribute
+         */
+        description?: string
+        /**
+         * The helper text that accompanies the attribute
+         */
+        tool_tip?: string
+        /**
+         * Whether or not the attribute is encrypted
+         */
+        crypt?: boolean
+        /**
+         * Whether the attribute is archived
+         */
+        archived?: boolean
+        /**
+         * When the attribute was archived
+         */
+        archived_on?: string
+        /**
+         * When the attribute was created
+         */
+        created_at: Date
+        /**
+         * When the attribute was last updated
+         */
+        updated_at: Date
+        /**
+         * The format of the date input if it is a date input
+         */
+        date_format?:
+        | "mm/dd/yyyy"
+        | "mm-dd-yyyy"
+        | "dd/mm/yyyy"
+        | "dd-mm-yyyy"
+        | "yyyy/mm/dd"
+        | "yyyy-mm-dd"
+        /**
+         * The status of the profiles that can be selected
+         */
+        selectable_status: string
+        /**
+         * What setting is used for the risk score
+         */
+        risk_score_setting: string
+        /**
+         * Type of risk that applies to the attribute
+         */
+        risk_type: string
+        /**
+         * Only shows profiles that the user currently has access to, to be selected
+         */
+        ownership_driven: boolean
+        /**
+         * Whether or not multiple selections can be made on something like a contributor search.
+         */
+        allow_multiple_selections: boolean
+        /**
+         * Whether or not the attribute is filtered by another attribute
+         */
+        filtered_by_ne_attribute: boolean
+        /**
+         * The ID of the filtering attribute
+         */
+        filtering_ne_attribute_id: string
+        /**
+         * The ID of the attribute filter
+         */
+        ne_attribute_filter_id: string
+        /**
+         * The ID of the attribute used with reverse association
+         */
+        reverse_association_attribute_id: string
+        /**
+         * The ID of the profile type the attribute applies to
+         */
+        profile_type_id: string
+        /**
+         * The legacy ID
+         */
+        legacy_id: string
+        /**
+         * the temp of when attribute was created
+         */
+        tmp_created_at?: string
+        /**
+         * the temp of when attribute was last updated
+         */
+        tmp_updated_at?: string
+    }
+    /**
+     * The ID of the profile type the attribute applies to
+     */
+    profile_type_id: string
+    /**
+     * The type of data that applies to the attribute
+     */
+    data_type: DataType
+    /**
+     * The attribute's type
+     */
+    type:
+    "AttachmentAttribute"
+    | "CheckBoxesAttribute"
+    | "ContributorSearchAttribute"
+    | "ContributorSelectAttribute"
+    | "DateAttribute"
+    | "DropDownAttribute"
+    | "OwnerSearchAttribute"
+    | "OwnerSelectAttribute"
+    | "ProfileSearchAttribute"
+    | "ProfileSelectAttribute"
+    | "RadioButtonsAttribute"
+    | "TagsAttribute"
+    | "TextAreaAttribute"
+    | "TextFieldAttribute"
+
+}
+
+export interface GetAttributesResponse extends PaginatedResponse {
+    ne_attributes: Attribute[]
+}

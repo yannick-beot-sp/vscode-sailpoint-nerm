@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
-
-import * as crypto from 'crypto';
 import * as constants from "../constants"
+import { NERMClientFactory } from "../services/NERMClientFactory";
+import { paginator } from "../services/paginator";
 
 /**
  * Base class 
@@ -10,7 +10,7 @@ export abstract class BaseTreeItem extends vscode.TreeItem {
 
     public readonly parentId?: string
     public readonly label: string
-    public readonly id: string
+    public readonly id?: string
 
     constructor(
         {
@@ -19,7 +19,7 @@ export abstract class BaseTreeItem extends vscode.TreeItem {
             parentId,
             collapsibleState = vscode.TreeItemCollapsibleState.None
         }: {
-            id: string,
+            id?: string,
             label: string,
             parentId?: string,
             collapsibleState: vscode.TreeItemCollapsibleState
@@ -31,7 +31,7 @@ export abstract class BaseTreeItem extends vscode.TreeItem {
         this.label = label
     }
 
-    getChildren?(): Promise<BaseTreeItem[]>
+    getChildren?(clientFactory: NERMClientFactory): Promise<BaseTreeItem[]>
 
 
 }
@@ -88,7 +88,7 @@ export class TenantTreeItem extends BaseTreeItem {
         return [
             new UsersTreeItem(this.id!),
             new RolesTreeItem(this.id!),
-            // new ProfilesTreeItem(this.id!)
+            new ProfilesTreeItem(this.id!)
         ]
     }
     contextValue = "tenant"
@@ -112,7 +112,6 @@ export class LinkTreeItem extends BaseTreeItem {
         }
     ) {
         super({
-            id: crypto.randomUUID(),
             parentId: tenantId,
             label,
             collapsibleState: vscode.TreeItemCollapsibleState.None
@@ -154,15 +153,44 @@ export class RolesTreeItem extends LinkTreeItem {
     iconPath = new vscode.ThemeIcon("account");
 }
 
-export class ProfilesTreeItem extends LinkTreeItem {
+export class ProfilesTreeItem extends BaseTreeItem {
     constructor(
         tenantId: string,
     ) {
         super({
-            tenantId,
+            parentId: tenantId,
             label: "Profiles",
-            path: "/profiles"
+            collapsibleState: vscode.TreeItemCollapsibleState.Collapsed
         });
+    }
+
+    contextValue = "profiles"
+
+    public async getChildren(clientFactory: NERMClientFactory) {
+        const client = await clientFactory.getClient({
+            tenantId: this.parentId!
+        })
+        const profileTypes = await paginator(client, client.getProfileTypes, { order: "name" })
+        return profileTypes?.map(x => new ProfileTreeItem(
+            this.parentId!,
+            x.id,
+            x.name
+        ))
+    }
+}
+
+export class ProfileTreeItem extends LinkTreeItem {
+    constructor(
+        tenantId: string,
+        private readonly profileTypeId: string,
+        label: string
+    ) {
+        super({
+            tenantId,
+            label,
+            path: `/profiles/${profileTypeId}`
+        });
+        this.resourceUri = vscode.Uri.parse(`/tmp/${tenantId}/profiles/${profileTypeId}`)
     }
     iconPath = new vscode.ThemeIcon("extensions");
 }

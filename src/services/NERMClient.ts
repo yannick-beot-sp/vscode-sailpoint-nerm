@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { AddUserRolePairingsRequest, AddUserRolePairingsResponse, DeleteUserRequest, DeleteUserResponse, ErrorMessages, ErrorResponse, GetRolesRequest, GetRolesResponse, GetUserRolePairingsRequest, GetUserRolePairingsResponse, GetUsersRequest, GetUsersResponse, isError, PaginatedData, RemoveUserRolePairingsRequest, RemoveUserRolePairingsResponse, Role, UpdateUserRequest, UpdateUserResponse, User, UserRole } from '../models/API';
+import { AddUserRolePairingsRequest, AddUserRolePairingsResponse, Attribute, DeleteUserRequest, DeleteUserResponse, ErrorMessages, ErrorResponse, GetAttributesRequest, GetAttributesResponse, GetProfileTypesRequest, GetProfileTypesResponse, GetRolesRequest, GetRolesResponse, GetUserRolePairingsRequest, GetUserRolePairingsResponse, GetUsersRequest, GetUsersResponse, isError, PaginatedData, ProfileType, RemoveUserRolePairingsRequest, RemoveUserRolePairingsResponse, Role, UpdateUserRequest, UpdateUserResponse, User, UserRole } from '../models/API';
 
 export class NERMClient {
     constructor(private readonly axios: AxiosInstance) {
@@ -18,13 +18,9 @@ export class NERMClient {
         }
     }
 
-    public async getUsers(request: GetUsersRequest): Promise<PaginatedData<User>> {
-        const response = await this.axios.get<GetUsersResponse>("users", { params: request })
-        return {
-            _metadata: response.data._metadata,
-            data: response.data.users
-        }
-    }
+    /////////////////////////////
+    // #region Roles
+    /////////////////////////////
 
     public async getRoles(request: GetRolesRequest): Promise<PaginatedData<Role>> {
         request = {
@@ -37,6 +33,14 @@ export class NERMClient {
             data: response.data.roles
         }
     }
+
+    /////////////////////////////
+    // #endregion Roles
+    /////////////////////////////
+
+    /////////////////////////////
+    // #region UserRolePairings
+    /////////////////////////////
 
     public async getUserRolePairings(request: GetUserRolePairingsRequest): Promise<PaginatedData<UserRole>> {
         const response = await this.axios.get<GetUserRolePairingsResponse | ErrorResponse>("user_roles", { params: request })
@@ -71,12 +75,66 @@ export class NERMClient {
         return response.data
     }
 
+    /////////////////////////////
+    // #endregion UserRolePairings
+    /////////////////////////////
+
+    /////////////////////////////
+    // #region Users
+    /////////////////////////////
+
+    public async getUsers(request: GetUsersRequest): Promise<PaginatedData<User>> {
+        const response = await this.axios.get<GetUsersResponse>("users", { params: request })
+        return {
+            _metadata: response.data._metadata,
+            data: response.data.users
+        }
+    }
+
     public async updateUser(request: UpdateUserRequest): Promise<User> {
         const response = await this.axios.patch<UpdateUserResponse>(`users/${request.user.id}`, request)
         return response.data.user
     }
+
     public async deleteUser(request: DeleteUserRequest): Promise<DeleteUserResponse> {
         const response = await this.axios.delete<DeleteUserResponse>(`users/${request.id}`)
         return response.data
     }
+
+    /////////////////////////////
+    // #endregion Users
+    /////////////////////////////
+
+    /////////////////////////////
+    // #region Profile Types
+    /////////////////////////////
+
+    public async getProfileTypes(request: GetProfileTypesRequest): Promise<PaginatedData<ProfileType>> {
+        const response = await this.axios.get<GetProfileTypesResponse>("profile_types", { params: request })
+        return {
+            _metadata: response.data._metadata,
+            data: response.data.profile_types
+        }
+    }
+
+    /////////////////////////////
+    // #endregion Profile Types
+    /////////////////////////////
+
+    /////////////////////////////
+    // #region Attributes
+    /////////////////////////////
+
+    public async getAttributes(request: GetAttributesRequest): Promise<PaginatedData<Attribute>> {
+        const response = await this.axios.get<GetAttributesResponse>("ne_attributes", { params: request })
+        return {
+            _metadata: response.data._metadata,
+            data: response.data.ne_attributes
+        }
+    }
+
+    /////////////////////////////
+    // #endregion Attributes
+    /////////////////////////////
+
 }

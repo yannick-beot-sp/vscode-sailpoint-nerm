@@ -74,11 +74,11 @@ export class NERMView implements vscode.TreeDataProvider<BaseTreeItem>, vscode.T
     //#region Tree data provider 
     ////////////////////////////////
 
-    public async getChildren(element: BaseTreeItem): Promise<BaseTreeItem[]> {
+    public async getChildren(element?: BaseTreeItem): Promise<BaseTreeItem[]> {
         let nodes: IStoredNode[] = []
         if (element) {
             if (element.getChildren) {
-                return await element.getChildren()
+                return await element.getChildren(this.clientFactory)
             } else {
                 nodes = this.treeService.getChildren(element.id!)
             }
@@ -119,7 +119,7 @@ export class NERMView implements vscode.TreeDataProvider<BaseTreeItem>, vscode.T
 
         const treeItems: BaseTreeItem[] = transferItem.value;
         for (const item of treeItems) {
-            const node = this.treeService.get(item.id)
+            const node = this.treeService.get(item.id!)
             if (node === undefined) {
                 return
             }
@@ -156,7 +156,7 @@ export class NERMView implements vscode.TreeDataProvider<BaseTreeItem>, vscode.T
         if (isBlank(name)) {
             return
         }
-        const node = this.treeService.get(element.id)
+        const node = this.treeService.get(element.id!)
         if (node === undefined) {
             return
         }
@@ -285,7 +285,7 @@ export class NERMView implements vscode.TreeDataProvider<BaseTreeItem>, vscode.T
             return
         }
 
-        const storedNode = this.treeService.get(node.id)
+        const storedNode = this.treeService.get(node.id!)
         if (!storedNode) { return }
         this._removeNode(storedNode)
         this.refresh(node?.parentId ? this._getNode(node?.parentId) : undefined)

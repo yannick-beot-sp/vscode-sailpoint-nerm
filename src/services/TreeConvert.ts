@@ -26,7 +26,7 @@ export class TreeConvert {
 
     public static toStoredNode(node: FolderTreeItem | TenantTreeItem): IStoredNode {
         return {
-            id: node.id,
+            id: node.id!,
             label: node.label,
             parentId: node.parentId,
             type: node instanceof FolderTreeItem ? "FOLDER" : "TENANT",

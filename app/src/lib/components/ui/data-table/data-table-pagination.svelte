@@ -10,7 +10,7 @@
 	let { table }: { table: Table<TData> } = $props();
 </script>
 
-<div class="flex items-center justify-between px-2">
+<div class="flex items-center justify-between px-2 pb-2">
 	<div class="text-muted-foreground flex-1 text-sm">
 		{table.getFilteredSelectedRowModel().rows.length} of
 		{table.getFilteredRowModel().rows.length} row(s) selected.

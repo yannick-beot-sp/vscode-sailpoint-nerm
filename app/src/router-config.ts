@@ -1,10 +1,11 @@
-import Router from "./services/Router";
+import { type RouterConfig } from "./model/Router";
 import ViewUsers from "./views/user-datatable/user-datatable.svelte"
 import ViewRoles from "./views/role-datatable/role-datatable.svelte"
+import ViewProfiles from "./views/profile-datatable/profile-datatable.svelte"
 
-export default new Router({
+export const routerConfig: RouterConfig = {
 	window: window,
-	
+
 	routes: {
 		'users': {
 			path: '/users',
@@ -14,5 +15,9 @@ export default new Router({
 			path: '/roles',
 			component: ViewRoles,
 		},
+		'profiles': {
+			path: '/profiles/(?<profileTypeId>.*)',
+			component: ViewProfiles,
+		},
 	},
-})
+}

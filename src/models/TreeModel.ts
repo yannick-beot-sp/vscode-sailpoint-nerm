@@ -176,6 +176,7 @@ export class ProfilesTreeItem extends BaseTreeItem {
             x.id,
             x.name
         ))
+        
     }
 }
 
@@ -190,7 +191,7 @@ export class ProfileTreeItem extends LinkTreeItem {
             label,
             path: `/profiles/${profileTypeId}`
         });
-        this.resourceUri = vscode.Uri.parse(`/tmp/${tenantId}/profiles/${profileTypeId}`)
+        
     }
     iconPath = new vscode.ThemeIcon("extensions");
 }

@@ -6,6 +6,8 @@ import type { Role } from "src/model/Role";
 import type { UserRolePair } from "src/model/UserRolePair";
 import type { NewUserRolePair } from "src/model/NewUserRolePair";
 import type { PaginationState, SortingState, VisibilityState } from "@tanstack/table-core";
+import type { Profile } from "src/model/Profile";
+import type { Attribute } from "src/model/Attribute";
 
 
 interface State {
@@ -16,7 +18,6 @@ interface State {
 }
 
 export class VsCodeClient implements Client {
-
     async addUserRolePairings(args: NewUserRolePair[]): Promise<UserRolePair[]> {
         return await messageHandler.request<UserRolePair[]>("addUserRolePairings", {
             user_roles: args
@@ -113,5 +114,13 @@ export class VsCodeClient implements Client {
     getGlobalFilter(): string | undefined {
         const tmpstate = Messenger.getState() as State
         return tmpstate?.globalFilter
+    }
+
+    async getAttributes(forceRefresh?: boolean): Promise<Attribute[]> {
+        return await messageHandler.request<Attribute[]>("getAllAttributes", { forceRefresh })
+    }
+
+    async getProfiles(profileTypeId: string, forceRefresh?: boolean): Promise<Profile[]> {
+        return await messageHandler.request<Profile[]>("getAllProfiles", { profileTypeId, forceRefresh })
     }
 }

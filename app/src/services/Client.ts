@@ -1,5 +1,7 @@
 import type { PaginationState, SortingState, VisibilityState } from "@tanstack/table-core"
+import type { Attribute } from "src/model/Attribute"
 import type { NewUserRolePair } from "src/model/NewUserRolePair"
+import type { Profile } from "src/model/Profile"
 import type { Role } from "src/model/Role"
 import type { User } from "src/model/User"
 import type { UserRolePair } from "src/model/UserRolePair"
@@ -8,8 +10,8 @@ import type { UserRolePair } from "src/model/UserRolePair"
 
 export interface Client {
     updateUser(user: User): Promise<User>
-    getUsers(forceRefresh?:boolean): Promise<User[]>
-    getRoles(forceRefresh?:boolean): Promise<Role[]>
+    getUsers(forceRefresh?: boolean): Promise<User[]>
+    getRoles(forceRefresh?: boolean): Promise<Role[]>
     getUserRolePairings(args: { user_id?: string, role_id?: string }): Promise<UserRolePair[]>
     addUserRolePairings(args: NewUserRolePair[]): Promise<UserRolePair[]>
     removeUserRolePairing(id: string): Promise<void>
@@ -32,4 +34,8 @@ export interface Client {
     getGlobalFilter(): string | undefined;
     setData<T>(data: T[]): void;
     getData<T>(): T[] | undefined;
+
+    getProfiles(profileTypeId: string, forceRefresh?: boolean): Promise<Profile[]>
+    getAttributes(forceRefresh?: boolean): Promise<Attribute[]>
+
 }

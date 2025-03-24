@@ -263,14 +263,12 @@ export interface GetAttributesRequest extends PaginatedQueryParams {
     /**
      *  The attribute label to filter by
      */
-    label: string
+    label?: string
 
-
-    data_type: DataType
+    data_type?: DataType
 }
 
 export interface Attribute {
-
     /**
      * The id of the attribute
      */
@@ -286,11 +284,11 @@ export interface Attribute {
     /**
      * A description of the attribute
      */
-    description: string
+    description: string | null
     /**
      * The helper text that accompanies the attribute
      */
-    tool_tip: string
+    tool_tip: string | null
     /**
      * Whether the attribute is encrypted
      */
@@ -302,7 +300,7 @@ export interface Attribute {
     /**
      * When the attribute was archived
      */
-    archived_on: Date
+    archived_on: Date | null
     /**
      * When the attribute was created
      */
@@ -321,10 +319,11 @@ export interface Attribute {
     | "dd-mm-yyyy"
     | "yyyy/mm/dd"
     | "yyyy-mm-dd"
+    | null
     /**
      * The status of the profiles that can be selected
      */
-    selectable_status?: string
+    selectable_status?: string | null
     /**
      * Type of risk that applies to the attribute
      */
@@ -344,11 +343,15 @@ export interface Attribute {
     /**
      * The ID of the filtering attribute
      */
-    filtering_ne_attribute_id?: string
+    filtering_ne_attribute_id?: string | null
+
+    legacy_id?: string | null
+
+    risk_score_setting: string
     /**
      * The ID of the attribute filter
      */
-    ne_attribute_filter_id?: string
+    ne_attribute_filter_id?: string | null
     reverse_association_attribute?: {
         /**
          * The id of the attribute
@@ -365,7 +368,7 @@ export interface Attribute {
         /**
          * A description of the attribute
          */
-        description?: string
+        description?: string | null
         /**
          * The helper text that accompanies the attribute
          */
@@ -381,7 +384,7 @@ export interface Attribute {
         /**
          * When the attribute was archived
          */
-        archived_on?: string
+        archived_on?: Date | null
         /**
          * When the attribute was created
          */
@@ -400,6 +403,7 @@ export interface Attribute {
         | "dd-mm-yyyy"
         | "yyyy/mm/dd"
         | "yyyy-mm-dd"
+        | null
         /**
          * The status of the profiles that can be selected
          */
@@ -427,23 +431,23 @@ export interface Attribute {
         /**
          * The ID of the filtering attribute
          */
-        filtering_ne_attribute_id: string
+        filtering_ne_attribute_id: string | null
         /**
          * The ID of the attribute filter
          */
-        ne_attribute_filter_id: string
+        ne_attribute_filter_id: string | null
         /**
          * The ID of the attribute used with reverse association
          */
-        reverse_association_attribute_id: string
+        reverse_association_attribute_id: string | null
         /**
          * The ID of the profile type the attribute applies to
          */
-        profile_type_id: string
+        profile_type_id?: string
         /**
          * The legacy ID
          */
-        legacy_id: string
+        legacy_id: string | null
         /**
          * the temp of when attribute was created
          */
@@ -452,11 +456,13 @@ export interface Attribute {
          * the temp of when attribute was last updated
          */
         tmp_updated_at?: string
-    }
+
+        core: boolean
+    } | null
     /**
      * The ID of the profile type the attribute applies to
      */
-    profile_type_id: string
+    profile_type_id: string | null
     /**
      * The type of data that applies to the attribute
      */
@@ -484,4 +490,79 @@ export interface Attribute {
 
 export interface GetAttributesResponse extends PaginatedResponse {
     ne_attributes: Attribute[]
+}
+
+const ProfileStatus = {
+    ACTIVE: 'Active',
+    INACTIVE: 'Inactive',
+    ON_LEAVE: 'On Leave',
+    TERMINATED: 'Terminated'
+} as const;
+
+type ProfileStatusValue = typeof ProfileStatus[keyof typeof ProfileStatus];
+
+export interface GetProfilesRequest  extends PaginatedQueryParams {
+    /**
+    /**
+     * Allows for optimization by not returning the associated attribute data for the returned profiles
+     */
+    exclude_attributes?: boolean
+    /**
+     * object name for filtering
+     */
+    name?: string
+    /**
+     * Profile Type ID for filtering
+     */
+    profile_type_id?: string
+    /**
+     * status value for filtering
+     */
+    status?: ProfileStatusValue
+    
+}
+
+
+export interface Profile{
+    /**
+     * The objects ID
+     */
+    id?: string
+    /**
+     * The objects UID
+     */
+    uid?: string
+    /**
+     * This is the name of the profile.
+     */
+    name?: string
+    /**
+     * This is the ID of the profile type the profile belongs to
+     */
+    profile_type_id?: string
+    /**
+     * This is the status of the profile
+     */
+    status?: ProfileStatusValue
+    /**
+     * This is the ID proofing staus of the profile
+     */
+    id_proofing_status?: "pending" | "pass" | "fail"
+    /**
+     * The date and time the profile was created
+     */
+    created_at?: string
+    /**
+     * The date and time the profile was updated
+     */
+    updated_at?: string
+    /**
+     * Attributes that belong to this profile.
+     */
+    attributes?: {
+      [k: string]: string
+    }
+  }
+export interface GetProfilesResponse extends PaginatedResponse {
+    profiles: Profile[]
 }

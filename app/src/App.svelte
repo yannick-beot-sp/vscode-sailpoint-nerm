@@ -1,8 +1,11 @@
 <script lang="ts">
   import "./app.css";
-  import router from "./router";
+  import { routerConfig } from "./router-config";
+  import Router from "./Router.svelte";
+  
 
-  let Thing = $state(router.getComponent(window.data.path));
+  
+  
 </script>
 
 <main>
@@ -10,7 +13,7 @@
     <h2 class="text-2xl font-bold tracking-tight">{window.data.label}</h2>
     <p class="text-muted-foreground">{window.data.tenantLabel}</p>
   </div>
-  <Thing />
+  <Router config={routerConfig} path={window.data.path}></Router>
 </main>
 
 <style>

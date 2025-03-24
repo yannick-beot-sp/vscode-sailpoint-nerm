@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { AddUserRolePairingsRequest, AddUserRolePairingsResponse, Attribute, DeleteUserRequest, DeleteUserResponse, ErrorMessages, ErrorResponse, GetAttributesRequest, GetAttributesResponse, GetProfileTypesRequest, GetProfileTypesResponse, GetRolesRequest, GetRolesResponse, GetUserRolePairingsRequest, GetUserRolePairingsResponse, GetUsersRequest, GetUsersResponse, isError, PaginatedData, ProfileType, RemoveUserRolePairingsRequest, RemoveUserRolePairingsResponse, Role, UpdateUserRequest, UpdateUserResponse, User, UserRole } from '../models/API';
+import { AddUserRolePairingsRequest, AddUserRolePairingsResponse, Attribute, DeleteUserRequest, DeleteUserResponse, ErrorMessages, ErrorResponse, GetAttributesRequest, GetAttributesResponse, GetProfilesRequest, GetProfilesResponse, GetProfileTypesRequest, GetProfileTypesResponse, GetRolesRequest, GetRolesResponse, GetUserRolePairingsRequest, GetUserRolePairingsResponse, GetUsersRequest, GetUsersResponse, isError, PaginatedData, Profile, ProfileType, RemoveUserRolePairingsRequest, RemoveUserRolePairingsResponse, Role, UpdateUserRequest, UpdateUserResponse, User, UserRole } from '../models/API';
 
 export class NERMClient {
     constructor(private readonly axios: AxiosInstance) {
@@ -130,6 +130,19 @@ export class NERMClient {
         return {
             _metadata: response.data._metadata,
             data: response.data.ne_attributes
+        }
+    }
+
+    /////////////////////////////
+    // #endregion Attributes
+    /////////////////////////////
+
+
+    public async getProfiles(request: GetProfilesRequest): Promise<PaginatedData<Profile>> {
+        const response = await this.axios.get<GetProfilesResponse>("profiles", { params: request })
+        return {
+            _metadata: response.data._metadata,
+            data: response.data.profiles
         }
     }
 

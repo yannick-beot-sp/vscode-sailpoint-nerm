@@ -22,8 +22,10 @@
     loading = true;
     columns = await getColumns(client, forceRefresh);
     console.log("got column", columns);
-
-    let tmprofiles = client.getData<Profile>();
+    let tmprofiles: Profile[] | undefined;
+    if (!forceRefresh) {
+      tmprofiles = client.getData<Profile>();
+    }
     if (!tmprofiles) {
       console.log({ profileTypeId });
       tmprofiles = await client.getProfiles(profileTypeId, forceRefresh);

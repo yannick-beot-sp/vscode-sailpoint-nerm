@@ -3357,42 +3357,53 @@ function getRandomStatus(): StatusValue {
     return ProfileStatus[randomKey];
 }
 
+function generateDummyProfiles(profileTypeId:string) {
+    const departments = [
+        "Service Desk",
+        "Communication",
+        "Finance"
+    ]
+    let i = 0;
+    return departments
+        .sort((a, b) => a.localeCompare(b))
+        .map(x => ({
+            id: crypto.randomUUID(),
+            uid: ++i + '',
+            name: x,
+            status: getRandomStatus(),
+            profile_type_id: profileTypeId,
+            created_at: new Date(),
+            attributes: {
+                "department_code": x,
+                "department_name": x
+            }
+        }))
+}
+
 
 export class MockupClient implements Client {
 
     private readonly userCount = 35
     private readonly userRoleCount = 10
     users: User[];
+
+    profiles: Profile[]
     /**
      *
      */
     constructor() {
         this.users = generateDummyUsers(this.userCount);
+        this.profiles = generateDummyProfiles(crypto.randomUUID())
     }
+
+    async deleteProfile(profileId: string): Promise<void> {
+        await stall()
+        this.profiles = this.profiles.filter(p => p.id !== profileId);
+    }
+
     async getProfiles(profileTypeId: string, forceRefresh?: boolean): Promise<Profile[]> {
         await stall()
-
-
-        const departments = [
-            "Service Desk",
-            "Communication",
-            "Finance"
-        ]
-        let i = 0;
-        return departments
-            .sort((a, b) => a.localeCompare(b))
-            .map(x => ({
-                id: crypto.randomUUID(),
-                uid: ++i + '',
-                name: x,
-                status: getRandomStatus(),
-                profile_type_id: profileTypeId,
-                created_at: new Date(),
-                attributes: {
-                    "department_code": x,
-                    "department_name": x
-                }
-            }))
+        return this.profiles
     }
 
     async getTableVisibilityState(tableName: string): Promise<Record<string, boolean> | undefined> {

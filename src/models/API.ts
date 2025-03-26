@@ -566,3 +566,8 @@ export interface Profile{
 export interface GetProfilesResponse extends PaginatedResponse {
     profiles: Profile[]
 }
+
+export interface DeleteProfileRequest {
+    /** ID of the object to retrieve, update, or delete */
+    id: string
+}

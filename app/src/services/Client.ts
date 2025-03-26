@@ -16,6 +16,7 @@ export interface Client {
     addUserRolePairings(args: NewUserRolePair[]): Promise<UserRolePair[]>
     removeUserRolePairing(id: string): Promise<void>
     deleteUser(id: string): Promise<void>
+
     /**
      * VisibilityState - which gives the visible column - is stored permanently by "tenant/table"
      * @param tableName 
@@ -36,6 +37,8 @@ export interface Client {
     getData<T>(): T[] | undefined;
 
     getProfiles(profileTypeId: string, forceRefresh?: boolean): Promise<Profile[]>
+    deleteProfile(profileId: string): Promise<void>
+
     getAttributes(forceRefresh?: boolean): Promise<Attribute[]>
 
 }

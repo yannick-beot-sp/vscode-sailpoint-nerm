@@ -123,4 +123,8 @@ export class VsCodeClient implements Client {
     async getProfiles(profileTypeId: string, forceRefresh?: boolean): Promise<Profile[]> {
         return await messageHandler.request<Profile[]>("getAllProfiles", { profileTypeId, forceRefresh })
     }
+
+    async deleteProfile(id: string): Promise<void> {
+        await messageHandler.request<User>("deleteProfile", { id })
+    }
 }

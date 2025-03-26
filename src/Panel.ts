@@ -13,6 +13,7 @@ import { GetTableVisibilityStateQuery } from './commands/GetTableVisibilityState
 import { SetTableVisibilityStateCommand } from './commands/SetTableVisibilityStateCommand';
 import { GetAllAttributesQuery } from './commands/GetAllAttributesQuery';
 import { GetAllProfilesQuery } from './commands/GetAllProfilesQuery';
+import { DeleteProfileCommand } from './commands/DeleteProfileCommand';
 
 
 
@@ -138,6 +139,7 @@ export class Panel {
             new SetTableVisibilityStateCommand(params.tenantId, params.treeService),
             new GetAllAttributesQuery(params.tenantId, params.client),
             new GetAllProfilesQuery(params.tenantId, params.client),
+            new DeleteProfileCommand(params.client),
         )
 
         // Handle messages from the webview

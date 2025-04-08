@@ -6,12 +6,10 @@ export interface PaginationMetadata {
 }
 export interface PaginatedQueryParams {
     /**
-     * Integer specifying the maximum number of records to return in a single API call. If it is not specified, a default limit is used.
      * @default 100
      */
     limit?: number
     /**
-     * Integer specifying the offset of the first result from the beginning of the collection.
      * @default 0
      */
     offset?: number
@@ -141,10 +139,8 @@ export interface UserRole {
 }
 
 export interface GetUserRolePairingsRequest extends PaginatedQueryParams {
-    /** The ID of a user for filtering  */
     user_id?: string;
 
-    /** The ID of a role for filtering */
     role_id?: string;
 }
 
@@ -183,7 +179,6 @@ export interface UpdateUserResponse extends UpdateUserRequest {
 }
 
 export interface DeleteUserRequest {
-    /** ID of the object to retrieve, update, or delete */
     id: string
 }
 
@@ -217,7 +212,6 @@ export interface ProfileType {
      */
     uid: string;
 
-    /** This is the name of the profile type.  */
     name: string;
     category: 'employee' | 'non-employee' | 'organization' | 'assignment' | 'other'; // This is the category the profile type falls into.
     bypass_dup_protection: boolean; // Whether or not duplication protection is bypassed.
@@ -225,16 +219,8 @@ export interface ProfileType {
     permitted_role_ids: string[]; // The role IDs that are permitted for this profile type.
     isc_synced: boolean; // Is this profile type synced with ICS.
     profile_type_dup_attributes: {
-        id: string; // The ID of the properties that are used for duplication protection.
-        uid: string; // The user-specified identifier of the properties that are used for duplication protection.
-        profile_type_id: string; // The ID of the profile type.
-        ne_attribute_id: string; // The ID of the NE attribute.
     }[];
     profile_type_namings: {
-        id: string; // The ID of the profile type naming.
-        uid: string; // The user-specified identifier of the profile type naming.
-        profile_type_id: string; // The ID of the associated profile type.
-        ne_attribute_id: string; // The ID of the associated NE attribute.
         order: number; // The order that the namings are used in.
     }[];
 }
@@ -270,11 +256,9 @@ export interface GetAttributesRequest extends PaginatedQueryParams {
 
 export interface Attribute {
     /**
-     * The id of the attribute
      */
     id: string
     /**
-     * The user-specified identifier of the attribute
      */
     uid: string
     /**
@@ -282,7 +266,6 @@ export interface Attribute {
      */
     label: string
     /**
-     * A description of the attribute
      */
     description: string | null
     /**
@@ -310,7 +293,6 @@ export interface Attribute {
      */
     updated_at: Date
     /**
-     * The format of the date input if it is a date input
      */
     date_format?:
     | "mm/dd/yyyy"
@@ -321,11 +303,9 @@ export interface Attribute {
     | "yyyy-mm-dd"
     | null
     /**
-     * The status of the profiles that can be selected
      */
     selectable_status?: string | null
     /**
-     * Type of risk that applies to the attribute
      */
     risk_type: string
     /**
@@ -341,7 +321,6 @@ export interface Attribute {
      */
     filtered_by_ne_attribute: boolean
     /**
-     * The ID of the filtering attribute
      */
     filtering_ne_attribute_id?: string | null
 
@@ -349,16 +328,13 @@ export interface Attribute {
 
     risk_score_setting: string
     /**
-     * The ID of the attribute filter
      */
     ne_attribute_filter_id?: string | null
     reverse_association_attribute?: {
         /**
-         * The id of the attribute
          */
         id?: string
         /**
-         * The user-specified identifier of the attribute
          */
         uid?: string
         /**
@@ -366,7 +342,6 @@ export interface Attribute {
          */
         label?: string
         /**
-         * A description of the attribute
          */
         description?: string | null
         /**
@@ -394,7 +369,6 @@ export interface Attribute {
          */
         updated_at: Date
         /**
-         * The format of the date input if it is a date input
          */
         date_format?:
         | "mm/dd/yyyy"
@@ -405,7 +379,6 @@ export interface Attribute {
         | "yyyy-mm-dd"
         | null
         /**
-         * The status of the profiles that can be selected
          */
         selectable_status: string
         /**
@@ -413,7 +386,6 @@ export interface Attribute {
          */
         risk_score_setting: string
         /**
-         * Type of risk that applies to the attribute
          */
         risk_type: string
         /**
@@ -429,19 +401,15 @@ export interface Attribute {
          */
         filtered_by_ne_attribute: boolean
         /**
-         * The ID of the filtering attribute
          */
         filtering_ne_attribute_id: string | null
         /**
-         * The ID of the attribute filter
          */
         ne_attribute_filter_id: string | null
         /**
-         * The ID of the attribute used with reverse association
          */
         reverse_association_attribute_id: string | null
         /**
-         * The ID of the profile type the attribute applies to
          */
         profile_type_id?: string
         /**
@@ -449,22 +417,18 @@ export interface Attribute {
          */
         legacy_id: string | null
         /**
-         * the temp of when attribute was created
          */
         tmp_created_at?: string
         /**
-         * the temp of when attribute was last updated
          */
         tmp_updated_at?: string
 
         core: boolean
     } | null
     /**
-     * The ID of the profile type the attribute applies to
      */
     profile_type_id: string | null
     /**
-     * The type of data that applies to the attribute
      */
     data_type: DataType
     /**
@@ -533,19 +497,15 @@ export interface Profile{
      */
     uid?: string
     /**
-     * This is the name of the profile.
      */
     name?: string
     /**
-     * This is the ID of the profile type the profile belongs to
      */
     profile_type_id?: string
     /**
-     * This is the status of the profile
      */
     status?: ProfileStatusValue
     /**
-     * This is the ID proofing staus of the profile
      */
     id_proofing_status?: "pending" | "pass" | "fail"
     /**
@@ -568,6 +528,13 @@ export interface GetProfilesResponse extends PaginatedResponse {
 }
 
 export interface DeleteProfileRequest {
-    /** ID of the object to retrieve, update, or delete */
     id: string
+}
+
+export interface UpdateProfileRequest {
+    profile: Profile
+}
+
+export interface UpdateProfileResponse {
+    profile: Profile
 }

@@ -1,12 +1,11 @@
 import type { ColumnDef } from "@tanstack/table-core";
-import type { User } from "src/model/User";
 import { renderComponent } from "$lib/components/ui/data-table";
 import Actions from "./actions.svelte";
 import SortableHeader from "../user-datatable/sortable-header.svelte";
 import type { Client } from "src/services/Client";
 import type { Profile } from "src/model/Profile";
-import { columns } from "../user-datatable/columns";
 import { compare } from "$lib/utils/stringUtils";
+import type { Attribute } from "src/model/Attribute";
 
 
 export type MyColumnDef<TData> = ColumnDef<TData> & {
@@ -53,10 +52,9 @@ const actionColumn: MyColumnDef<Profile> = {
 }
 
 
-export async function getColumns(client: Client, forceRefresh?: boolean): Promise<MyColumnDef<Profile>[]> {
+export async function getColumns(client: Client, attrs: Attribute[]): Promise<MyColumnDef<Profile>[]> {
     const columns = [...commonColumns]
 
-    const attrs = await client.getAttributes(forceRefresh)
     columns.push(...attrs.map(x => ({
         id: x.uid,
         accessorKey: `attributes.${x.uid}`,

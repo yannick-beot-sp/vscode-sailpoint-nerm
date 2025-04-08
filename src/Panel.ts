@@ -14,6 +14,7 @@ import { SetTableVisibilityStateCommand } from './commands/SetTableVisibilitySta
 import { GetAllAttributesQuery } from './commands/GetAllAttributesQuery';
 import { GetAllProfilesQuery } from './commands/GetAllProfilesQuery';
 import { DeleteProfileCommand } from './commands/DeleteProfileCommand';
+import { UpdateProfileCommand } from './commands/UpdateProfileCommand';
 
 
 
@@ -140,6 +141,7 @@ export class Panel {
             new GetAllAttributesQuery(params.tenantId, params.client),
             new GetAllProfilesQuery(params.tenantId, params.client),
             new DeleteProfileCommand(params.client),
+            new UpdateProfileCommand(params.client),
         )
 
         // Handle messages from the webview

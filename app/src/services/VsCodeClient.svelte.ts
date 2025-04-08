@@ -127,4 +127,8 @@ export class VsCodeClient implements Client {
     async deleteProfile(id: string): Promise<void> {
         await messageHandler.request<User>("deleteProfile", { id })
     }
+
+    async updateProfile(profile: Profile): Promise<Profile> {
+        return await messageHandler.request<Profile>("updateProfile", profile)
+    }
 }

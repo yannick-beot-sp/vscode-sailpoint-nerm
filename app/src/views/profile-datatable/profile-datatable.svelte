@@ -5,6 +5,7 @@
   import type { Profile } from "src/model/Profile";
   import { ClientFactory } from "../../services/ClientFactory";
   import Spinner from "$lib/components/Spinner.svelte";
+  import type { Attribute } from "src/model/Attribute";
 
   type Props = {
     profileTypeId: string;
@@ -14,13 +15,19 @@
 
   let client = ClientFactory.getClient();
   let profiles: Profile[] = $state<Profile[]>([]);
+  let attributes: Attribute[] = $state<Attribute[]>([]);
   let columns: MyColumnDef<Profile>[] = $state<MyColumnDef<Profile>[]>([]);
 
   let loading = $state(true);
 
+  let meta = $derived({
+    attributes,
+  });
+
   async function getData(forceRefresh?: boolean) {
     loading = true;
-    columns = await getColumns(client, forceRefresh);
+    attributes = await client.getAttributes(forceRefresh);
+    columns = await getColumns(client, attributes);
     console.log("got column", columns);
     let tmprofiles: Profile[] | undefined;
     if (!forceRefresh) {
@@ -50,6 +57,7 @@
     bind:data={profiles}
     {columns}
     {client}
+    meta={meta}
     refresh={getData}
     tableId={`profiles/${profileTypeId}`}
   />

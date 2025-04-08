@@ -28,6 +28,7 @@
     client: Client;
     tableId: string;
     refresh: (forceRefresh?: boolean) => Promise<void>;
+    meta?: any;
   };
 
   let {
@@ -36,6 +37,7 @@
     client,
     tableId,
     refresh,
+    meta,
   }: Props = $props();
   let pagination = $state<PaginationState>(
     client.getPaginationState() ?? { pageIndex: 0, pageSize: 10 }
@@ -102,6 +104,7 @@
       },
     },
     meta: {
+      ...meta,
       client,
       removeRow: async (rowIndex: number) => {
         console.log(">table.meta.removeRow");

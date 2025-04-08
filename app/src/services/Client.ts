@@ -38,6 +38,7 @@ export interface Client {
 
     getProfiles(profileTypeId: string, forceRefresh?: boolean): Promise<Profile[]>
     deleteProfile(profileId: string): Promise<void>
+    updateProfile(profile:Profile): Promise<Profile>
 
     getAttributes(forceRefresh?: boolean): Promise<Attribute[]>
 

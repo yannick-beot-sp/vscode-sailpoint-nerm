@@ -7,6 +7,8 @@ import type { PaginationState, SortingState, VisibilityState } from "@tanstack/t
 import type { Profile, StatusValue } from "src/model/Profile";
 import { Status as ProfileStatus } from "src/model/Profile";
 import type { Attribute } from "src/model/Attribute";
+import { getLocalTimeZone, today } from "@internationalized/date";
+import { formatDateValue } from "$lib/utils/date";
 
 function getRandomInt(min: number, max: number): number {
     min = Math.ceil(min);
@@ -3293,7 +3295,7 @@ const attributes: Attribute[] = [
         "archived_on": null,
         "legacy_id": null
     },
-   
+
 ]
 
 function generateDummyUsers(count: number): User[] {
@@ -3357,7 +3359,7 @@ function getRandomStatus(): StatusValue {
     return ProfileStatus[randomKey];
 }
 
-function generateDummyProfiles(profileTypeId:string) {
+function generateDummyProfiles(profileTypeId: string) {
     const departments = [
         "Service Desk",
         "Communication",
@@ -3375,7 +3377,8 @@ function generateDummyProfiles(profileTypeId:string) {
             created_at: new Date(),
             attributes: {
                 "department_code": x,
-                "department_name": x
+                "department_name": x,
+                "end_date": formatDateValue(today(getLocalTimeZone()), "mm/dd/yyyy")
             }
         }))
 }
@@ -3404,6 +3407,16 @@ export class MockupClient implements Client {
     async getProfiles(profileTypeId: string, forceRefresh?: boolean): Promise<Profile[]> {
         await stall()
         return this.profiles
+    }
+
+    async updateProfile(profile: Profile): Promise<Profile> {
+        await stall()
+        const profileIndex = this.profiles.findIndex(u => u.id === profile.id);
+
+        if (profileIndex !== -1) {
+            this.profiles[profileIndex] = profile;
+        }
+        return profile;
     }
 
     async getTableVisibilityState(tableName: string): Promise<Record<string, boolean> | undefined> {

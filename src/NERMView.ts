@@ -281,7 +281,7 @@ export class NERMView implements vscode.TreeDataProvider<BaseTreeItem>, vscode.T
 
     async remove(node: BaseTreeItem): Promise<void> {
         if (!(await confirm(`Are you sure you want to remove ${node.label}${node instanceof FolderTreeItem ? " and all its content" : ""}?`))) {
-            console.log("< EscalateCertificationCommand.execute: no reassignment");
+            console.log("< remove. Not confirmed");
             return
         }
 

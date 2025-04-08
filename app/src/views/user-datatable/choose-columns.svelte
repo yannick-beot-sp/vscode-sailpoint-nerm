@@ -1,6 +1,6 @@
 <script lang="ts" generics="TData">
   import { Check, Columns3 } from "lucide-svelte";
-  import type { Table } from "@tanstack/table-core";
+  import type { Column, Table } from "@tanstack/table-core";
   import { Button } from "$lib/components/ui/button";
   import * as Popover from "$lib/components/ui/popover/index.js";
   import * as Command from "$lib/components/ui/command/index.js";
@@ -10,6 +10,23 @@
 
   let open = $state(false);
   let triggerRef = $state<HTMLButtonElement>(null!);
+
+  const sortedColumnsWithSort = (a: Column<TData>, b: Column<TData>) => {
+    const aIsVisible = a.getIsVisible();
+    const bIsVisible = b.getIsVisible();
+
+    // If a is visible and b is not, a comes first (-1)
+    if (aIsVisible && !bIsVisible) {
+      return -1;
+    }
+    // If b is visible and a is not, b comes first (1)
+    if (!aIsVisible && bIsVisible) {
+      return 1;
+    }
+    // Otherwise (both visible or both invisible), maintain original relative order (0)
+    // This relies on the sort being stable, which is true for modern JS engines.
+    return 0;
+  };
 </script>
 
 <Popover.Root bind:open>
@@ -35,7 +52,8 @@
         <Command.Group>
           {#each table
             .getAllColumns()
-            .filter((col) => typeof col.accessorFn !== "undefined" && col.getCanHide()) as column}
+            .filter((col) => typeof col.accessorFn !== "undefined" && col.getCanHide())
+            .sort(sortedColumnsWithSort) as column}
             <Command.Item
               value={column.id}
               onSelect={() => {

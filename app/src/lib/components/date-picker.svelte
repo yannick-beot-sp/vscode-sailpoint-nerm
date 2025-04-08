@@ -35,19 +35,22 @@
   let valueDate = $derived(parseDateString(value, dateFormat));
 
   //console.log({value, dateFormat, valueDate});
-  
 
   function getValue() {
-
     return valueDate ?? today(getLocalTimeZone());
   }
 
   function setValue(newValue: DateValue) {
     value = formatDateValue(newValue, dateFormat);
   }
+  let isOpen = $state(false);
+  function closeOnChange(e: Event) {
+    isOpen = false;
+    onchange(e);
+  }
 </script>
 
-<Popover.Root>
+<Popover.Root bind:open={isOpen}>
   <Popover.Trigger>
     {#snippet child({ props })}
       <Button
@@ -71,7 +74,7 @@
       type="single"
       initialFocus
       bind:value={getValue, setValue}
-      onValueChange={onchange}
+      onValueChange={closeOnChange}
       {...restProps}
     ></Calendar>
   </Popover.Content>

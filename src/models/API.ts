@@ -465,7 +465,7 @@ const ProfileStatus = {
 
 type ProfileStatusValue = typeof ProfileStatus[keyof typeof ProfileStatus];
 
-export interface GetProfilesRequest  extends PaginatedQueryParams {
+export interface GetProfilesRequest extends PaginatedQueryParams {
     /**
     /**
      * Allows for optimization by not returning the associated attribute data for the returned profiles
@@ -483,11 +483,11 @@ export interface GetProfilesRequest  extends PaginatedQueryParams {
      * status value for filtering
      */
     status?: ProfileStatusValue
-    
+
 }
 
 
-export interface Profile{
+export interface Profile {
     /**
      * The objects ID
      */
@@ -520,9 +520,9 @@ export interface Profile{
      * Attributes that belong to this profile.
      */
     attributes?: {
-      [k: string]: string
+        [k: string]: string
     }
-  }
+}
 export interface GetProfilesResponse extends PaginatedResponse {
     profiles: Profile[]
 }
@@ -537,4 +537,25 @@ export interface UpdateProfileRequest {
 
 export interface UpdateProfileResponse {
     profile: Profile
+}
+
+export interface GetAttributeOptionsRequest extends PaginatedQueryParams {
+    /**
+     *  ID of an attribute for filtering
+     */
+    ne_attribute_id?: string
+}
+
+export interface AttributeOption {
+    id: string
+    uid: string
+    ne_attribute_id: string
+    option: string
+}
+
+export interface GetAttributeOptionsResponse extends PaginatedResponse {
+    /**
+     *  ID of an attribute for filtering
+     */
+    ne_attribute_options: AttributeOption[]
 }

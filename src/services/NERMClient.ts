@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { AddUserRolePairingsRequest, AddUserRolePairingsResponse, Attribute, DeleteProfileRequest, DeleteUserRequest, DeleteUserResponse, ErrorMessages, ErrorResponse, GetAttributesRequest, GetAttributesResponse, GetProfilesRequest, GetProfilesResponse, GetProfileTypesRequest, GetProfileTypesResponse, GetRolesRequest, GetRolesResponse, GetUserRolePairingsRequest, GetUserRolePairingsResponse, GetUsersRequest, GetUsersResponse, isError, PaginatedData, Profile, ProfileType, RemoveUserRolePairingsRequest, RemoveUserRolePairingsResponse, Role, UpdateProfileRequest, UpdateProfileResponse, UpdateUserRequest, UpdateUserResponse, User, UserRole } from '../models/API';
+import { AddUserRolePairingsRequest, AddUserRolePairingsResponse, Attribute, AttributeOption, DeleteProfileRequest, DeleteUserRequest, DeleteUserResponse, ErrorMessages, ErrorResponse, GetAttributeOptionsRequest, GetAttributeOptionsResponse, GetAttributesRequest, GetAttributesResponse, GetProfilesRequest, GetProfilesResponse, GetProfileTypesRequest, GetProfileTypesResponse, GetRolesRequest, GetRolesResponse, GetUserRolePairingsRequest, GetUserRolePairingsResponse, GetUsersRequest, GetUsersResponse, isError, PaginatedData, Profile, ProfileType, RemoveUserRolePairingsRequest, RemoveUserRolePairingsResponse, Role, UpdateProfileRequest, UpdateProfileResponse, UpdateUserRequest, UpdateUserResponse, User, UserRole } from '../models/API';
 
 export class NERMClient {
     constructor(private readonly axios: AxiosInstance) {
@@ -133,6 +133,14 @@ export class NERMClient {
         }
     }
 
+    public async getAttributeOptions(request: GetAttributeOptionsRequest): Promise<PaginatedData<AttributeOption>> {
+        const response = await this.axios.get<GetAttributeOptionsResponse>("ne_attribute_options", { params: request })
+        return {
+            _metadata: response.data._metadata,
+            data: response.data.ne_attribute_options
+        }
+    }
+
     /////////////////////////////
     // #endregion Profiles
     /////////////////////////////
@@ -150,7 +158,7 @@ export class NERMClient {
         await this.axios.delete(`profiles/${request.id}`)
     }
     public async updateProfile(request: UpdateProfileRequest): Promise<UpdateProfileResponse> {
-        const response = await this.axios.patch<UpdateProfileResponse>(`profiles/${request.profile.id}`)
+        const response = await this.axios.patch<UpdateProfileResponse>(`profiles/${request.profile.id}`, request)
         return response.data
     }
 

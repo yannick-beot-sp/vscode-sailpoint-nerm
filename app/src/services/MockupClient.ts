@@ -3414,9 +3414,15 @@ export class MockupClient implements Client {
         const profileIndex = this.profiles.findIndex(u => u.id === profile.id);
 
         if (profileIndex !== -1) {
-            this.profiles[profileIndex] = profile;
+            const oldProfile = this.profiles[profileIndex]
+            const mergedAttributes = {
+                ...oldProfile.attributes,
+                ...profile.attributes,
+            };
+            this.profiles[profileIndex] = { ...oldProfile, ...profile, attributes: mergedAttributes };
+            console.log("Update Profile", this.profiles[profileIndex])
         }
-        return profile;
+        return this.profiles[profileIndex];
     }
 
     async getTableVisibilityState(tableName: string): Promise<Record<string, boolean> | undefined> {

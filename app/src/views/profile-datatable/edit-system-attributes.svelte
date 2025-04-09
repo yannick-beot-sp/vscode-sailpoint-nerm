@@ -25,6 +25,7 @@
       items={Status}
       value={profile.status}
       {onchange}
+      data-accessor="status"
     />
   </div>
 </div>

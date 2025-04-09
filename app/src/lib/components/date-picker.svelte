@@ -34,19 +34,41 @@
 
   let valueDate = $derived(parseDateString(value, dateFormat));
 
-  //console.log({value, dateFormat, valueDate});
-
   function getValue() {
     return valueDate ?? today(getLocalTimeZone());
   }
 
   function setValue(newValue: DateValue) {
-    value = formatDateValue(newValue, dateFormat);
+    if (newValue) {
+      value = formatDateValue(newValue, dateFormat);
+    }
   }
+
+  function extractDataAttributes<T extends Record<string, any>>(props: T) {
+    const dataAttributes: { [key: `data-${string}`]: any } = {};
+
+    for (const key in props) {
+      if (key.startsWith("data-")) {
+        dataAttributes[key as `data-${string}`] = props[key];
+      }
+    }
+
+    return dataAttributes;
+  }
+
+  const dataset = extractDataAttributes(restProps); // to get data-accessor
+  let buttonRef = $state<HTMLButtonElement | null>(null);
+  // Manage open state (to force close on date selection)
+  // No event is returned by Calendar "onchange". Need to build one
   let isOpen = $state(false);
   function closeOnChange(e: Event) {
-    isOpen = false;
+    e = new Event("change");
+    Object.defineProperty(e, "target", {
+      writable: false,
+      value: buttonRef,
+    });
     onchange(e);
+    isOpen = false;
   }
 </script>
 
@@ -54,6 +76,7 @@
   <Popover.Trigger>
     {#snippet child({ props })}
       <Button
+        bind:ref={buttonRef}
         {name}
         variant="outline"
         class={cn(
@@ -61,6 +84,9 @@
           !value && "text-muted-foreground"
         )}
         {...props}
+        {...dataset}
+        {value}
+        {onchange}
       >
         <CalendarIcon class="mr-2 size-4" />
         {valueDate

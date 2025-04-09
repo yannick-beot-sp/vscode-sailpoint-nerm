@@ -2,11 +2,11 @@ export type Profile = {
     /**
      * Attributes that belong to this profile.
      */
-    attributes: { [key: string]: string };
+    attributes?: { [key: string]: string };
     /**
      * The date and time the profile was created
      */
-    created_at: Date;
+    created_at?: Date;
     /**
      * The objects ID
      */
@@ -18,19 +18,19 @@ export type Profile = {
     /**
      * This is the name of the profile.
      */
-    name: string;
+    name?: string;
     /**
      * This is the ID of the profile type the profile belongs to
      */
-    profile_type_id: string;
+    profile_type_id?: string;
     /**
      * This is the status of the profile
      */
-    status: StatusValue;
+    status?: StatusValue;
     /**
      * The objects UID
      */
-    uid: string;
+    uid?: string;
     /**
      * The date and time the profile was updated
      */
@@ -54,7 +54,7 @@ export type IDProofingStatusValue = typeof IDProofingStatus[keyof typeof IDProof
 export const Status = {
     Active: "Active",
     Inactive: "Inactive",
-    OnLeave: "On Leave",
+    "On Leave": "On Leave",
     Terminated: "Terminated",
 }
 

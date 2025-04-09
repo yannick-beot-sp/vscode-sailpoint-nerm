@@ -22,7 +22,19 @@
 </script>
 
 <div>
-  <ActionEdit profile={row.original} {client} {updateRow} {attributes} edit={false}/>
-  <ActionEdit profile={row.original} {client} {updateRow} {attributes} edit={true}/>
-  <DeleteButton handleClick={handleDelete} name={row.original.name} />
+  <ActionEdit
+    profile={row.original}
+    {client}
+    {updateRow}
+    {attributes}
+    edit={false}
+  />
+  <ActionEdit
+    profile={row.original}
+    {client}
+    {updateRow}
+    {attributes}
+    edit={true}
+  />
+  <DeleteButton handleClick={handleDelete} name={row.original.name!} />
 </div>

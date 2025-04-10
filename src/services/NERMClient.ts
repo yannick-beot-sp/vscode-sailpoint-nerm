@@ -158,7 +158,9 @@ export class NERMClient {
         await this.axios.delete(`profiles/${request.id}`)
     }
     public async updateProfile(request: UpdateProfileRequest): Promise<UpdateProfileResponse> {
-        const response = await this.axios.patch<UpdateProfileResponse>(`profiles/${request.profile.id}`, request)
+        const id = request.profile.id
+        delete request.profile.id
+        const response = await this.axios.patch<UpdateProfileResponse>(`profiles/${id}`, request)
         return response.data
     }
 

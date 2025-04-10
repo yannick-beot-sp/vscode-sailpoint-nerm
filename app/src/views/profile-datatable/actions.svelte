@@ -27,14 +27,14 @@
     {client}
     {updateRow}
     {attributes}
-    edit={false}
+    mode="view"
   />
   <ActionEdit
     profile={row.original}
     {client}
     {updateRow}
     {attributes}
-    edit={true}
+    mode="edit"
   />
   <DeleteButton handleClick={handleDelete} name={row.original.name!} />
 </div>

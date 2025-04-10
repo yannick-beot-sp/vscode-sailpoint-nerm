@@ -17,17 +17,11 @@
     client: Client;
     attributes: Attribute[];
     updateRow: (p: Profile) => void;
-    edit: boolean;
+    mode: "view" | "edit";
   }
   let updated = $state(false);
-  let {
-    profile,
-    client,
-    attributes,
-    updateRow,
-    edit = false,
-  }: Props = $props();
-
+  let { profile, client, attributes, updateRow, mode }: Props = $props();
+  let edit = $state(mode === "edit");
   function getAttributeDisplayName(key: string) {
     return attributes.find((x) => x.uid === key)?.label;
   }

@@ -3,11 +3,12 @@
   import { Input } from "$lib/components/ui/input";
   import { formatHumanReadableDate } from "$lib/utils/date";
 
-  import type { Attribute } from "src/model/Attribute";
+  import type { Attribute, AttributeWithOptions } from "src/model/Attribute";
+  import Select from "./inputs/select.svelte";
 
   interface Props {
     value: string;
-    attributes: Attribute[];
+    attributes: AttributeWithOptions[];
     name: string;
     onchange: (e: Event) => void;
     editable: boolean;
@@ -19,7 +20,23 @@
 </script>
 
 {#if editable && attributeType === "TextFieldAttribute"}
-  <Input id={name} {value} class="col-span-2" oninput={onchange} data-accessor={"attributes." + name}/>
+  <Input
+    id={name}
+    {value}
+    class="col-span-2"
+    oninput={onchange}
+    data-accessor={"attributes." + name}
+  />
+{:else if editable && (attributeType === "RadioButtonsAttribute" || attributeType === "DropDownAttribute" || attributeType === "CheckBoxesAttribute")}
+  <Select
+    {value}
+    {name}
+    {onchange}
+    options={attribute?.options || []}
+    label={attribute?.label as string}
+    type={attributeType === "CheckBoxesAttribute" ? "multiple" : "single"}
+    data-accessor={"attributes." + name}
+  ></Select>
 {:else if editable && attributeType === "DateAttribute"}
   <DatePicker
     {value}

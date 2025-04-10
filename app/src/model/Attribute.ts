@@ -30,7 +30,7 @@ export interface Attribute {
     /**
      * A description of the attribute
      */
-    description: string| null
+    description: string | null
     /**
      * The helper text that accompanies the attribute
      */
@@ -232,4 +232,15 @@ export interface Attribute {
     | "TextAreaAttribute"
     | "TextFieldAttribute"
 
+}
+
+export interface AttributeOption {
+    id: string
+    uid: string
+    ne_attribute_id: string
+    option: string
+}
+
+export interface AttributeWithOptions extends Attribute {
+    options?: AttributeOption[]
 }

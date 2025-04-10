@@ -6,7 +6,7 @@ import type { NewUserRolePair } from "src/model/NewUserRolePair";
 import type { PaginationState, SortingState, VisibilityState } from "@tanstack/table-core";
 import type { Profile, StatusValue } from "src/model/Profile";
 import { Status as ProfileStatus } from "src/model/Profile";
-import type { Attribute } from "src/model/Attribute";
+import type { Attribute, AttributeWithOptions } from "src/model/Attribute";
 import { getLocalTimeZone, today } from "@internationalized/date";
 import { formatDateValue } from "$lib/utils/date";
 
@@ -356,7 +356,7 @@ const roles: Role[] = [
     }
 ]
 
-const attributes: Attribute[] = [
+const attributes: AttributeWithOptions[] = [
     {
         "id": "00285e61-07d1-4be5-a4c2-71de85dc67a7",
         "uid": "import_existing_assignment",
@@ -2629,11 +2629,11 @@ const attributes: Attribute[] = [
         "id": "6907fa7e-58bf-43f5-babf-97112c53540c",
         "uid": "user_manager_ne_attribute",
         "label": "user_manager",
-        "tool_tip": "Michelin Account Responsible",
+        "tool_tip": "Sponsor",
         "data_type": "drop-down",
         "profile_type_id": null,
         "date_format": null,
-        "description": "Michelin Account Responsible",
+        "description": "Sponsor",
         "archived": false,
         "type": "DropDownAttribute",
         "reverse_association_attribute": null,
@@ -2827,7 +2827,19 @@ const attributes: Attribute[] = [
         "created_at": new Date("2025-01-17T23:38:09.417-05:00"),
         "updated_at": new Date("2025-01-17T23:38:09.415-05:00"),
         "archived_on": null,
-        "legacy_id": null
+        "legacy_id": null,
+        "options": [{
+            "id": "9378e255-257e-472d-8a24-806040d0f0d7",
+            "uid": "4e51f725b2134c43af12c63281a63973",
+            "ne_attribute_id": "72965a26-6dc9-4d71-be21-6cdecbd49a76",
+            "option": "No"
+        },
+        {
+            "id": "97292507-3310-4729-80b9-a37fb811472c",
+            "uid": "ef48d229d58b48c49e55c74c543bf7fd",
+            "ne_attribute_id": "72965a26-6dc9-4d71-be21-6cdecbd49a76",
+            "option": "Yes"
+        }]
     },
     {
         "id": "732d479e-d6f6-4b19-9d7f-449b9cdf78d2",
@@ -2957,7 +2969,15 @@ const attributes: Attribute[] = [
         "created_at": new Date("2025-01-17T23:37:58.731-05:00"),
         "updated_at": new Date("2025-01-17T23:37:58.729-05:00"),
         "archived_on": null,
-        "legacy_id": null
+        "legacy_id": null,
+        "options": [
+            {
+                "id": "0cb5b100-4ff1-4568-8d46-a6ca8f5e8f93",
+                "uid": "6bba6d5fea7941b18ea034cc6d2b0749",
+                "ne_attribute_id": "785ee5b4-0f5e-404b-a3db-cb24c8265a8e",
+                "option": "Yes"
+            }
+        ]
     },
     {
         "id": "79099fa4-b59a-4ed3-911c-de5c40c26afb",
@@ -3347,7 +3367,7 @@ const getRandomUserRolePairsForRoles = (users: User[], userRoleCount: number, ro
         }));
 };
 
-function getRandomColorKey(): keyof typeof ProfileStatus {
+function getRandomProfileStatusKey(): keyof typeof ProfileStatus {
     const keys = Object.keys(ProfileStatus) as Array<keyof typeof ProfileStatus>;
     const randomIndex = Math.floor(Math.random() * keys.length);
     return keys[randomIndex];
@@ -3355,7 +3375,7 @@ function getRandomColorKey(): keyof typeof ProfileStatus {
 
 // Function to get a random color value using the key
 function getRandomStatus(): StatusValue {
-    const randomKey = getRandomColorKey();
+    const randomKey = getRandomProfileStatusKey();
     return ProfileStatus[randomKey];
 }
 
@@ -3378,9 +3398,60 @@ function generateDummyProfiles(profileTypeId: string) {
             attributes: {
                 "department_code": x,
                 "department_name": x,
-                "end_date": formatDateValue(today(getLocalTimeZone()), "mm/dd/yyyy")
+                "end_date": formatDateValue(today(getLocalTimeZone()), "mm/dd/yyyy"),
+                "terminate_non-employee": Math.random() > .5 ? "Yes" : "No"
             }
         }))
+}
+
+
+function transformProfileAttributes(
+    profile: Profile,
+    availableAttributes: AttributeWithOptions[]
+): { [key: string]: string } | undefined {
+
+    // If the profile has no attributes, return undefined or an empty object
+    if (!profile.attributes) {
+        console.warn("no attributes");
+        return undefined; // Or return {} if you prefer an empty object
+    }
+
+    // Create a copy to avoid modifying the original object (immutability best practice)
+    const transformedAttributes: { [key: string]: string } = {};
+
+    // Iterate over each key/value pair in the profile's attributes
+    for (const [attributeUid, selectedOptionId] of Object.entries(profile.attributes)) {
+
+        // 1. Find the corresponding attribute in the availableAttributes list
+        //    based on the key (attributeId) matching AttributeWithOptions.id
+        const matchingAttribute = availableAttributes.find(attr => attr.uid === attributeUid);
+
+        let finalValue = selectedOptionId; // Keep the original value by default
+        console.log({ matchingAttribute });
+
+        // Check if the attribute was found and if it has options
+        if (matchingAttribute && matchingAttribute.options) {
+
+            // 2. Find the corresponding option within the found attribute's options
+            //    based on the value (selectedOptionId) matching AttributeOption.id
+            const matchingOption = matchingAttribute.options.find(opt => opt.id === selectedOptionId);
+            console.log({ matchingOption });
+            // If a matching option is found, replace the value with the option's text
+            if (matchingOption) {
+                finalValue = matchingOption.option;
+            }
+            // If no matching option is found for this attribute,
+            // the value remains the original ID (selectedOptionId)
+        }
+        // If no matching attribute is found for this key,
+        // the value remains the original ID (selectedOptionId)
+
+        // Assign the value (transformed or original) to the new object
+        transformedAttributes[attributeUid] = finalValue;
+    }
+
+    // Return the new object containing the transformed attributes.
+    return transformedAttributes;
 }
 
 
@@ -3410,17 +3481,18 @@ export class MockupClient implements Client {
     }
 
     async updateProfile(profile: Profile): Promise<Profile> {
+        console.log("new profile", profile)
         await stall()
         const profileIndex = this.profiles.findIndex(u => u.id === profile.id);
-
         if (profileIndex !== -1) {
+            //profile.attributes = transformProfileAttributes(profile, attributes)
             const oldProfile = this.profiles[profileIndex]
             const mergedAttributes = {
                 ...oldProfile.attributes,
                 ...profile.attributes,
             };
             this.profiles[profileIndex] = { ...oldProfile, ...profile, attributes: mergedAttributes };
-            console.log("Update Profile", this.profiles[profileIndex])
+            console.log("Updated Profile", this.profiles[profileIndex])
         }
         return this.profiles[profileIndex];
     }

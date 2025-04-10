@@ -84,7 +84,7 @@
       class: "relative size-8 p-0",
     })}
   >
-    {#if edit}
+    {#if mode==="edit"}
       <Pen />
     {:else}
       <Eye />
@@ -95,7 +95,32 @@
     side="right"
     class="sm:max-w-3xl overflow-y-scroll max-h-screen"
   >
-    <Sheet.Title>{profile.name}</Sheet.Title>
+    <Sheet.Title
+      >{profile.name}
+      {#if edit}
+        <Button
+          variant="ghost"
+          size="icon"
+          class="relative size-8 p-0"
+          onclick={async () => {
+            edit = false;
+          }}
+        >
+          <Eye />
+        </Button>
+      {:else}
+        <Button
+          variant="ghost"
+          size="icon"
+          class="relative size-8 p-0"
+          onclick={async () => {
+            edit = true;
+          }}
+        >
+          <Pen />
+        </Button>
+      {/if}
+    </Sheet.Title>
     <div class="grid gap-4 py-4">
       {#if edit}
         <EditSystemAttributes {profile} {onchange}></EditSystemAttributes>

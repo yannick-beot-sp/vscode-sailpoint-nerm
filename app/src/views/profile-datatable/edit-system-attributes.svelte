@@ -2,6 +2,7 @@
   import { Label } from "$lib/components/ui/label";
   import { Status, type Profile } from "src/model/Profile";
   import Select from "$lib/components/simple-select/select.svelte";
+  import { Input } from "$lib/components/ui/input";
   interface Props {
     profile: Profile;
     onchange: (e: Event) => void;
@@ -14,6 +15,19 @@
   const divValueClass = "col-span-2";
 </script>
 
+<!-- Name -->
+<div class={divWrapperClass}>
+  <Label class={labelClass} for="name">Name</Label>
+  <div class={divValueClass}>
+    <Input
+      id="name"
+      value={profile.name}
+      class="col-span-2"
+      oninput={onchange}
+      data-accessor="name"
+    />
+  </div>
+</div>
 <!-- Status -->
 <div class={divWrapperClass}>
   <Label class={labelClass} for="status">Status</Label>

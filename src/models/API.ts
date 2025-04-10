@@ -228,6 +228,9 @@ export interface ProfileType {
 export interface GetProfileTypesResponse extends PaginatedResponse {
     profile_types: ProfileType[]
 }
+export interface GetProfileTypeResponse extends PaginatedResponse {
+    profile_type: ProfileType
+}
 
 export type DataType = "text field"
     | "text area"

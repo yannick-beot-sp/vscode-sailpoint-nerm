@@ -18,9 +18,19 @@
     attributes: Attribute[];
     updateRow: (p: Profile) => void;
     mode: "view" | "edit";
+    open?: boolean;
+    hidden?: boolean;
   }
   let updated = $state(false);
-  let { profile, client, attributes, updateRow, mode }: Props = $props();
+  let {
+    profile,
+    client,
+    attributes,
+    updateRow,
+    mode,
+    open = false,
+    hidden = false,
+  }: Props = $props();
   let edit = $state(mode === "edit");
   function getAttributeDisplayName(key: string) {
     return attributes.find((x) => x.uid === key)?.label;
@@ -72,25 +82,28 @@
     updateRow({ ...profile, ...updatedProfile, attributes: mergedAttributes });
     toast.success("Profile updated");
   }
+
+  let isOpen = $state(open);
 </script>
 
 <Toaster />
 
-<Sheet.Root>
-  <Sheet.Trigger
-    class={buttonVariants({
-      variant: "ghost",
-      size: "icon",
-      class: "relative size-8 p-0",
-    })}
-  >
-    {#if mode==="edit"}
-      <Pen />
-    {:else}
-      <Eye />
-    {/if}
-  </Sheet.Trigger>
-
+<Sheet.Root bind:open={isOpen}>
+  {#if !hidden}
+    <Sheet.Trigger
+      class={buttonVariants({
+        variant: "ghost",
+        size: "icon",
+        class: "relative size-8 p-0",
+      })}
+    >
+      {#if mode === "edit"}
+        <Pen />
+      {:else}
+        <Eye />
+      {/if}
+    </Sheet.Trigger>
+  {/if}
   <Sheet.Content
     side="right"
     class="sm:max-w-3xl overflow-y-scroll max-h-screen"
@@ -138,6 +151,7 @@
               name={key}
               {attributes}
               {onchange}
+              {client}
               editable={edit}
             ></ProfileInput>
           </div>

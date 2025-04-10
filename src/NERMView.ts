@@ -247,8 +247,30 @@ export class NERMView implements vscode.TreeDataProvider<BaseTreeItem>, vscode.T
         vscode.window.showInformationMessage(`Tenant ${tenantDisplayName} successfully added`)
     }
 
-    public async openWebview(element: LinkTreeItem): Promise<void> {
-        const tenantId = element.parentId!
+    public async openWebview(element: LinkTreeItem | string): Promise<void> {
+        let tenantId, path, label, profileTypeId;
+
+        if (typeof element === "string") {
+            // expecting element like "{tenantId}/profiles/7aff2a20-c3e9-4b77-87cb-147deb744227/e007bcc4-f041-401b-b5f9-845301d46999"
+            const firstSlashIndex = element.indexOf('/');
+
+            if (firstSlashIndex === -1) {
+                // Case: No slash found 
+                tenantId = element;
+                path = '';
+            } else {
+                // Case: Slash found
+                tenantId = element.slice(0, firstSlashIndex); // Get the part before the first slash
+                path = element.slice(firstSlashIndex);      // Get the part from the first slash onwards
+                const segments = path.split('/'); // Result: ['', 'profiles', '7aff2a20-c3e9-4b77-87cb-147deb744227', 'e007bcc4-f041-401b-b5f9-845301d46999']
+                profileTypeId = segments.length >= 3 ? segments[2] : undefined
+            }
+
+        } else {
+            tenantId = element.parentId!
+            path = element.path
+            label = element.label
+        }
         const tenantInfo = this.treeService.get(tenantId)
 
         const apiKey = await this.tenantService.get(tenantId)
@@ -259,11 +281,21 @@ export class NERMView implements vscode.TreeDataProvider<BaseTreeItem>, vscode.T
             baseUrl: tenantInfo.baseUrl!,
             token: apiKey
         })
+
+        if (profileTypeId) {
+            const profileType = await client.getProfileType(profileTypeId)
+            label = profileType.name
+        }
+
+        if(!label) {
+            throw new Error("Could not find profile type");
+            
+        }
         Panel.createOrShow({
             tenantId,
             tenantLabel: tenantInfo.label,
-            path: element.path,
-            label: element.label,
+            path,
+            label,
             client,
             extensionUri: this.extensionUri,
             treeService: this.treeService

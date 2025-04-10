@@ -19,6 +19,8 @@
     if (found) {
       Thing = route.component;
       componentProps = found.groups;
+      console.log({ componentProps });
+
       break;
     }
   }

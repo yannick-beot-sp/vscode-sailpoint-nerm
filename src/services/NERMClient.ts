@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { AddUserRolePairingsRequest, AddUserRolePairingsResponse, Attribute, AttributeOption, DeleteProfileRequest, DeleteUserRequest, DeleteUserResponse, ErrorMessages, ErrorResponse, GetAttributeOptionsRequest, GetAttributeOptionsResponse, GetAttributesRequest, GetAttributesResponse, GetProfilesRequest, GetProfilesResponse, GetProfileTypesRequest, GetProfileTypesResponse, GetRolesRequest, GetRolesResponse, GetUserRolePairingsRequest, GetUserRolePairingsResponse, GetUsersRequest, GetUsersResponse, isError, PaginatedData, Profile, ProfileType, RemoveUserRolePairingsRequest, RemoveUserRolePairingsResponse, Role, UpdateProfileRequest, UpdateProfileResponse, UpdateUserRequest, UpdateUserResponse, User, UserRole } from '../models/API';
+import { AddUserRolePairingsRequest, AddUserRolePairingsResponse, Attribute, AttributeOption, DeleteProfileRequest, DeleteUserRequest, DeleteUserResponse, ErrorMessages, ErrorResponse, GetAttributeOptionsRequest, GetAttributeOptionsResponse, GetAttributesRequest, GetAttributesResponse, GetProfilesRequest, GetProfilesResponse, GetProfileTypeResponse, GetProfileTypesRequest, GetProfileTypesResponse, GetRolesRequest, GetRolesResponse, GetUserRolePairingsRequest, GetUserRolePairingsResponse, GetUsersRequest, GetUsersResponse, isError, PaginatedData, Profile, ProfileType, RemoveUserRolePairingsRequest, RemoveUserRolePairingsResponse, Role, UpdateProfileRequest, UpdateProfileResponse, UpdateUserRequest, UpdateUserResponse, User, UserRole } from '../models/API';
 
 export class NERMClient {
     constructor(private readonly axios: AxiosInstance) {
@@ -115,6 +115,10 @@ export class NERMClient {
             _metadata: response.data._metadata,
             data: response.data.profile_types
         }
+    }
+    public async getProfileType(profileId: string): Promise<ProfileType> {
+        const response = await this.axios.get<GetProfileTypeResponse>(`profile_types/${profileId}`)
+        return response.data.profile_type
     }
 
     /////////////////////////////

@@ -3445,11 +3445,16 @@ function generateDummyProfiles(profileTypeId: string) {
         "Communication",
         "Finance"
     ]
+    const ids = [
+        "e8e0e24d-9ed5-476b-9118-76bafdbbaad7",
+        "e007bcc4-f041-401b-b5f9-845301d46999",
+        "55bc2cd6-4187-4957-83a8-66ca0010c23b"
+    ]
     let i = 0;
     return departments
         .sort((a, b) => a.localeCompare(b))
         .map(x => ({
-            id: crypto.randomUUID(),
+            id: ids[i],
             uid: ++i + '',
             name: x,
             status: getRandomStatus(),
@@ -3529,6 +3534,10 @@ export class MockupClient implements Client {
     constructor() {
         this.users = generateDummyUsers(this.userCount);
         this.profiles = generateDummyProfiles(crypto.randomUUID())
+    }
+
+    async open(uri: string): Promise<void> {
+        console.log("open", uri);
     }
 
     async deleteProfile(profileId: string): Promise<void> {

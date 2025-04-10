@@ -2,10 +2,7 @@
   import "./app.css";
   import { routerConfig } from "./router-config";
   import Router from "./Router.svelte";
-  
 
-  
-  
 </script>
 
 <main>

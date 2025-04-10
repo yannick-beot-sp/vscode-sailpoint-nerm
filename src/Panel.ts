@@ -15,6 +15,7 @@ import { GetAllAttributesQuery } from './commands/GetAllAttributesQuery';
 import { GetAllProfilesQuery } from './commands/GetAllProfilesQuery';
 import { DeleteProfileCommand } from './commands/DeleteProfileCommand';
 import { UpdateProfileCommand } from './commands/UpdateProfileCommand';
+import { OpenWebViewCommand } from './commands/OpenWebViewCommand';
 
 
 
@@ -142,6 +143,7 @@ export class Panel {
             new GetAllProfilesQuery(params.tenantId, params.client),
             new DeleteProfileCommand(params.client),
             new UpdateProfileCommand(params.client),
+            new OpenWebViewCommand(params.tenantId),
         )
 
         // Handle messages from the webview

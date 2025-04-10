@@ -16,7 +16,7 @@ export const routerConfig: RouterConfig = {
 			component: ViewRoles,
 		},
 		'profiles': {
-			path: '/profiles/(?<profileTypeId>.*)',
+			path: '\/profiles\/(?<profileTypeId>[^\/]+)(\/(?<profileId>.*))?',
 			component: ViewProfiles,
 		},
 	},

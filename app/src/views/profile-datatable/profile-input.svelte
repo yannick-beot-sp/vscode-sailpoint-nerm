@@ -3,8 +3,11 @@
   import { Input } from "$lib/components/ui/input";
   import { formatHumanReadableDate } from "$lib/utils/date";
 
-  import type { Attribute, AttributeWithOptions } from "src/model/Attribute";
+  import type { AttributeWithOptions } from "src/model/Attribute";
   import Select from "./inputs/select.svelte";
+  import { SquareArrowOutUpRight } from "lucide-svelte";
+  import { Button } from "$lib/components/ui/button";
+  import type { Client } from "src/services/Client";
 
   interface Props {
     value: string;
@@ -12,11 +15,24 @@
     name: string;
     onchange: (e: Event) => void;
     editable: boolean;
+    client: Client;
   }
 
-  let { attributes, value, name, onchange, editable }: Props = $props();
+  let { attributes, value, name, onchange, editable, client }: Props = $props();
   let attribute = attributes.find((x) => x.uid === name);
   let attributeType = attribute?.type;
+
+  async function open(v: string) {
+    const profileTypeId = attribute?.profile_type_id || "";
+    const profiles = await client.getProfiles(profileTypeId);
+    const p = profiles.find((x) => x.name == v);
+    if (p) {
+      const uri = `/profiles/${profileTypeId}/${p.id}`;
+      client.open(uri);
+    } else {
+      console.error("Profile not found", profileTypeId, v);
+    }
+  }
 </script>
 
 {#if editable && attributeType === "TextFieldAttribute"}
@@ -47,6 +63,22 @@
   ></DatePicker>
 {:else if !editable && attributeType === "DateAttribute"}
   <div class="col-span-2">{formatHumanReadableDate(value)}</div>
+{:else if !editable && (attributeType === "ProfileSearchAttribute" || attributeType === "ProfileSelectAttribute")}
+  {#if value.indexOf(",") === -1}
+    <!-- single profile-->
+    <Button variant="ghost" class="w-fit" onclick={async () => open(value)}
+      >{value} <SquareArrowOutUpRight class="size-4" /></Button
+    >
+  {:else}
+    <!-- multiple profiles-->
+    <div class="col-span-2">
+      {#each value.split(", ") as item}
+        <Button variant="ghost" class="w-fit" onclick={async () => open(item)}
+          >{item} <SquareArrowOutUpRight class="size-4" /></Button
+        >
+      {/each}
+    </div>
+  {/if}
 {:else}
   <div class="col-span-2">{value}</div>
 {/if}

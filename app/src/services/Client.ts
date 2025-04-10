@@ -41,5 +41,7 @@ export interface Client {
     updateProfile(profile:Profile): Promise<Profile>
 
     getAttributes(forceRefresh?: boolean): Promise<Attribute[]>
+    
+    open(uri:string): Promise<void>
 
 }

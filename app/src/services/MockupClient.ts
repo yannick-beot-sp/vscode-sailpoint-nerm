@@ -2365,7 +2365,67 @@ const attributes: AttributeWithOptions[] = [
         "created_at": new Date("2025-01-17T23:38:01.213-05:00"),
         "updated_at": new Date("2025-01-17T23:38:01.211-05:00"),
         "archived_on": null,
-        "legacy_id": null
+        "legacy_id": null,
+        "options": [{
+            "id": "19384cbe-1287-429d-b6bc-bd77ab75f249",
+            "uid": "e501cf0a0df1491884ade7511c5832fd",
+            "ne_attribute_id": "603aa029-3e94-4ab8-aa74-e769ebc46f6c",
+            "option": "Assignment Location Required"
+        },
+        {
+            "id": "6d266297-f9ea-491f-8110-69eeb4b86418",
+            "uid": "5878faa74048440392e8055558c21cdf",
+            "ne_attribute_id": "603aa029-3e94-4ab8-aa74-e769ebc46f6c",
+            "option": "Organization Location Required"
+        },
+        {
+            "id": "7f17d08f-da00-4863-9e26-6ef95c844498",
+            "uid": "a55b4d658c564b449198bca43473ac51",
+            "ne_attribute_id": "603aa029-3e94-4ab8-aa74-e769ebc46f6c",
+            "option": "Organization Deparment Required"
+        },
+        {
+            "id": "8d345d0d-0670-48ab-9932-94de87c5be8a",
+            "uid": "fe6ce55cad1246b790845dc237a06683",
+            "ne_attribute_id": "603aa029-3e94-4ab8-aa74-e769ebc46f6c",
+            "option": "Assignment Department Required"
+        },
+        {
+            "id": "b2b6b6ec-4a89-435e-a458-1a32268834e1",
+            "uid": "8016a4663a29441695db9774a4e252c8",
+            "ne_attribute_id": "603aa029-3e94-4ab8-aa74-e769ebc46f6c",
+            "option": "Organization Sponsor Required"
+        },
+        {
+            "id": "ba70301c-91f5-4b4e-957b-366747662730",
+            "uid": "17e8fe3ae12a4672a8fc48322b67f4d0",
+            "ne_attribute_id": "603aa029-3e94-4ab8-aa74-e769ebc46f6c",
+            "option": "Assignment Sub-Organization Required"
+        },
+        {
+            "id": "c3bddaa1-9668-41f6-93aa-24d38d0853cb",
+            "uid": "efd40aba62fc4a368e2247f741fb2d53",
+            "ne_attribute_id": "603aa029-3e94-4ab8-aa74-e769ebc46f6c",
+            "option": "Non-Human Owner Required"
+        },
+        {
+            "id": "c9d9fe27-6a55-411b-aed7-b23c10825359",
+            "uid": "44c9c631397342ba80c503395800dcd8",
+            "ne_attribute_id": "603aa029-3e94-4ab8-aa74-e769ebc46f6c",
+            "option": "Organization RiskScore Required"
+        },
+        {
+            "id": "cf08814b-e3d4-4d6f-815b-3cb61d214506",
+            "uid": "6c73dd7673944d369cbfdc99b9a8976c",
+            "ne_attribute_id": "603aa029-3e94-4ab8-aa74-e769ebc46f6c",
+            "option": "Assignment Sponsor Required"
+        },
+        {
+            "id": "eb3232d4-bc55-4002-95a1-dd0fb64c9b4a",
+            "uid": "af1e823afeb6405ea8b560fa75aaf28b",
+            "ne_attribute_id": "603aa029-3e94-4ab8-aa74-e769ebc46f6c",
+            "option": "Assignment Sub-Population Required"
+        }]
     },
     {
         "id": "60e97769-ffd6-4fb0-a199-e3690e56367b",
@@ -3399,7 +3459,8 @@ function generateDummyProfiles(profileTypeId: string) {
                 "department_code": x,
                 "department_name": x,
                 "end_date": formatDateValue(today(getLocalTimeZone()), "mm/dd/yyyy"),
-                "terminate_non-employee": Math.random() > .5 ? "Yes" : "No"
+                "terminate_non-employee": Math.random() > .5 ? "Yes" : "No",
+                "sysconfig_baselinedataloader_flags": "Organization Location Required"
             }
         }))
 }

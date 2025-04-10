@@ -22,6 +22,9 @@
     ...restProps
   }: Props = $props();
   const placeholder = "Select a value";
+  if (type==="multiple" && typeof value==="string") {
+    value = value.split(', ');
+  }
   // NERM API returns the "label" and not the id
   // need to find the id based on the label
 
@@ -59,11 +62,11 @@
   }}
 >
   <Select.Trigger
-    class="w-[180px]"
+    class="col-span-2 text-ellipsis overflow-hidden whitespace-nowrap"
     {value}
     bind:ref={buttonRef}
     data-accessor={restProps["data-accessor"]}
-  >
+  ><!-- adding class to manage width and long values e.g. Assignment Location Required, Organization Location Required, Organization Deparment Required, Assignment Department Required, Organization Sponsor Required, Assignment Sub-Organization Required, Organization RiskScore Required, Assignment Sponsor Required, Assignment Sub-Population Required -->
     {triggerContent}
   </Select.Trigger>
   <Select.Content>

@@ -4,7 +4,15 @@ All notable changes to the "vscode-sailpoint-nerm" extension will be documented 
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.0.5] - 2025-04-20
+
+### Added
+
+- View, edit, delete profiles. Not all attributes can be edited. When an attribute is referencing another profile, you can open the profile
+
 ## [0.0.4] - 2025-03-17
+
+### Changed
 
 - Add cache for users & roles for better performance, and the possibility to refresh
 

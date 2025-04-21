@@ -72,6 +72,7 @@ The SailPoint Non-Employee Risk Management extension makes it easy to:
 
 - View, edit users and add them to roles
 - View roles users and add users
+- View, edit, delete profiles
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -108,6 +109,10 @@ You will asked for:
 
 ## Release Notes
 
+
+### 0.0.5
+
+- View, edit, delete profiles. Not all attributes can be edited. When an attribute is referencing another profile, you can open the profile
 
 ### 0.0.4
 

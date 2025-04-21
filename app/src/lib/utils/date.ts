@@ -12,7 +12,7 @@ export function formatHumanReadableDate(input: Date | string | undefined) {
   if (typeof input === "string") {
     input = new Date(input)
   }
-
+  
   return dateFormat.format(input)
 }
 

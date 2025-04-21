@@ -1,7 +1,7 @@
 <script lang="ts">
   import DatePicker from "$lib/components/date-picker.svelte";
   import { Input } from "$lib/components/ui/input";
-  import { formatHumanReadableDate } from "$lib/utils/date";
+  import { formatHumanReadableDate, parseDateString } from "$lib/utils/date";
 
   import type { AttributeWithOptions } from "src/model/Attribute";
   import Select from "./inputs/select.svelte";
@@ -62,7 +62,7 @@
     data-accessor={"attributes." + name}
   ></DatePicker>
 {:else if !editable && attributeType === "DateAttribute"}
-  <div class="col-span-2">{formatHumanReadableDate(value)}</div>
+  <div class="col-span-2">{formatHumanReadableDate(parseDateString(value, attribute?.date_format ?? "mm/dd/yyyy")?.toDate(Intl.DateTimeFormat().resolvedOptions().timeZone))}</div>
 {:else if !editable && (attributeType === "ProfileSearchAttribute" || attributeType === "ProfileSelectAttribute")}
   {#if value.indexOf(",") === -1}
     <!-- single profile-->

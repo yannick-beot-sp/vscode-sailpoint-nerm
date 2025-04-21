@@ -2,7 +2,7 @@
   "name": "vscode-sailpoint-nerm",
   "displayName": "SailPoint Non-Employee Risk Management",
   "description": "Customize SailPoint Non-Employee Risk Management",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "publisher": "yannick-beot-sp",
   "license": "SEE LICENSE IN LICENSE.txt",
   "icon": "resources/nerm.png",
@@ -46,7 +46,8 @@
       "sailpoint": [
         {
           "id": "vscode-sailpoint-nerm.view",
-          "name": "NERM Tenants"
+          "name": "NERM Tenants",
+          "icon": "resources/nerm.svg"
         }
       ]
     },
@@ -184,7 +185,7 @@
     "@typescript-eslint/parser": "^8.7.0",
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.4.1",
-    "esbuild": "^0.24.0",
+    "esbuild": "^0.25.2",
     "eslint": "^9.13.0",
     "npm-run-all": "^4.1.5",
     "typescript": "^5.6.3"

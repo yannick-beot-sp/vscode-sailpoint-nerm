@@ -151,7 +151,29 @@ export class NERMClient {
 
 
     public async getProfiles(request: GetProfilesRequest): Promise<PaginatedData<Profile>> {
-        const response = await this.axios.get<GetProfilesResponse>("profiles", { params: request })
+        const response = await this.axios.get<GetProfilesResponse | ErrorResponse>("profiles", {
+            params: request,
+            validateStatus: (status: number) => {
+                return (status >= 200 && status < 300) || status === 400
+            }
+        })
+
+        if (response.status === 400) {
+            if (isError(response.data)) {
+
+                const { error } = response.data
+                if (error === "no profiles found") {
+                    return {
+                        data: []
+                    }
+                }
+            }
+        }
+
+        if (isError(response.data)) {
+            throw new Error(response.data.error);
+        }
+
         return {
             _metadata: response.data._metadata,
             data: response.data.profiles

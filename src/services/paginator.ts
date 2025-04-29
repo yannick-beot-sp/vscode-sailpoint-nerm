@@ -16,7 +16,7 @@ export async function paginator<T, TQuery extends PaginatedQueryParams, TResult>
         response = await callbackFn.call(thisArg, params);
         results.push.apply(results, response.data);
         params.offset! += increment;
-    } while (params.offset! < response._metadata!.total)
+    } while (params.offset! < (response._metadata?.total ?? 0 ))
 
     return results
 }

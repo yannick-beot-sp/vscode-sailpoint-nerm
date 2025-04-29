@@ -4,6 +4,13 @@ All notable changes to the "vscode-sailpoint-nerm" extension will be documented 
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+
+## Unreleased
+
+### Fixed
+
+- If there was no profile for a profile type, the spinner was turning forever.
+
 ## [0.0.5] - 2025-04-20
 
 ### Added

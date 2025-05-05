@@ -110,6 +110,12 @@ You will asked for:
 ## Release Notes
 
 
+### 0.0.6
+
+- If there was no profile for a profile type, the spinner was turning forever.
+- Add column filters for status and type for users
+- Add column filter for status for profiles
+
 ### 0.0.5
 
 - View, edit, delete profiles. Not all attributes can be edited. When an attribute is referencing another profile, you can open the profile

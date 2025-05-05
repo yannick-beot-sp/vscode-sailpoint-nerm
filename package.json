@@ -2,7 +2,7 @@
   "name": "vscode-sailpoint-nerm",
   "displayName": "SailPoint Non-Employee Risk Management",
   "description": "Customize SailPoint Non-Employee Risk Management",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "publisher": "yannick-beot-sp",
   "license": "SEE LICENSE IN LICENSE.txt",
   "icon": "resources/nerm.png",

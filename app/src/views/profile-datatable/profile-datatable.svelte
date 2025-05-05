@@ -5,7 +5,7 @@
   import type { Profile } from "src/model/Profile";
   import { ClientFactory } from "../../services/ClientFactory";
   import Spinner from "$lib/components/Spinner.svelte";
-  import type { Attribute, AttributeWithOptions } from "src/model/Attribute";
+  import type { AttributeWithOptions } from "src/model/Attribute";
   import ActionEdit from "./action-edit.svelte";
   import { filters } from "./faceted-filters";
 

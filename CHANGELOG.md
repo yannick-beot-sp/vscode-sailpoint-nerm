@@ -7,6 +7,13 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Unreleased
 
+## [0.0.6] - 2025-05-05
+
+### Added
+
+- Add column filters for status and type for users
+- Add column filter for status for profiles
+
 ### Fixed
 
 - If there was no profile for a profile type, the spinner was turning forever.

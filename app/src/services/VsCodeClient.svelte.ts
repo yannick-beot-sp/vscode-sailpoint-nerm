@@ -5,7 +5,7 @@ import { Messenger } from "./Messenger";
 import type { Role } from "src/model/Role";
 import type { UserRolePair } from "src/model/UserRolePair";
 import type { NewUserRolePair } from "src/model/NewUserRolePair";
-import type { PaginationState, SortingState, VisibilityState } from "@tanstack/table-core";
+import type { ColumnFiltersState, PaginationState, SortingState, VisibilityState } from "@tanstack/table-core";
 import type { Profile } from "src/model/Profile";
 import type { Attribute } from "src/model/Attribute";
 
@@ -15,6 +15,8 @@ interface State {
     paginationState?: PaginationState
     sortingState?: SortingState
     globalFilter?: string
+    columnFilters?: ColumnFiltersState
+
 }
 
 export class VsCodeClient implements Client {
@@ -35,8 +37,6 @@ export class VsCodeClient implements Client {
     async getRoles(forceRefresh?: boolean): Promise<Role[]> {
         return await messageHandler.request<Role[]>("getAllRoles", { forceRefresh })
     }
-
-    private state: State = {}
 
     async getUsers(forceRefresh?: boolean): Promise<User[]> {
         return await messageHandler.request<User[]>("getUsers", { forceRefresh })
@@ -116,6 +116,17 @@ export class VsCodeClient implements Client {
         return tmpstate?.globalFilter
     }
 
+    async setColumnFiltersState(tableName: string, filter: ColumnFiltersState): Promise<void> {
+        await messageHandler.request<void>("setColumnFiltersState", {
+            tableName,
+            columnFiltersState: $state.snapshot(filter)
+        })
+    }
+
+    async getColumnFiltersState(tableName: string): Promise<ColumnFiltersState | undefined> {
+        return await messageHandler.request<ColumnFiltersState | undefined>("getColumnFiltersState", { tableName })
+    }
+
     async getAttributes(forceRefresh?: boolean): Promise<Attribute[]> {
         return await messageHandler.request<Attribute[]>("getAllAttributes", { forceRefresh })
     }
@@ -133,6 +144,6 @@ export class VsCodeClient implements Client {
     }
 
     async open(uri: string): Promise<void> {
-         await messageHandler.request<void>("openWebView", uri)
+        await messageHandler.request<void>("openWebView", uri)
     }
 }

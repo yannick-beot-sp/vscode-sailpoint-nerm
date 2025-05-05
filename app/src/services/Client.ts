@@ -1,4 +1,4 @@
-import type { PaginationState, SortingState, VisibilityState } from "@tanstack/table-core"
+import type { ColumnFiltersState, PaginationState, SortingState, VisibilityState } from "@tanstack/table-core"
 import type { Attribute } from "src/model/Attribute"
 import type { NewUserRolePair } from "src/model/NewUserRolePair"
 import type { Profile } from "src/model/Profile"
@@ -29,19 +29,25 @@ export interface Client {
      */
     setPaginationState(state: PaginationState): void;
     getPaginationState(): PaginationState | undefined;
+    
     setSortingState(state: SortingState): void;
     getSortingState(): SortingState | undefined;
+
     setGlobalFilter(filter: string): void;
     getGlobalFilter(): string | undefined;
+
+    setColumnFiltersState(tableName: string, filter: ColumnFiltersState): Promise<void>;
+    getColumnFiltersState(tableName: string):  Promise<ColumnFiltersState | undefined> ;
+
     setData<T>(data: T[]): void;
     getData<T>(): T[] | undefined;
 
     getProfiles(profileTypeId: string, forceRefresh?: boolean): Promise<Profile[]>
     deleteProfile(profileId: string): Promise<void>
-    updateProfile(profile:Profile): Promise<Profile>
+    updateProfile(profile: Profile): Promise<Profile>
 
     getAttributes(forceRefresh?: boolean): Promise<Attribute[]>
-    
-    open(uri:string): Promise<void>
+
+    open(uri: string): Promise<void>
 
 }

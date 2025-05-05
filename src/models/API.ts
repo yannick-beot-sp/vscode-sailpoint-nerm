@@ -41,9 +41,12 @@ export function isError(e: any): e is ErrorResponse {
     return "error" in e
 }
 
-export type Status = "Active" | "Disabled"
+export declare const Status: {
+    readonly Active: "Active";
+    readonly Disabled: "Disabled";
+};
 
-
+export type Status =  typeof Status[keyof typeof Status];
 
 export type User = {
     id: string;

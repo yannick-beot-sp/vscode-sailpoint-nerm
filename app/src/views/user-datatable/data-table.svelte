@@ -1,9 +1,12 @@
 <script lang="ts" generics="TData, TValue">
   import {
+    type ColumnFiltersState,
     type PaginationState,
     type SortingState,
     type VisibilityState,
     getCoreRowModel,
+    getFacetedRowModel,
+    getFacetedUniqueValues,
     getFilteredRowModel,
     getPaginationRowModel,
     getSortedRowModel,
@@ -20,8 +23,10 @@
   import type { Client } from "src/services/Client";
   import { onMount } from "svelte";
   import { Input } from "$lib/components/ui/input";
-  import { RotateCw } from "lucide-svelte";
+  import { RotateCw, X } from "lucide-svelte";
   import { Button } from "$lib/components/ui/button";
+  import type { FacetedFilter } from "src/model/FacetedFilter";
+  import DataTableFacetedFilter from "$lib/components/data-table-faceted-filter.svelte";
   type Props = {
     columns: MyColumnDef<TData>[];
     data: TData[];
@@ -29,6 +34,7 @@
     tableId: string;
     refresh: (forceRefresh?: boolean) => Promise<void>;
     meta?: any;
+    filters?: FacetedFilter[];
   };
 
   let {
@@ -38,12 +44,14 @@
     tableId,
     refresh,
     meta,
+    filters,
   }: Props = $props();
   let pagination = $state<PaginationState>(
     client.getPaginationState() ?? { pageIndex: 0, pageSize: 10 }
   );
   let sorting = $state<SortingState>(client.getSortingState() ?? []);
   let columnVisibility = $state<VisibilityState>(createVisibilityMap(columns));
+  let columnFilters = $state<ColumnFiltersState>([]);
   let globalFilter = $state(client.getGlobalFilter());
   const table = createSvelteTable({
     get data() {
@@ -55,6 +63,9 @@
     globalFilterFn: "includesString", // built-in filter function
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
+
     onSortingChange: (updater) => {
       if (typeof updater === "function") {
         sorting = updater(sorting);
@@ -70,6 +81,14 @@
         pagination = updater;
       }
       client.setPaginationState(pagination);
+    },
+    onColumnFiltersChange: (updater) => {
+      if (typeof updater === "function") {
+        columnFilters = updater(columnFilters);
+      } else {
+        columnFilters = updater;
+      }
+      client.setColumnFiltersState(tableId, $state.snapshot(columnFilters));
     },
     onColumnVisibilityChange: (updater) => {
       if (typeof updater === "function") {
@@ -102,6 +121,9 @@
       get globalFilter() {
         return globalFilter;
       },
+      get columnFilters() {
+        return columnFilters;
+      },
     },
     meta: {
       ...meta,
@@ -129,7 +151,13 @@
     if (visibilityState) {
       columnVisibility = visibilityState;
     }
+    const columnFiltersState = await client.getColumnFiltersState(tableId);
+    if (columnFiltersState) {
+      columnFilters = columnFiltersState;
+    }
   });
+
+  const isFiltered = $derived(table.getState().columnFilters.length > 0);
 </script>
 
 <div>
@@ -141,6 +169,25 @@
       oninput={(e) => table.setGlobalFilter(String(e.target.value))}
       class="max-w-sm"
     />
+    {#if filters}
+      {#each filters as filter}
+        <DataTableFacetedFilter
+          column={table.getColumn(filter.columnName)!}
+          title={filter.title}
+          options={filter.options}
+        />
+      {/each}
+    {/if}
+    {#if isFiltered}
+      <Button
+        variant="ghost"
+        onclick={() => table.resetColumnFilters()}
+        class="h-8 px-2 lg:px-3"
+      >
+        Reset
+        <X />
+      </Button>
+    {/if}
     <Button
       onclick={async () => {
         await refresh(true);

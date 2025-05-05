@@ -16,6 +16,8 @@ import { GetAllProfilesQuery } from './commands/GetAllProfilesQuery';
 import { DeleteProfileCommand } from './commands/DeleteProfileCommand';
 import { UpdateProfileCommand } from './commands/UpdateProfileCommand';
 import { OpenWebViewCommand } from './commands/OpenWebViewCommand';
+import { GetColumnFiltersStateQuery } from './commands/GetColumnFiltersStateQuery';
+import { SetColumnFiltersStateCommand } from './commands/SetColumnFiltersStateCommand';
 
 
 
@@ -144,6 +146,8 @@ export class Panel {
             new DeleteProfileCommand(params.client),
             new UpdateProfileCommand(params.client),
             new OpenWebViewCommand(params.tenantId),
+            new GetColumnFiltersStateQuery(params.tenantId, params.treeService),
+            new SetColumnFiltersStateCommand(params.tenantId, params.treeService),
         )
 
         // Handle messages from the webview

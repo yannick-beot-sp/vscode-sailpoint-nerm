@@ -1,9 +1,10 @@
-import type { Status, User } from "src/model/User";
+import type { User } from "src/model/User";
+import { Status } from "src/model/User";
 import type { Client } from "./Client";
 import type { Role } from "src/model/Role";
 import type { UserRolePair } from "src/model/UserRolePair";
 import type { NewUserRolePair } from "src/model/NewUserRolePair";
-import type { PaginationState, SortingState, VisibilityState } from "@tanstack/table-core";
+import type { ColumnFiltersState, PaginationState, SortingState, VisibilityState } from "@tanstack/table-core";
 import type { Profile, StatusValue } from "src/model/Profile";
 import { Status as ProfileStatus } from "src/model/Profile";
 import type { Attribute, AttributeWithOptions } from "src/model/Attribute";
@@ -44,7 +45,7 @@ const lastNames = [
     "Rodriguez",
     "Martinez",
 ];
-const statuses: Status[] = ["Active", "Disabled"];
+const statuses: StatusValue[] = Object.values(Status);
 
 const roles: Role[] = [
     {
@@ -3639,6 +3640,11 @@ export class MockupClient implements Client {
 
     setGlobalFilter(filter: string): void { }
     getGlobalFilter(): string | undefined {
+        return undefined
+    }
+
+    async setColumnFiltersState(tableName: string, filter: ColumnFiltersState): Promise<void> { }
+    async getColumnFiltersState(tableName: string):  Promise<ColumnFiltersState | undefined> {
         return undefined
     }
 

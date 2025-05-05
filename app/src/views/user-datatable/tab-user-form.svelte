@@ -14,7 +14,8 @@
   import { Switch } from "$lib/components/ui/switch/index.js";
   import { copyText } from "$lib/utils";
 
-  import type { Status, User } from "src/model/User";
+  import type { StatusValue, User } from "src/model/User";
+  import { Status } from "src/model/User";
   import type { Client } from "src/services/Client";
 
   interface Props {
@@ -27,8 +28,8 @@
 
   let { user = $bindable(), client, updateRow }: Props = $props();
 
-  let statusChecked = $state(user.status === "Active");
-  let statusLabel: Status = $derived(statusChecked ? "Active" : "Disabled");
+  let statusChecked = $state(user.status === Status.Active);
+  let statusLabel: StatusValue = $derived(statusChecked ? Status.Active: Status.Disabled);
 
   const schema = yup.object({
     email: yup.string().label("Email").email().required(),
@@ -39,7 +40,7 @@
       .string()
       .label("Status")
       .required()
-      .oneOf(["Active", "Disabled"]),
+      .oneOf(Object.values(Status)),
     title: yup.string().label("Title").trim().notRequired(),
   });
 
@@ -72,7 +73,7 @@
   isSubmitting.subscribe((e) => {
     isFormSubmitting = e;
   });
-  let disabled = $derived(!(isTouched && isFormValid && !isFormSubmitting))
+  let disabled = $derived(!(isTouched && isFormValid && !isFormSubmitting));
   $inspect(isTouched, isFormValid, isFormSubmitting, disabled);
 </script>
 
@@ -143,8 +144,7 @@
       </ValidationMessage>
     </div>
   </div>
-  <Button type="submit" {disabled}    >Save</Button
-  >
+  <Button type="submit" {disabled}>Save</Button>
 </form>
 
 <style>

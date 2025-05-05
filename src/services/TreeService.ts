@@ -6,6 +6,11 @@ const KEY_PREFIX = "TREE_"
 export type StoredNodeType = "FOLDER" | "TENANT"
 
 export type VisibilityState = Record<string, boolean>;
+export type ColumnFiltersState = ColumnFilter[];
+export interface ColumnFilter {
+    id: string;
+    value: unknown;
+}
 
 
 export interface IStoredNode {
@@ -16,6 +21,7 @@ export interface IStoredNode {
     readonly baseUrl?: string
     readOnly?: boolean
     tableViews?: Record<string, VisibilityState>
+    tableColumnFilters?: Record<string, ColumnFiltersState>
 }
 
 export class StoredNode implements IStoredNode {

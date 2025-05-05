@@ -39,6 +39,7 @@ export const columns: MyColumnDef<User>[] = [
                 status: row.original.status,
             });
         },
+        filterFn: "arrIncludesSome"
     },
     {
         id: "email",
@@ -65,7 +66,8 @@ export const columns: MyColumnDef<User>[] = [
         id: "type",
         accessorKey: "type",
         header: "Type",
-        isVisibleByDefault: false
+        isVisibleByDefault: false,
+        filterFn: "arrIncludesSome"
     },
     {
         id: "last_login",
@@ -73,7 +75,7 @@ export const columns: MyColumnDef<User>[] = [
         header: "Last Login",
         isVisibleByDefault: false,
         cell: ({ row, table }) => {
-            return renderComponent(ColumnLastLogin,  {
+            return renderComponent(ColumnLastLogin, {
                 value: row.original.last_login,
             });
         },

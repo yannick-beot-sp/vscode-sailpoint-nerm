@@ -5,6 +5,7 @@
   import type { User } from "src/model/User";
   import { ClientFactory } from "../../services/ClientFactory";
   import Spinner from "$lib/components/Spinner.svelte";
+  import { filters } from "./faceted-filters";
 
   let client = ClientFactory.getClient();
   let users: User[] = $state<User[]>([]);
@@ -43,5 +44,6 @@
     {client}
     refresh={getData}
     tableId="user"
+    {filters}
   />
 {/if}

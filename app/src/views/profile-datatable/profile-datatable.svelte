@@ -7,6 +7,7 @@
   import Spinner from "$lib/components/Spinner.svelte";
   import type { Attribute, AttributeWithOptions } from "src/model/Attribute";
   import ActionEdit from "./action-edit.svelte";
+  import { filters } from "./faceted-filters";
 
   type Props = {
     profileTypeId: string;
@@ -73,6 +74,7 @@
     {meta}
     refresh={getData}
     tableId={`profiles/${profileTypeId}`}
+    {filters}
   />
 {/if}
 

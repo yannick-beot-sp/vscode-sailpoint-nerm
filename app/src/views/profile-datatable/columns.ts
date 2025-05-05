@@ -26,7 +26,8 @@ const commonColumns: MyColumnDef<Profile>[] = [
         id: "status",
         accessorKey: "status",
         header: "Status",
-        enableHiding: true
+        enableHiding: true,
+        filterFn: "arrIncludesSome"
     },
     {
         id: "id_proofing_status",

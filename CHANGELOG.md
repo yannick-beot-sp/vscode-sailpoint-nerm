@@ -7,6 +7,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Unreleased
 
+### Fixed
+
+- Roles were not refreshed when hitting refresh
+
 ## [0.0.6] - 2025-05-05
 
 ### Added

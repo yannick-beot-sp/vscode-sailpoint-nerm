@@ -5,15 +5,21 @@
   import type { Role } from "src/model/Role";
   import { ClientFactory } from "../../services/ClientFactory";
   import Spinner from "$lib/components/Spinner.svelte";
-  
+
   let client = ClientFactory.getClient();
   let roles: Role[] = $state<Role[]>([]);
   let loading = $state(true);
 
   async function getData(forceRefresh?: boolean) {
     loading = true;
-    let tmproles = client.getData<Role>();
+    let tmproles: Role[] | undefined;
+
+    if (!forceRefresh) {
+      tmproles = client.getData<Role>();
+    }
+
     if (!tmproles) {
+      console.log("loading data", forceRefresh);
       tmproles = await client.getRoles(forceRefresh);
       client.setData(tmproles);
     }
@@ -32,11 +38,11 @@
     <Spinner show={true} />
   </div>
 {:else}
-<DataTable
-  bind:data={roles}
-  {columns}
-  {client}
-  refresh={getData}
-  tableId="role"
-/>
+  <DataTable
+    bind:data={roles}
+    {columns}
+    {client}
+    refresh={getData}
+    tableId="role"
+  />
 {/if}

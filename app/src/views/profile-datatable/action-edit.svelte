@@ -1,16 +1,28 @@
 <script lang="ts">
   import { toast } from "svelte-sonner";
-  import { Eye, Pen } from "lucide-svelte";
-  import type { Profile } from "src/model/Profile";
-  import * as Sheet from "$lib/components/ui/sheet/index.js";
+  import { Eye, Pen, CirclePlus } from "lucide-svelte";
+
   import { Button, buttonVariants } from "$lib/components/ui/button/index.js";
+  import * as Sheet from "$lib/components/ui/sheet/index.js";
   import { Toaster } from "$lib/components/ui/sonner/index.js";
-  import type { Client } from "src/services/Client";
+  import Autocomplete from "$lib/components/combobox/combobox.svelte";
   import { Label } from "$lib/components/ui/label";
+
+  import type { Client } from "src/services/Client";
+  import type { Profile } from "src/model/Profile";
   import type { Attribute } from "src/model/Attribute";
+
   import ProfileInput from "./profile-input.svelte";
   import ViewSystemAttributes from "./view-system-attributes.svelte";
   import EditSystemAttributes from "./edit-system-attributes.svelte";
+  import type { Item } from "$lib/components/Item";
+  import { compare } from "$lib/utils/stringUtils";
+
+  interface listItem<T> {
+    original: T;
+    status?: "Deleted" | "Added";
+    new?: boolean;
+  }
 
   interface Props {
     profile: Profile;
@@ -31,6 +43,7 @@
     open = false,
     hidden = false,
   }: Props = $props();
+
   let edit = $state(mode === "edit");
   function getAttributeDisplayName(key: string) {
     return attributes.find((x) => x.uid === key)?.label;
@@ -39,9 +52,6 @@
   let updates = new Set<HTMLElement>();
 
   function onchange(event: Event) {
-    // console.log(event);
-    // console.log(event.target?.id);
-    // console.log(event.target?.dataset?.accessor);
     updates.add(event.target as HTMLElement);
     updated = true;
   }
@@ -84,6 +94,41 @@
   }
 
   let isOpen = $state(open);
+  let selectedAttribute = $state<string>();
+
+  let attributesMap = $derived.by(() => {
+    let attributesMap = new Map<string, boolean>();
+    if (profile.attributes) {
+      Object.keys(profile.attributes).forEach((x) => {
+        attributesMap.set(x, true);
+      });
+    }
+    return attributesMap;
+  });
+
+  let newAttributeItems: Item[] = $derived(
+    attributes
+      .filter((x) => !attributesMap.has(x.uid))
+      .map((x) => ({ label: x.label, value: x.uid }))
+      .sort((a, b) => compare(a.label, b.label))
+  );
+
+  function handleAdd() {
+    console.log(">handleAdd");
+    if (selectedAttribute) {
+      // const newAttr = attributes.find((x) => x.uid === selectedAttribute);
+      if (profile.attributes) {
+        profile.attributes[selectedAttribute] = "";
+      } else {
+        profile.attributes = {
+          [selectedAttribute]: ""
+        };
+      }
+
+      selectedAttribute = undefined;
+      updated = true;
+    }
+  }
 </script>
 
 <Toaster />
@@ -156,6 +201,25 @@
             ></ProfileInput>
           </div>
         {/each}
+      {/if}
+      {#if edit}
+        <div
+          class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2"
+        >
+          <Autocomplete
+            items={newAttributeItems}
+            bind:value={selectedAttribute}
+          />
+          <Button
+            variant="ghost"
+            size="icon"
+            class="relative size-8 p-0"
+            onclick={async () => handleAdd()}
+            disabled={!selectedAttribute}
+          >
+            <CirclePlus class="text-success" />
+          </Button>
+        </div>
       {/if}
     </div>
     {#if edit}

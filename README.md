@@ -110,6 +110,11 @@ You will asked for:
 ## Release Notes
 
 
+### 0.0.7
+
+- Can add a new attribute to a profile
+- Roles were not refreshed when hitting refresh
+
 ### 0.0.6
 
 - If there was no profile for a profile type, the spinner was turning forever.

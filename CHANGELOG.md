@@ -7,6 +7,12 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Unreleased
 
+## [0.0.7] - 2025-05-11
+
+### Added
+
+- Can add a new attribute to a profile
+
 ### Fixed
 
 - Roles were not refreshed when hitting refresh

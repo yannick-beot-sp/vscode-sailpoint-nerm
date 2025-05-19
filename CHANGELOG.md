@@ -7,6 +7,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Unreleased
 
+### Fixed
+
+- Fix issue while sorting and filtering columns to display
+
 ## [0.0.7] - 2025-05-11
 
 ### Added

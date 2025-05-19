@@ -23,9 +23,22 @@
     if (!aIsVisible && bIsVisible) {
       return 1;
     }
-    // Otherwise (both visible or both invisible), maintain original relative order (0)
-    // This relies on the sort being stable, which is true for modern JS engines.
-    return 0;
+    const aHeader = a.columnDef.header;
+    const bHeader = b.columnDef.header;
+
+    return typeof aHeader === "string" && typeof bHeader === "string"
+      ? aHeader.localeCompare(bHeader, undefined, { sensitivity: "base" })
+      : 0;
+  };
+
+  const getKeywords = (a: Column<TData>) => {
+    if (
+      a.columnDef.header !== undefined &&
+      typeof a.columnDef.header === "string"
+    ) {
+      return a.columnDef.header.split(" ");
+    }
+    return [a.columnDef.id];
   };
 </script>
 
@@ -56,6 +69,7 @@
             .sort(sortedColumnsWithSort) as column}
             <Command.Item
               value={column.id}
+              keywords={getKeywords(column)}
               onSelect={() => {
                 column.toggleVisibility();
               }}

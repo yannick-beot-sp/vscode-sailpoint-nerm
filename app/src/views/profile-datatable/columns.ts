@@ -14,6 +14,7 @@ export type MyColumnDef<TData> = ColumnDef<TData> & {
 
 const commonColumns: MyColumnDef<Profile>[] = [
     {
+        id: "Name",
         accessorKey: "name",
         header: ({ column }) =>
             renderComponent(SortableHeader, {

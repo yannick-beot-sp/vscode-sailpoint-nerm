@@ -10,6 +10,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ### Fixed
 
 - Fix issue while sorting and filtering columns to display
+- Filtering NeprofileUser and NeaccessUser users
 
 ## [0.0.7] - 2025-05-11
 

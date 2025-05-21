@@ -48,12 +48,19 @@ export declare const Status: {
 
 export type Status =  typeof Status[keyof typeof Status];
 
+export const UserType = {
+    NeprofileUser: "NeprofileUser",
+    NeaccessUser: "NeaccessUser"
+};
+
+export type UserTypeValue = typeof UserType[keyof typeof UserType];
+
 export type User = {
     id: string;
     uid: string;
     name: string;
     email: string;
-    type: "NeprofileUser" | "NeaccessUser";
+    type: UserTypeValue;
     title?: string;
     status: Status;
     login: string;

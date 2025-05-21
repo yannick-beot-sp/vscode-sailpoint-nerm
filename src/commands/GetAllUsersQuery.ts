@@ -1,4 +1,4 @@
-import { User } from "../models/API";
+import { User, UserType } from "../models/API";
 import { NERMClient } from "../services/NERMClient";
 import { paginator } from "../services/paginator";
 import { IRequest, IRequestHandler } from "./interfaces";
@@ -20,7 +20,9 @@ export class GetAllUsersQuery implements IRequestHandler<GetAllUsersRequest, Use
             return userCache.get(this.tenantId)!
         }
 
-        const users = await paginator(this.client, this.client.getUsers, {})
+        let users = await paginator(this.client, this.client.getUsers, {})
+        // Excluding DelegateUser
+        users = users.filter(x => x.type === UserType.NeprofileUser || x.type === UserType.NeaccessUser)
         userCache.set(this.tenantId, users)
         return users
     }
